@@ -18,10 +18,14 @@ jobs:
 
       - name: Prepare dist
         run: |
+          set -e
           mkdir -p dist
           cp -r registry dist/registry
           cp -r servers dist/servers
           cp -r site dist/site
+          # корневые файлы:
+          [ -f index.html ] && cp index.html dist/index.html
+          [ -f README.md ] && cp README.md dist/README.md
 
       - uses: actions/upload-pages-artifact@v3
         with:
