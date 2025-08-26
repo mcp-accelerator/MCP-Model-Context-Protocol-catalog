@@ -1,15 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" translate="no" class="notranslate">
 <head>
   <meta charset="utf-8" />
   <title>MCP Catalog · Directory</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- запрет автоперевода браузерами -->
+  <meta name="google" content="notranslate">
   <style>
     :root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330;--ok:#27c93f;--warn:#ffb020}
     *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell}
     header{position:sticky;top:0;background:linear-gradient(180deg,var(--bg) 70%,transparent);padding:18px 16px 8px;z-index:10}
     .bar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;max-width:1100px;margin:0 auto}
-    .title{font-size:20px;font-weight:700;margin-right:auto}
+    .title{font-size:20px;font-weight:700;margin-right:auto;white-space:nowrap}
+    .lang{display:flex;gap:6px}
+    .lang button{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
+    .lang button.active{outline:2px solid var(--brand)}
     input[type="search"]{flex:1;min-width:220px;background:var(--card);border:1px solid #223044;color:var(--ink);border-radius:10px;padding:10px 12px;outline:none}
     .chips{display:flex;gap:8px;flex-wrap:wrap}
     .chip{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
@@ -29,15 +34,20 @@
     .empty{color:var(--muted);text-align:center;padding:32px}
     footer{max-width:1100px;margin:0 auto;padding:18px 16px;color:var(--muted);font-size:13px}
     .pill{padding:2px 8px;border-radius:999px;background:#182435;border:1px solid #223044;font-size:12px}
+    .notranslate{unicode-bidi: plaintext;}
   </style>
 </head>
-<body>
+<body class="notranslate">
   <header>
     <div class="bar">
-      <div class="title">MCP Catalog</div>
+      <div class="title"><span class="notranslate">MCP</span> Catalog</div>
       <input id="q" type="search" placeholder="Search servers (title, keywords, description)…" />
       <div id="chips" class="chips"></div>
       <div id="count" class="count"></div>
+      <div class="lang">
+        <button id="lang-en" class="active">EN</button>
+        <button id="lang-ru">RU</button>
+      </div>
     </div>
   </header>
 
@@ -55,65 +65,105 @@
   </footer>
 
   <script>
-    const BASE = location.pathname.replace(/\/site\/.*$/, '/');
-    const REGISTRY_URL = BASE + 'registry/servers.index.json';
+    // --- i18n strings (EN/RU) ---
+    const STR = {
+      en: {
+        title: 'MCP Catalog',
+        searchPh: 'Search servers (title, keywords, description)…',
+        all: 'all',
+        shown: (a,b)=>`${a} / ${b}`,
+        manifest: 'manifest',
+        homepage: 'homepage',
+        repo: 'repo',
+        nothing: 'Nothing found. Try another query or clear filters.',
+        footer: { ui: 'UI', registry: 'Registry JSON', servers: 'Servers', schema: 'Schema' }
+      },
+      ru: {
+        title: 'Каталог MCP',
+        searchPh: 'Поиск серверов (название, ключевые слова, описание)…',
+        all: 'все',
+        shown: (a,b)=>`Показано ${a} из ${b}`,
+        manifest: 'манифест',
+        homepage: 'сайт',
+        repo: 'репозиторий',
+        nothing: 'Ничего не найдено. Измените запрос или очистите фильтры.',
+        footer: { ui: 'UI', registry: 'Реестр JSON', servers: 'Серверы', schema: 'Схема' }
+      }
+    };
 
-    const state = { q:'', cat:'all', items:[], cats:[] };
+    // persist lang in URL (?lang=en|ru)
+    const urlParams = new URLSearchParams(location.search);
+    let LANG = (urlParams.get('lang')||'en').toLowerCase();
+    if (!['en','ru'].includes(LANG)) LANG='en';
 
     const els = {
+      title: document.querySelector('.title'),
       q: document.getElementById('q'),
       chips: document.getElementById('chips'),
       grid: document.getElementById('grid'),
       empty: document.getElementById('empty'),
       count: document.getElementById('count'),
+      langEn: document.getElementById('lang-en'),
+      langRu: document.getElementById('lang-ru'),
+      footer: document.querySelector('footer')
     };
 
-    const escapeHTML = s => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    function setLang(l){
+      LANG=l;
+      const p=new URLSearchParams(location.search);
+      p.set('lang', l);
+      history.replaceState(null,'',location.pathname+'?'+p.toString());
+      renderStaticText();
+      render(); // re-render cards with localized labels
+      els.langEn.classList.toggle('active', l==='en');
+      els.langRu.classList.toggle('active', l==='ru');
+      document.documentElement.lang = l;
+    }
 
-    async function loadRegistry() {
-      const res = await fetch(REGISTRY_URL, {cache:'no-store'});
-      if (!res.ok) throw new Error('Registry load failed');
-      const index = await res.json();
+    els.langEn.onclick=()=>setLang('en');
+    els.langRu.onclick=()=>setLang('ru');
 
-      // Derive unique categories
-      const cats = Array.from(new Set(index.map(x => x.category))).sort();
-      state.cats = ['all', ...cats];
+    const escapeHTML = s => (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 
-      // Load minimal meta for each server (title/desc/badges/homepage/repo)
-      state.items = await Promise.all(index.map(async item => {
-        const url = BASE + item.path;
-        try {
-          const r = await fetch(url, {cache:'no-store'});
-          const manifest = r.ok ? await r.json() : {};
-          const meta = manifest.meta || {};
-          const keywords = (meta.keywords || []).map(String).join(' ');
-          return {
-            name: item.name,
-            category: item.category,
-            path: item.path,
-            homepage: item.homepage || meta.homepage || '',
-            repo: meta.repo || '',
-            title: meta.title || item.name,
-            description: meta.description || '',
-            badges: Array.isArray(meta.badges) ? meta.badges : [],
-            keywords
-          };
-        } catch {
-          return { name:item.name, category:item.category, path:item.path, title:item.name, description:'', badges:[], keywords:'' };
-        }
-      }));
+    const BASE = location.pathname.replace(/\/site\/.*$/, '/');
+    const REGISTRY_URL = BASE + 'registry/servers.index.json';
+    const state = { q:'', cat:'all', items:[], cats:[] };
 
-      renderFilters();
-      readQueryParams();
-      render();
+    function renderStaticText(){
+      const T=STR[LANG];
+      els.title.innerHTML = `<span class="notranslate">MCP</span> ${escapeHTML(T.title.replace(/^Каталог MCP$/,'Каталог MCP'))}`;
+      els.q.placeholder = T.searchPh;
+      // footer links (labels only)
+      els.footer.innerHTML =
+        `<span class="pill">UI</span> ${LANG==='ru'?'загружает':'loads'} <code>registry/servers.index.json</code> ${LANG==='ru'?'и':''} ${LANG==='ru'?'meta каждого манифеста':'and each server manifest’s <code>meta</code>'}. |
+         <a href="../registry/servers.index.json">${STR[LANG].footer.registry}</a> ·
+         <a href="../servers/">${STR[LANG].footer.servers}</a> ·
+         <a href="../schema/">${STR[LANG].footer.schema}</a> ·
+         <a href="../README.md">README</a>`;
+      document.getElementById('empty').textContent = STR[LANG].nothing;
+    }
+
+    function readQueryParams() {
+      const p = new URLSearchParams(location.search);
+      const cat = p.get('cat'); const q = p.get('q');
+      if (cat) state.cat = cat;
+      if (q) { state.q = q; els.q.value = q; }
+    }
+    function writeQueryParams() {
+      const p = new URLSearchParams(location.search);
+      p.set('lang', LANG);
+      if (state.cat && state.cat!=='all') p.set('cat', state.cat); else p.delete('cat');
+      if (state.q) p.set('q', state.q); else p.delete('q');
+      history.replaceState(null,'',location.pathname+(p.toString()?('?'+p.toString()):''));
     }
 
     function renderFilters() {
       els.chips.innerHTML = '';
-      state.cats.forEach(cat => {
+      const cats = state.cats;
+      cats.forEach(cat => {
         const b = document.createElement('button');
         b.className = 'chip' + (state.cat===cat ? ' active' : '');
-        b.textContent = cat;
+        b.textContent = (cat==='all' ? STR[LANG].all : cat);
         b.onclick = () => { state.cat = cat; writeQueryParams(); render(); };
         els.chips.appendChild(b);
       });
@@ -123,16 +173,16 @@
     function filterItems() {
       return state.items.filter(x => {
         const byCat = state.cat==='all' || x.category===state.cat;
-        const q = state.q;
-        if (!q) return byCat;
-        const hay = (x.title+' '+x.description+' '+x.keywords+' '+x.name).toLowerCase();
-        return byCat && hay.includes(q);
+        if (!state.q) return byCat;
+        const hay = (x.title+' '+x.description+' '+(x.keywords||'')+' '+x.name).toLowerCase();
+        return byCat && hay.includes(state.q);
       });
     }
 
     function render() {
+      const T=STR[LANG];
       const items = filterItems();
-      els.count.textContent = `${items.length} / ${state.items.length}`;
+      els.count.textContent = T.shown(items.length, state.items.length);
       els.grid.innerHTML = '';
       els.empty.hidden = items.length !== 0;
 
@@ -140,42 +190,65 @@
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <h3>${escapeHTML(x.title)}</h3>
+          <h3 class="notranslate">${escapeHTML(x.title)}</h3>
           <div class="meta">
             <span>${escapeHTML(x.category)}</span>
             <span>•</span>
-            <a class="links" href="../${encodeURI(x.path)}" target="_blank" rel="noopener">manifest</a>
+            <a class="links" href="../${encodeURI(x.path)}" target="_blank" rel="noopener">${escapeHTML(T.manifest)}</a>
           </div>
           <div>${escapeHTML(x.description || '')}</div>
           <div class="badges">
-            ${x.badges.map(b => `<span class="badge ${b}">${escapeHTML(b)}</span>`).join('')}
+            ${(Array.isArray(x.badges)?x.badges:[]).map(b => `<span class="badge ${b} notranslate">${escapeHTML(b)}</span>`).join('')}
           </div>
           <div class="links">
-            ${x.homepage ? `<a href="${escapeHTML(x.homepage)}" target="_blank" rel="noopener">homepage</a>` : ''}
-            ${x.repo ? `<a href="${escapeHTML(x.repo)}" target="_blank" rel="noopener">repo</a>` : ''}
+            ${x.homepage ? `<a class="notranslate" href="${escapeHTML(x.homepage)}" target="_blank" rel="noopener">${escapeHTML(T.homepage)}</a>` : ''}
+            ${x.repo ? `<a class="notranslate" href="${escapeHTML(x.repo)}" target="_blank" rel="noopener">${escapeHTML(T.repo)}</a>` : ''}
           </div>
         `;
         els.grid.appendChild(card);
       }
     }
 
-    function readQueryParams() {
-      const p = new URLSearchParams(location.search);
-      const cat = p.get('cat'); const q = p.get('q');
-      if (cat && state.cats.includes(cat)) state.cat = cat;
-      if (q) { state.q = q; els.q.value = q; }
-    }
-    function writeQueryParams() {
-      const p = new URLSearchParams();
-      if (state.cat && state.cat!=='all') p.set('cat', state.cat);
-      if (state.q) p.set('q', state.q);
-      const url = location.pathname + (p.toString()?('?'+p.toString()):'');
-      history.replaceState(null, '', url);
+    async function loadRegistry() {
+      const res = await fetch(REGISTRY_URL, {cache:'no-store'});
+      const index = await res.json();
+
+      // categories from index
+      state.cats = ['all', ...Array.from(new Set(index.map(x => x.category))).sort()];
+
+      // minimal meta fetch
+      state.items = await Promise.all(index.map(async item => {
+        const url = BASE + item.path;
+        try {
+          const r = await fetch(url, {cache:'no-store'});
+          const manifest = r.ok ? await r.json() : {};
+          const meta = manifest.meta || {};
+          return {
+            name: item.name,
+            category: item.category,
+            path: item.path,
+            homepage: item.homepage || meta.homepage || '',
+            repo: meta.repo || '',
+            title: meta.title || item.name,
+            description: meta.description || '',
+            badges: Array.isArray(meta.badges) ? meta.badges : [],
+            keywords: (meta.keywords || []).map(String).join(' ')
+          };
+        } catch {
+          return { name:item.name, category:item.category, path:item.path, title:item.name, description:'', badges:[], keywords:'' };
+        }
+      }));
+
+      renderStaticText();
+      renderFilters();
+      readQueryParams();
+      render();
     }
 
+    // init
+    renderStaticText();
     loadRegistry().catch(err => {
-      els.grid.innerHTML = '';
-      els.empty.hidden = false; els.empty.textContent = 'Failed to load registry.';
+      els.grid.innerHTML=''; els.empty.hidden=false; els.empty.textContent = STR[LANG].nothing;
       console.error(err);
     });
   </script>
