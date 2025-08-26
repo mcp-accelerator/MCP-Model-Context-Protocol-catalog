@@ -1,0 +1,24 @@
+{
+  "name": "echo",
+  "version": "1.0.0",
+  "base_url": "https://httpbin.org",
+  "capabilities": [
+    {
+      "tool": "echo.get_ip",
+      "method": "GET",
+      "path": "/ip",
+      "inputs": {}
+    }
+  ],
+  "meta": {
+    "title": "Echo",
+    "description": "Демо эндпоинты httpbin",
+    "category": "other",
+    "homepage": "https://httpbin.org/",
+    "repo": "https://github.com",
+    "license": "MIT",
+    "badges": [
+      "community"
+    ]
+  }
+}

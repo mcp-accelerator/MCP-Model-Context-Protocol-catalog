@@ -1,0 +1,56 @@
+{
+  "name": "trello_mcp",
+  "version": "1.0.0",
+  "base_url": "https://api.trello.com/1",
+  "auth": {
+    "type": "apikey",
+    "env": "TRELLO_KEY",
+    "in": "query",
+    "name": "key"
+  },
+  "query_defaults": {
+    "token": "${env.TRELLO_TOKEN}"
+  },
+  "capabilities": [
+    {
+      "tool": "trello_mcp.create_card",
+      "method": "POST",
+      "path": "/cards",
+      "inputs": {
+        "query.idList": "string",
+        "query.name": "string",
+        "query.desc?": "string",
+        "query.pos?": "string"
+      }
+    },
+    {
+      "tool": "trello_mcp.move_card",
+      "method": "PUT",
+      "path": "/cards/{id}",
+      "inputs": {
+        "path.id": "string",
+        "query.idList": "string",
+        "query.pos?": "string"
+      }
+    }
+  ],
+  "meta": {
+    "title": "Trello",
+    "description": "Создание и перемещение карточек на досках Trello",
+    "category": "productivity",
+    "homepage": "https://developer.atlassian.com/cloud/trello/rest",
+    "repo": "https://github.com/modelcontextprotocol/server-trello",
+    "license": "MIT",
+    "badges": [
+      "community"
+    ],
+    "maintainers": [
+      "BogdanAIP"
+    ],
+    "keywords": [
+      "trello",
+      "kanban",
+      "cards"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "name": "github_mcp",
+  "version": "1.0.0",
+  "base_url": "https://api.github.com",
+  "auth": {
+    "type": "bearer",
+    "env": "GITHUB_TOKEN"
+  },
+  "headers": {
+    "Accept": "application/vnd.github+json"
+  },
+  "capabilities": [
+    {
+      "tool": "github_mcp.create_issue",
+      "method": "POST",
+      "path": "/repos/{owner}/{repo}/issues",
+      "inputs": {
+        "path.owner": "string",
+        "path.repo": "string",
+        "body": "object"
+      }
+    },
+    {
+      "tool": "github_mcp.comment_issue",
+      "method": "POST",
+      "path": "/repos/{owner}/{repo}/issues/{issue_number}/comments",
+      "inputs": {
+        "path.owner": "string",
+        "path.repo": "string",
+        "path.issue_number": "string",
+        "body": "object"
+      }
+    },
+    {
+      "tool": "github_mcp.add_label",
+      "method": "POST",
+      "path": "/repos/{owner}/{repo}/issues/{issue_number}/labels",
+      "inputs": {
+        "path.owner": "string",
+        "path.repo": "string",
+        "path.issue_number": "string",
+        "body": "object"
+      }
+    }
+  ],
+  "meta": {
+    "title": "GitHub",
+    "description": "Issues, PRs, репозитории",
+    "category": "devtools",
+    "homepage": "https://docs.github.com/en/rest",
+    "repo": "https://github.com/modelcontextprotocol/server-github",
+    "license": "MIT",
+    "badges": [
+      "verified"
+    ]
+  }
+}

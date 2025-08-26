@@ -1,0 +1,61 @@
+{
+  "name": "airtable_mcp",
+  "version": "1.0.0",
+  "base_url": "https://api.airtable.com/v0",
+  "auth": {
+    "type": "bearer",
+    "env": "AIRTABLE_API_KEY"
+  },
+  "capabilities": [
+    {
+      "tool": "airtable_mcp.list_records",
+      "method": "GET",
+      "path": "/{base_id}/{table_name}",
+      "inputs": {
+        "path.base_id": "string",
+        "path.table_name": "string",
+        "query.maxRecords?": "string",
+        "query.view?": "string"
+      }
+    },
+    {
+      "tool": "airtable_mcp.create_record",
+      "method": "POST",
+      "path": "/{base_id}/{table_name}",
+      "inputs": {
+        "path.base_id": "string",
+        "path.table_name": "string",
+        "body": "object"
+      }
+    },
+    {
+      "tool": "airtable_mcp.update_record",
+      "method": "PATCH",
+      "path": "/{base_id}/{table_name}",
+      "inputs": {
+        "path.base_id": "string",
+        "path.table_name": "string",
+        "body": "object"
+      }
+    }
+  ],
+  "meta": {
+    "title": "Airtable",
+    "description": "Чтение и запись таблиц/записей Airtable",
+    "category": "storage",
+    "homepage": "https://airtable.com/developers/web/api/introduction",
+    "repo": "https://github.com/modelcontextprotocol/server-airtable",
+    "license": "MIT",
+    "badges": [
+      "community"
+    ],
+    "maintainers": [
+      "BogdanAIP"
+    ],
+    "keywords": [
+      "airtable",
+      "database",
+      "records"
+    ]
+  }
+}

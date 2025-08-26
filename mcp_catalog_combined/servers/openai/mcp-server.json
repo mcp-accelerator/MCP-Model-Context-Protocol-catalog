@@ -1,0 +1,33 @@
+{
+  "name": "openai_mcp",
+  "version": "1.0.0",
+  "base_url": "https://api.openai.com/v1",
+  "auth": {
+    "type": "bearer",
+    "env": "OPENAI_API_KEY"
+  },
+  "capabilities": [
+    {
+      "tool": "openai_mcp.chat_completion",
+      "method": "POST",
+      "path": "/chat/completions",
+      "inputs": {
+        "body": {
+          "model": "string",
+          "messages": "array"
+        }
+      }
+    }
+  ],
+  "meta": {
+    "title": "OpenAI",
+    "description": "LLM‑запросы (совместимый API)",
+    "category": "ai",
+    "homepage": "https://platform.openai.com/docs",
+    "repo": "https://github.com",
+    "license": "MIT",
+    "badges": [
+      "community"
+    ]
+  }
+}

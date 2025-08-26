@@ -1,0 +1,38 @@
+{
+  "name": "telegram_mcp",
+  "version": "1.0.0",
+  "base_url": "https://api.telegram.org",
+  "capabilities": [
+    {
+      "tool": "telegram_mcp.post_message",
+      "method": "POST",
+      "path": "/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage",
+      "inputs": {
+        "body": {
+          "chat_id": "string",
+          "text": "string",
+          "parse_mode?": "string"
+        }
+      }
+    }
+  ],
+  "meta": {
+    "title": "Telegram",
+    "description": "Отправка сообщений в Telegram",
+    "category": "messaging",
+    "homepage": "https://core.telegram.org/bots/api",
+    "repo": "https://github.com",
+    "license": "MIT",
+    "badges": [
+      "community"
+    ],
+    "maintainers": [
+      "BogdanAIP"
+    ],
+    "keywords": [
+      "chat",
+      "telegram",
+      "bot"
+    ]
+  }
+}

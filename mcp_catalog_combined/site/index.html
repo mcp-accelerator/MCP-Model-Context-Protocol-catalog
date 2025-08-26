@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>MCP Catalog</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Arial,sans-serif;margin:20px;max-width:1100px}
+    header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .badge{padding:2px 8px;border-radius:999px;background:#eee;margin-left:6px;font-size:12px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+    .card{border:1px solid #e5e5e5;border-radius:12px;padding:12px}
+    .muted{color:#666;font-size:12px}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+    button{padding:6px 10px;border:1px solid #ddd;border-radius:8px;background:#fafafa;cursor:pointer}
+    button.active{background:#222;color:#fff}
+    input[type="search"]{padding:8px;border:1px solid #ddd;border-radius:8px;width:260px}
+    .meta{font-size:12px;color:#444;margin-top:6px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1 style="margin:0">MCP Catalog</h1>
+    <span class="badge" id="count">0</span>
+  </header>
+
+  <div class="filters">
+    <input type="search" id="q" placeholder="Поиск по названию/описанию/тегам"/>
+    <div id="cats"></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <script type="module">
+    const grid = document.getElementById('grid');
+    const badge = document.getElementById('count');
+    const cats = document.getElementById('cats');
+    const q = document.getElementById('q');
+
+    const CATS = ["all","messaging","productivity","devtools","storage","ai","social","other"];
+    let currentCat = "all";
+    let data = [];
+
+    function catBtn(cat){
+      const b = document.createElement('button');
+      b.textContent = cat;
+      b.className = cat===currentCat? 'active' : '';
+      b.onclick = ()=>{ currentCat = cat; render(); };
+      return b;
+    }
+
+    CATS.forEach(c=> cats.appendChild(catBtn(c)));
+
+    q.addEventListener('input', ()=>render());
+
+    function matchQuery(item, text){
+      if(!text) return true;
+      const t = text.toLowerCase();
+      const m = item.meta || {};
+      const fields = [item.name, m.title, m.description, ...(m.keywords||[])].filter(Boolean).join(' ').toLowerCase();
+      return fields.includes(t);
+    }
+
+    function matchCat(item){
+      if(currentCat==="all") return true;
+      return (item.meta && item.meta.category===currentCat) || item.category===currentCat;
+    }
+
+    function card(item){
+      const c = document.createElement('div');
+      c.className = 'card';
+      const m = item.meta || {};
+      c.innerHTML = \`
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>\${m.title || item.name}</strong>
+          <span>\${(m.badges||[]).map(b=>'<span class="badge">'+b+'</span>').join('')}</span>
+        </div>
+        <div class="muted">\${item.name}</div>
+        <div class="meta">\${m.description || ''}</div>
+        <div class="meta">Категория: \${m.category || item.category || '—'}</div>
+        <div class="meta">Манифест: <code>\${item.path}</code></div>
+        <div class="meta">\${m.homepage? ('Документация: <a href="'+m.homepage+'" target="_blank">ссылка</a>') : ''}</div>
+      \`;
+      return c;
+    }
+
+    async function load(){
+      const indexUrl = new URL('../servers.index.json', location.href).toString();
+      const r = await fetch(indexUrl);
+      const list = await r.json();
+      data = await Promise.all(list.map(async e => {
+        try{
+          const base = new URL('..', location.href).toString();
+          const manifestUrl = new URL(e.path, base).toString();
+          const mr = await fetch(manifestUrl);
+          const man = await mr.json();
+          return {...e, meta: man.meta};
+        }catch(_){ return e; }
+      }));
+      render();
+    }
+
+    function render(){
+      const qv = q.value.trim();
+      const items = data.filter(i => matchCat(i) && matchQuery(i, qv));
+      badge.textContent = items.length;
+      grid.innerHTML = '';
+      items.forEach(i => grid.appendChild(card(i)));
+    }
+
+    load();
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+name: Validate MCP Catalog
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install ajv-cli
+        run: npm i -g ajv-cli@5
+      - name: Validate server manifests
+        run: ajv validate -s schema/mcp-server.schema.json -d "servers/*/mcp-server.json"
+      - name: Validate registry index
+        run: ajv validate -s schema/registry.schema.json -d registry/servers.index.json

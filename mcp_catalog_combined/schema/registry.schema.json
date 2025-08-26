@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MCP Registry Index",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "name",
+      "path"
+    ],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "path": {
+        "type": "string"
+      },
+      "category": {
+        "type": "string"
+      },
+      "badges": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "homepage": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": true
+  }
+}
