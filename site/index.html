@@ -1,114 +1,183 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>MCP Catalog</title>
+  <meta charset="utf-8" />
+  <title>MCP Catalog · Directory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body{font-family:system-ui,Segoe UI,Arial,sans-serif;margin:20px;max-width:1100px}
-    header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-    .badge{padding:2px 8px;border-radius:999px;background:#eee;margin-left:6px;font-size:12px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
-    .card{border:1px solid #e5e5e5;border-radius:12px;padding:12px}
-    .muted{color:#666;font-size:12px}
-    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-    button{padding:6px 10px;border:1px solid #ddd;border-radius:8px;background:#fafafa;cursor:pointer}
-    button.active{background:#222;color:#fff}
-    input[type="search"]{padding:8px;border:1px solid #ddd;border-radius:8px;width:260px}
-    .meta{font-size:12px;color:#444;margin-top:6px}
+    :root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330;--ok:#27c93f;--warn:#ffb020}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell}
+    header{position:sticky;top:0;background:linear-gradient(180deg,var(--bg) 70%,transparent);padding:18px 16px 8px;z-index:10}
+    .bar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;max-width:1100px;margin:0 auto}
+    .title{font-size:20px;font-weight:700;margin-right:auto}
+    input[type="search"]{flex:1;min-width:220px;background:var(--card);border:1px solid #223044;color:var(--ink);border-radius:10px;padding:10px 12px;outline:none}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
+    .chip.active{outline:2px solid var(--brand)}
+    .count{color:var(--muted);font-size:13px}
+    main{max-width:1100px;margin:14px auto;padding:0 16px 40px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    .card{background:var(--card);border:1px solid #223044;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+    .card h3{margin:0 0 4px 0;font-size:18px}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+    .badges{display:flex;gap:6px;flex-wrap:wrap}
+    .badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid #27415a;background:#14202e}
+    .badge.verified{border-color:var(--ok);color:#c7ffd8;background:#13241a}
+    .badge.community{border-color:var(--warn);background:#2a210f}
+    .links{display:flex;gap:10px;flex-wrap:wrap}
+    .links a{font-size:13px;color:var(--brand);text-decoration:none}
+    .empty{color:var(--muted);text-align:center;padding:32px}
+    footer{max-width:1100px;margin:0 auto;padding:18px 16px;color:var(--muted);font-size:13px}
+    .pill{padding:2px 8px;border-radius:999px;background:#182435;border:1px solid #223044;font-size:12px}
   </style>
 </head>
 <body>
   <header>
-    <h1 style="margin:0">MCP Catalog</h1>
-    <span class="badge" id="count">0</span>
+    <div class="bar">
+      <div class="title">MCP Catalog</div>
+      <input id="q" type="search" placeholder="Search servers (title, keywords, description)…" />
+      <div id="chips" class="chips"></div>
+      <div id="count" class="count"></div>
+    </div>
   </header>
 
-  <div class="filters">
-    <input type="search" id="q" placeholder="Поиск по названию/описанию/тегам"/>
-    <div id="cats"></div>
-  </div>
+  <main>
+    <div id="grid" class="grid" aria-live="polite"></div>
+    <div id="empty" class="empty" hidden>Nothing found. Try another query or clear filters.</div>
+  </main>
 
-  <div class="grid" id="grid"></div>
+  <footer>
+    <span class="pill">UI</span> loads <code>registry/servers.index.json</code> and each server manifest’s <code>meta</code>. |
+    <a href="../registry/servers.index.json">Registry JSON</a> ·
+    <a href="../servers/">Servers</a> ·
+    <a href="../schema/">Schema</a> ·
+    <a href="../README.md">README</a>
+  </footer>
 
-  <script type="module">
-    const grid = document.getElementById('grid');
-    const badge = document.getElementById('count');
-    const cats = document.getElementById('cats');
-    const q = document.getElementById('q');
+  <script>
+    const BASE = location.pathname.replace(/\/site\/.*$/, '/');
+    const REGISTRY_URL = BASE + 'registry/servers.index.json';
 
-    const CATS = ["all","messaging","productivity","devtools","storage","ai","social","other"];
-    let currentCat = "all";
-    let data = [];
+    const state = { q:'', cat:'all', items:[], cats:[] };
 
-    function catBtn(cat){
-      const b = document.createElement('button');
-      b.textContent = cat;
-      b.className = cat===currentCat? 'active' : '';
-      b.onclick = ()=>{ currentCat = cat; render(); };
-      return b;
-    }
+    const els = {
+      q: document.getElementById('q'),
+      chips: document.getElementById('chips'),
+      grid: document.getElementById('grid'),
+      empty: document.getElementById('empty'),
+      count: document.getElementById('count'),
+    };
 
-    CATS.forEach(c=> cats.appendChild(catBtn(c)));
+    const escapeHTML = s => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 
-    q.addEventListener('input', ()=>render());
+    async function loadRegistry() {
+      const res = await fetch(REGISTRY_URL, {cache:'no-store'});
+      if (!res.ok) throw new Error('Registry load failed');
+      const index = await res.json();
 
-    function matchQuery(item, text){
-      if(!text) return true;
-      const t = text.toLowerCase();
-      const m = item.meta || {};
-      const fields = [item.name, m.title, m.description, ...(m.keywords||[])].filter(Boolean).join(' ').toLowerCase();
-      return fields.includes(t);
-    }
+      // Derive unique categories
+      const cats = Array.from(new Set(index.map(x => x.category))).sort();
+      state.cats = ['all', ...cats];
 
-    function matchCat(item){
-      if(currentCat==="all") return true;
-      return (item.meta && item.meta.category===currentCat) || item.category===currentCat;
-    }
-
-    function card(item){
-      const c = document.createElement('div');
-      c.className = 'card';
-      const m = item.meta || {};
-      c.innerHTML = \`
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <strong>\${m.title || item.name}</strong>
-          <span>\${(m.badges||[]).map(b=>'<span class="badge">'+b+'</span>').join('')}</span>
-        </div>
-        <div class="muted">\${item.name}</div>
-        <div class="meta">\${m.description || ''}</div>
-        <div class="meta">Категория: \${m.category || item.category || '—'}</div>
-        <div class="meta">Манифест: <code>\${item.path}</code></div>
-        <div class="meta">\${m.homepage? ('Документация: <a href="'+m.homepage+'" target="_blank">ссылка</a>') : ''}</div>
-      \`;
-      return c;
-    }
-
-    async function load(){
-      const indexUrl = new URL('../servers.index.json', location.href).toString();
-      const r = await fetch(indexUrl);
-      const list = await r.json();
-      data = await Promise.all(list.map(async e => {
-        try{
-          const base = new URL('..', location.href).toString();
-          const manifestUrl = new URL(e.path, base).toString();
-          const mr = await fetch(manifestUrl);
-          const man = await mr.json();
-          return {...e, meta: man.meta};
-        }catch(_){ return e; }
+      // Load minimal meta for each server (title/desc/badges/homepage/repo)
+      state.items = await Promise.all(index.map(async item => {
+        const url = BASE + item.path;
+        try {
+          const r = await fetch(url, {cache:'no-store'});
+          const manifest = r.ok ? await r.json() : {};
+          const meta = manifest.meta || {};
+          const keywords = (meta.keywords || []).map(String).join(' ');
+          return {
+            name: item.name,
+            category: item.category,
+            path: item.path,
+            homepage: item.homepage || meta.homepage || '',
+            repo: meta.repo || '',
+            title: meta.title || item.name,
+            description: meta.description || '',
+            badges: Array.isArray(meta.badges) ? meta.badges : [],
+            keywords
+          };
+        } catch {
+          return { name:item.name, category:item.category, path:item.path, title:item.name, description:'', badges:[], keywords:'' };
+        }
       }));
+
+      renderFilters();
+      readQueryParams();
       render();
     }
 
-    function render(){
-      const qv = q.value.trim();
-      const items = data.filter(i => matchCat(i) && matchQuery(i, qv));
-      badge.textContent = items.length;
-      grid.innerHTML = '';
-      items.forEach(i => grid.appendChild(card(i)));
+    function renderFilters() {
+      els.chips.innerHTML = '';
+      state.cats.forEach(cat => {
+        const b = document.createElement('button');
+        b.className = 'chip' + (state.cat===cat ? ' active' : '');
+        b.textContent = cat;
+        b.onclick = () => { state.cat = cat; writeQueryParams(); render(); };
+        els.chips.appendChild(b);
+      });
+      els.q.oninput = (e) => { state.q = e.target.value.trim().toLowerCase(); writeQueryParams(); render(); };
     }
 
-    load();
+    function filterItems() {
+      return state.items.filter(x => {
+        const byCat = state.cat==='all' || x.category===state.cat;
+        const q = state.q;
+        if (!q) return byCat;
+        const hay = (x.title+' '+x.description+' '+x.keywords+' '+x.name).toLowerCase();
+        return byCat && hay.includes(q);
+      });
+    }
+
+    function render() {
+      const items = filterItems();
+      els.count.textContent = `${items.length} / ${state.items.length}`;
+      els.grid.innerHTML = '';
+      els.empty.hidden = items.length !== 0;
+
+      for (const x of items) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h3>${escapeHTML(x.title)}</h3>
+          <div class="meta">
+            <span>${escapeHTML(x.category)}</span>
+            <span>•</span>
+            <a class="links" href="../${encodeURI(x.path)}" target="_blank" rel="noopener">manifest</a>
+          </div>
+          <div>${escapeHTML(x.description || '')}</div>
+          <div class="badges">
+            ${x.badges.map(b => `<span class="badge ${b}">${escapeHTML(b)}</span>`).join('')}
+          </div>
+          <div class="links">
+            ${x.homepage ? `<a href="${escapeHTML(x.homepage)}" target="_blank" rel="noopener">homepage</a>` : ''}
+            ${x.repo ? `<a href="${escapeHTML(x.repo)}" target="_blank" rel="noopener">repo</a>` : ''}
+          </div>
+        `;
+        els.grid.appendChild(card);
+      }
+    }
+
+    function readQueryParams() {
+      const p = new URLSearchParams(location.search);
+      const cat = p.get('cat'); const q = p.get('q');
+      if (cat && state.cats.includes(cat)) state.cat = cat;
+      if (q) { state.q = q; els.q.value = q; }
+    }
+    function writeQueryParams() {
+      const p = new URLSearchParams();
+      if (state.cat && state.cat!=='all') p.set('cat', state.cat);
+      if (state.q) p.set('q', state.q);
+      const url = location.pathname + (p.toString()?('?'+p.toString()):'');
+      history.replaceState(null, '', url);
+    }
+
+    loadRegistry().catch(err => {
+      els.grid.innerHTML = '';
+      els.empty.hidden = false; els.empty.textContent = 'Failed to load registry.';
+      console.error(err);
+    });
   </script>
 </body>
 </html>
