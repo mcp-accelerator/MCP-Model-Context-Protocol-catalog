@@ -110,18 +110,25 @@
 
     // helpers
     const escapeHTML = s => (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-    function pickText(field) {
+    function pickText(field, lang) {
       if (typeof field === 'string') return field;
       if (field && typeof field === 'object') {
-        return field[LANG] || field.en || Object.values(field).find(v=>typeof v==='string') || '';
+        const L = (lang || 'en').toLowerCase();
+        return field[L] || field.en || Object.values(field).find(v=>typeof v==='string') || '';
       }
       return '';
     }
-    function pickKeywords(field) {
+      return '';
+    }
+    function pickKeywords(field, lang) {
       if (Array.isArray(field)) return field.map(String);
       if (field && typeof field === 'object') {
-        return (field[LANG] || field.en || Object.values(field).find(v=>Array.isArray(v)) || []).map(String);
+        const L = (lang || 'en').toLowerCase();
+        const arr = field[L] || field.en || Object.values(field).find(v=>Array.isArray(v)) || [];
+        return Array.isArray(arr) ? arr.map(String) : [];
       }
+      return [];
+    }
       return [];
     }
 
@@ -147,11 +154,16 @@
       }
     }
     function setLang(l){
-      LANG=l;
+      state.lang = (l==='ru'?'ru':'en');
+      document.documentElement.lang = state.lang;
+      els.en.classList.toggle('active', state.lang==='en');
+      els.ru.classList.toggle('active', state.lang==='ru');
+      renderStaticText();
+      makeChips();   // << важно: пересобрать чипы
+      render();
       const p = new URLSearchParams(location.search);
-      p.set('lang', l);
-      history.replaceState(null,'',location.pathname + '?' + p.toString());
-      applyLang();
+      p.set('lang', state.lang);
+      history.replaceState(null,'',location.pathname+'?'+p.toString());
     }
     els.en.addEventListener('click', ()=>setLang('en'));
     els.ru.addEventListener('click', ()=>setLang('ru'));
@@ -238,10 +250,10 @@
               path: item.path,
               homepage: item.homepage || meta.homepage || '',
               repo: meta.repo || '',
-              title: pickText(meta.title) || item.name,
-              description: pickText(meta.description) || '',
+              title: pickText(meta.title, state.lang) || item.name,
+              description: pickText(meta.description, state.lang) || '',
               badges: Array.isArray(meta.badges)?meta.badges:[],
-              keywords: pickKeywords(meta.keywords).join(' ')
+              keywords: pickKeywords(meta.keywords, state.lang).join(' ')
             };
           }catch(e){
             return { name:item.name, category:item.category, path:item.path, title:item.name, description:'', badges:[], keywords:'' };
