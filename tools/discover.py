@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import os, json, re, pathlib, urllib.request, urllib.error
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SERVERS = ROOT / "servers"
@@ -11,27 +11,31 @@ GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
 SERVERS.mkdir(parents=True, exist_ok=True)
 REGISTRY.parent.mkdir(parents=True, exist_ok=True)
 
+def _req(url, headers=None):
+    h = {"Accept":"application/vnd.github+json"}
+    if headers: h.update(headers)
+    if GITHUB_TOKEN and "Authorization" not in h:
+        h["Authorization"] = f"Bearer {GITHUB_TOKEN}"
+    r = urllib.request.Request(url, headers=h)
+    return urllib.request.urlopen(r, timeout=30)
+
 def gh_api(url):
-    req = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json"})
-    if GITHUB_TOKEN:
-        req.add_header("Authorization", f"Bearer {GITHUB_TOKEN}")
-    with urllib.request.urlopen(req, timeout=30) as r:
+    with _req(url) as r:
         return json.loads(r.read().decode("utf-8"))
 
 def gh_raw(owner, repo, ref, path):
-    url = f"https://raw.githubusercontent.com/{owner}/{repo}/{ref}/{path}"
+    url = f"https://raw.githubusercontent.com/{owner}/{repo}/{quote(ref)}/{path}"
     with urllib.request.urlopen(url, timeout=30) as r:
         return r.read()
 
 def list_repos_in_org_or_user(owner):
-    # попробуем как org, затем как user
+    # определяем тип (Org/User), потом пагинируем
     try:
         kind = gh_api(f"https://api.github.com/users/{owner}").get("type","User")
     except urllib.error.HTTPError:
         kind = "User"
-    repos = []
-    page = 1
     base = f"https://api.github.com/orgs/{owner}/repos" if kind=="Organization" else f"https://api.github.com/users/{owner}/repos"
+    repos, page = [], 1
     while True:
         data = gh_api(f"{base}?per_page=100&page={page}&type=public")
         if not data: break
@@ -41,11 +45,21 @@ def list_repos_in_org_or_user(owner):
         page += 1
     return repos
 
-def tree_paths(owner, repo, ref):
-    data = gh_api(f"https://api.github.com/repos/{owner}/{repo}/git/trees/{ref}?recursive=1")
-    for item in data.get("tree", []):
-        p = item.get("path","")
-        if p: yield p
+def code_search_paths(owner, repo):
+    # Используем Code Search API, чтобы найти только mcp-server.json
+    # Документация: GET /search/code?q=filename:mcp-server.json repo:owner/repo
+    # Важно: квери URL-энкодим.
+    q = quote(f"filename:mcp-server.json repo:{owner}/{repo}")
+    url = f"https://api.github.com/search/code?q={q}&per_page=100"
+    try:
+        data = gh_api(url)
+        for item in data.get("items", []):
+            path = item.get("path")
+            if path and path.endswith("mcp-server.json"):
+                yield path
+    except urllib.error.HTTPError as e:
+        # Часто 422/404 на пустых/форках — тихо пропускаем
+        return
 
 def safe_name(s):
     s = re.sub(r"[^a-zA-Z0-9_-]+","-", s.strip().lower()).strip("-")
@@ -59,18 +73,16 @@ def save_manifest(name, content):
 
 def try_repo(owner, repo, ref):
     found = 0
-    for p in tree_paths(owner, repo, ref):
-        if p.endswith("mcp-server.json"):
-            try:
-                raw = gh_raw(owner, repo, ref, p)
-                _ = json.loads(raw.decode("utf-8"))
-                # имя по owner/repo/подкаталогу
-                sub = pathlib.Path(p).parent.name or "root"
-                name = f"{owner}-{repo}-{sub}"
-                save_manifest(name, raw)
-                found += 1
-            except Exception:
-                continue
+    for p in code_search_paths(owner, repo):
+        try:
+            raw = gh_raw(owner, repo, ref, p)
+            data = json.loads(raw.decode("utf-8"))
+            sub = pathlib.Path(p).parent.name or "root"
+            name = f"{owner}-{repo}-{sub}"
+            save_manifest(name, raw)
+            found += 1
+        except Exception:
+            continue
     return found
 
 def try_url(url):
@@ -83,7 +95,6 @@ def try_url(url):
         if isinstance(title, dict):
             title = title.get("en") or title.get("ru")
         if not title:
-            # возьмём кусочек пути
             title = pathlib.Path(urlparse(url).path).parent.name or "server"
         save_manifest(title, raw)
         return 1
@@ -125,9 +136,15 @@ def main():
                 total += try_repo(ow, rp, ref)
         elif src.startswith("repo:"):
             full = src.split(":",1)[1].strip()
+            if "/" not in full: 
+                print(f"skip malformed repo source: {full}")
+                continue
             ow, rp = full.split("/",1)
-            info = gh_api(f"https://api.github.com/repos/{ow}/{rp}")
-            ref = info.get("default_branch","main")
+            try:
+                info = gh_api(f"https://api.github.com/repos/{ow}/{rp}")
+                ref = info.get("default_branch","main")
+            except urllib.error.HTTPError:
+                ref = "main"
             total += try_repo(ow, rp, ref)
         elif src.startswith("url:"):
             url = src.split(":",1)[1].strip()
