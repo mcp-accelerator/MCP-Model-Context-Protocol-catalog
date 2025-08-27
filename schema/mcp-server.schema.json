@@ -102,10 +102,10 @@
       "type": "object",
       "properties": {
         "title": {
-          "type": "string"
+          "$ref": "#/$defs/i18nString"
         },
         "description": {
-          "type": "string"
+          "$ref": "#/$defs/i18nString"
         },
         "category": {
           "type": "string",
@@ -145,13 +145,44 @@
           }
         },
         "keywords": {
+          "$ref": "#/$defs/i18nStringArray"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "i18nString": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "i18nStringArray": {
+      "oneOf": [
+        {
           "type": "array",
           "items": {
             "type": "string"
           }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         }
-      },
-      "additionalProperties": true
+      ]
     }
   }
 }
