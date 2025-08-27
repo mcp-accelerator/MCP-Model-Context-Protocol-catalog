@@ -46,6 +46,10 @@
         "бот",
         "сообщения"
       ]
-    }
+    },
+    "capabilities": [
+      "REST API",
+      "Webhooks"
+    ]
   }
 }

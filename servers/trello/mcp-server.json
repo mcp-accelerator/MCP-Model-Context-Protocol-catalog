@@ -64,6 +64,11 @@
         "доски",
         "карточки"
       ]
-    }
+    },
+    "capabilities": [
+      "REST API",
+      "Webhooks",
+      "OAuth"
+    ]
   }
 }

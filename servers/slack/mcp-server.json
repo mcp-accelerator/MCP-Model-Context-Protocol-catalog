@@ -50,6 +50,11 @@
         "сообщения",
         "чат"
       ]
-    }
+    },
+    "capabilities": [
+      "REST API",
+      "Webhooks",
+      "OAuth"
+    ]
   }
 }

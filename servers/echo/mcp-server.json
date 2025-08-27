@@ -37,6 +37,9 @@
         "httpbin",
         "echo"
       ]
-    }
+    },
+    "capabilities": [
+      "REST API"
+    ]
   }
 }

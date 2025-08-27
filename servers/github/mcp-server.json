@@ -72,6 +72,12 @@
         "pull requests",
         "репозитории"
       ]
-    }
+    },
+    "capabilities": [
+      "REST API",
+      "Webhooks",
+      "OAuth",
+      "SDK Support"
+    ]
   }
 }

@@ -69,6 +69,11 @@
         "таблицы",
         "записи"
       ]
-    }
+    },
+    "capabilities": [
+      "REST API",
+      "SDK Support",
+      "OAuth"
+    ]
   }
 }

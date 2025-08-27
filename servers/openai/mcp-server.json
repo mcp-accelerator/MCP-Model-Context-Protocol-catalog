@@ -46,6 +46,10 @@
         "llm",
         "api"
       ]
-    }
+    },
+    "capabilities": [
+      "REST API",
+      "SDK Support"
+    ]
   }
 }
