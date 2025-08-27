@@ -125,7 +125,27 @@
 
     const escapeHTML = s => (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 
-    const BASE = location.pathname.replace(/\/site\/.*$/, '/');
+    const BASE = location.pathname.replace(/return {
+            name: item.name,
+            category: item.category,
+            path: item.path,
+            homepage: item.homepage || meta.homepage || '',
+            repo: meta.repo || '',
+            title: pickText(meta.title || item.name, LANG) || item.name,
+            description: pickText(meta.description || '', LANG),
+            badges: Array.isArray(meta.badges) ? meta.badges : [],
+            keywords: pickKeywords(meta.keywords || [], LANG).join(' ')
+          };/sitereturn {
+            name: item.name,
+            category: item.category,
+            path: item.path,
+            homepage: item.homepage || meta.homepage || '',
+            repo: meta.repo || '',
+            title: pickText(meta.title || item.name, LANG) || item.name,
+            description: pickText(meta.description || '', LANG),
+            badges: Array.isArray(meta.badges) ? meta.badges : [],
+            keywords: pickKeywords(meta.keywords || [], LANG).join(' ')
+          };/.*$/, '/');
     const REGISTRY_URL = BASE + 'registry/servers.index.json';
     const state = { q:'', cat:'all', items:[], cats:[] };
 
