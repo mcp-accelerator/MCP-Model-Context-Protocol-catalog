@@ -17,8 +17,14 @@
     }
   ],
   "meta": {
-    "title": "Telegram",
-    "description": "Отправка сообщений в Telegram",
+    "title": {
+      "en": "Telegram",
+      "ru": "Telegram"
+    },
+    "description": {
+      "en": "Send messages in Telegram",
+      "ru": "Отправка сообщений в Telegram"
+    },
     "category": "messaging",
     "homepage": "https://core.telegram.org/bots/api",
     "repo": "https://github.com",
@@ -29,10 +35,17 @@
     "maintainers": [
       "BogdanAIP"
     ],
-    "keywords": [
-      "chat",
-      "telegram",
-      "bot"
-    ]
+    "keywords": {
+      "en": [
+        "telegram",
+        "bot",
+        "messages"
+      ],
+      "ru": [
+        "telegram",
+        "бот",
+        "сообщения"
+      ]
+    }
   }
 }

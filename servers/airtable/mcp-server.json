@@ -40,8 +40,14 @@
     }
   ],
   "meta": {
-    "title": "Airtable",
-    "description": "Чтение и запись таблиц/записей Airtable",
+    "title": {
+      "en": "Airtable",
+      "ru": "Airtable"
+    },
+    "description": {
+      "en": "Read and write Airtable tables/records",
+      "ru": "Чтение и запись таблиц/записей Airtable"
+    },
     "category": "storage",
     "homepage": "https://airtable.com/developers/web/api/introduction",
     "repo": "https://github.com/modelcontextprotocol/server-airtable",
@@ -52,10 +58,17 @@
     "maintainers": [
       "BogdanAIP"
     ],
-    "keywords": [
-      "airtable",
-      "database",
-      "records"
-    ]
+    "keywords": {
+      "en": [
+        "airtable",
+        "tables",
+        "records"
+      ],
+      "ru": [
+        "airtable",
+        "таблицы",
+        "записи"
+      ]
+    }
   }
 }

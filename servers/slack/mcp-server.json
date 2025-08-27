@@ -24,14 +24,32 @@
     }
   ],
   "meta": {
-    "title": "Slack",
-    "description": "Публикация сообщений",
+    "title": {
+      "en": "Slack",
+      "ru": "Slack"
+    },
+    "description": {
+      "en": "Post messages to Slack",
+      "ru": "Публикация сообщений"
+    },
     "category": "messaging",
     "homepage": "https://api.slack.com",
     "repo": "https://github.com",
     "license": "MIT",
     "badges": [
       "community"
-    ]
+    ],
+    "keywords": {
+      "en": [
+        "slack",
+        "messages",
+        "chat"
+      ],
+      "ru": [
+        "slack",
+        "сообщения",
+        "чат"
+      ]
+    }
   }
 }

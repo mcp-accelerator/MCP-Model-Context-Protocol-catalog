@@ -11,14 +11,32 @@
     }
   ],
   "meta": {
-    "title": "Echo",
-    "description": "Демо эндпоинты httpbin",
+    "title": {
+      "en": "Echo",
+      "ru": "Echo"
+    },
+    "description": {
+      "en": "Demo httpbin endpoints",
+      "ru": "Демо эндпоинты httpbin"
+    },
     "category": "other",
     "homepage": "https://httpbin.org/",
     "repo": "https://github.com",
     "license": "MIT",
     "badges": [
       "community"
-    ]
+    ],
+    "keywords": {
+      "en": [
+        "demo",
+        "httpbin",
+        "echo"
+      ],
+      "ru": [
+        "демо",
+        "httpbin",
+        "echo"
+      ]
+    }
   }
 }

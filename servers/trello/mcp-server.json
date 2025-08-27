@@ -35,8 +35,14 @@
     }
   ],
   "meta": {
-    "title": "Trello",
-    "description": "Создание и перемещение карточек на досках Trello",
+    "title": {
+      "en": "Trello",
+      "ru": "Trello"
+    },
+    "description": {
+      "en": "Create and move cards on Trello boards",
+      "ru": "Создание и перемещение карточек на досках Trello"
+    },
     "category": "productivity",
     "homepage": "https://developer.atlassian.com/cloud/trello/rest",
     "repo": "https://github.com/modelcontextprotocol/server-trello",
@@ -47,10 +53,17 @@
     "maintainers": [
       "BogdanAIP"
     ],
-    "keywords": [
-      "trello",
-      "kanban",
-      "cards"
-    ]
+    "keywords": {
+      "en": [
+        "trello",
+        "boards",
+        "cards"
+      ],
+      "ru": [
+        "trello",
+        "доски",
+        "карточки"
+      ]
+    }
   }
 }

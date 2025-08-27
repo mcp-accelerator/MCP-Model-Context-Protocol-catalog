@@ -44,14 +44,34 @@
     }
   ],
   "meta": {
-    "title": "GitHub",
-    "description": "Issues, PRs, репозитории",
+    "title": {
+      "en": "GitHub",
+      "ru": "GitHub"
+    },
+    "description": {
+      "en": "Issues, PRs, repositories",
+      "ru": "Issues, PRs, репозитории"
+    },
     "category": "devtools",
     "homepage": "https://docs.github.com/en/rest",
     "repo": "https://github.com/modelcontextprotocol/server-github",
     "license": "MIT",
     "badges": [
       "verified"
-    ]
+    ],
+    "keywords": {
+      "en": [
+        "github",
+        "issues",
+        "pull requests",
+        "repos"
+      ],
+      "ru": [
+        "github",
+        "issues",
+        "pull requests",
+        "репозитории"
+      ]
+    }
   }
 }

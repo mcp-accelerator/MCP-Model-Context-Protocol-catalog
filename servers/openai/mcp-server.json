@@ -20,14 +20,32 @@
     }
   ],
   "meta": {
-    "title": "OpenAI",
-    "description": "LLM‑запросы (совместимый API)",
+    "title": {
+      "en": "OpenAI",
+      "ru": "OpenAI"
+    },
+    "description": {
+      "en": "LLM requests (compatible API)",
+      "ru": "LLM-запросы (совместимый API)"
+    },
     "category": "ai",
     "homepage": "https://platform.openai.com/docs",
     "repo": "https://github.com",
     "license": "MIT",
     "badges": [
       "community"
-    ]
+    ],
+    "keywords": {
+      "en": [
+        "openai",
+        "llm",
+        "api"
+      ],
+      "ru": [
+        "openai",
+        "llm",
+        "api"
+      ]
+    }
   }
 }

@@ -20,14 +20,32 @@
     }
   ],
   "meta": {
-    "title": "Notion",
-    "description": "Создание страниц и базы данных",
+    "title": {
+      "en": "Notion",
+      "ru": "Notion"
+    },
+    "description": {
+      "en": "Create pages and databases",
+      "ru": "Создание страниц и базы данных"
+    },
     "category": "productivity",
     "homepage": "https://developers.notion.com/",
     "repo": "https://github.com",
     "license": "MIT",
     "badges": [
       "community"
-    ]
+    ],
+    "keywords": {
+      "en": [
+        "notion",
+        "pages",
+        "databases"
+      ],
+      "ru": [
+        "notion",
+        "страницы",
+        "базы данных"
+      ]
+    }
   }
 }
