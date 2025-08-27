@@ -1,45 +1,9 @@
 [
   {
-    "name": "telegram_mcp",
-    "path": "servers/telegram/mcp-server.json",
-    "category": "messaging",
-    "homepage": "https://core.telegram.org/bots/api",
-    "badges": [
-      "community"
-    ]
-  },
-  {
-    "name": "slack_mcp",
-    "path": "servers/slack/mcp-server.json",
-    "category": "messaging",
-    "homepage": "https://api.slack.com",
-    "badges": [
-      "community"
-    ]
-  },
-  {
-    "name": "notion_mcp",
-    "path": "servers/notion/mcp-server.json",
-    "category": "productivity",
-    "homepage": "https://developers.notion.com/",
-    "badges": [
-      "community"
-    ]
-  },
-  {
-    "name": "github_mcp",
-    "path": "servers/github/mcp-server.json",
-    "category": "devtools",
-    "homepage": "https://docs.github.com/en/rest",
-    "badges": [
-      "verified"
-    ]
-  },
-  {
-    "name": "openai_mcp",
-    "path": "servers/openai/mcp-server.json",
-    "category": "ai",
-    "homepage": "https://platform.openai.com/docs",
+    "name": "airtable",
+    "path": "servers/airtable/mcp-server.json",
+    "category": "storage",
+    "homepage": "https://airtable.com/developers/web/api/introduction",
     "badges": [
       "community"
     ]
@@ -52,20 +16,54 @@
     "badges": [
       "community"
     ]
-  }
-
-  ,{
-    "name": "airtable_mcp",
-    "path": "servers/airtable/mcp-server.json",
-    "category": "storage",
-    "homepage": "https://airtable.com/developers/web/api/introduction",
+  },
+  {
+    "name": "github",
+    "path": "servers/github/mcp-server.json",
+    "category": "devtools",
+    "homepage": "https://docs.github.com/en/rest",
+    "badges": [
+      "verified"
+    ]
+  },
+  {
+    "name": "notion",
+    "path": "servers/notion/mcp-server.json",
+    "category": "productivity",
+    "homepage": "https://developers.notion.com/",
     "badges": [
       "community"
     ]
-  }
-
-  ,{
-    "name": "trello_mcp",
+  },
+  {
+    "name": "openai",
+    "path": "servers/openai/mcp-server.json",
+    "category": "ai",
+    "homepage": "https://platform.openai.com/docs",
+    "badges": [
+      "community"
+    ]
+  },
+  {
+    "name": "slack",
+    "path": "servers/slack/mcp-server.json",
+    "category": "messaging",
+    "homepage": "https://api.slack.com",
+    "badges": [
+      "community"
+    ]
+  },
+  {
+    "name": "telegram",
+    "path": "servers/telegram/mcp-server.json",
+    "category": "messaging",
+    "homepage": "https://core.telegram.org/bots/api",
+    "badges": [
+      "community"
+    ]
+  },
+  {
+    "name": "trello",
     "path": "servers/trello/mcp-server.json",
     "category": "productivity",
     "homepage": "https://developer.atlassian.com/cloud/trello/rest",
