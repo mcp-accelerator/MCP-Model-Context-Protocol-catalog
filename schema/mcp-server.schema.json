@@ -146,6 +146,12 @@
         },
         "keywords": {
           "$ref": "#/$defs/i18nStringArray"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
