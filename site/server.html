@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MCP Server · Details</title>
+<style>
+:root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui}
+main{max-width:900px;margin:24px auto;padding:0 16px 40px}
+.card{background:var(--card);border:1px solid #223044;border-radius:14px;padding:16px}
+h1{margin:0 0 12px 0;font-size:28px}
+.meta{color:var(--muted);font-size:13px;margin-bottom:10px}
+.badge{display:inline-block;margin-right:6px;margin-bottom:6px;padding:4px 8px;border-radius:999px;background:#14202e;border:1px solid #27415a;font-size:12px}
+a{color:var(--brand);text-decoration:none}
+pre{background:#0d141d;border:1px solid #223044;border-radius:10px;padding:12px;overflow:auto}
+.btn{display:inline-block;margin:0 0 16px 0;padding:8px 12px;background:#182435;border:1px solid #223044;border-radius:10px;color:var(--ink);text-decoration:none}
+.lang{float:right;display:flex;gap:6px}
+.lang button{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
+.lang button.active{outline:2px solid var(--brand)}
+</style>
+</head><body>
+<main>
+  <div class="lang">
+    <button id="en" class="active">EN</button>
+    <button id="ru">RU</button>
+  </div>
+  <a class="btn" id="back" href="./index.html">&larr; Back to catalog</a>
+  <div class="card" id="wrap">
+    <h1 id="title">Loading…</h1>
+    <div class="meta" id="meta"></div>
+    <p id="desc"></p>
+    <div id="badges"></div>
+    <h3>Capabilities</h3>
+    <div id="caps"></div>
+    <h3>Links</h3>
+    <ul id="links"></ul>
+    <h3>Quick Connect (example)</h3>
+    <pre id="qc"></pre>
+  </div>
+</main>
+<script>
+(function(){
+  const p=new URLSearchParams(location.search), name=p.get('name')||'';
+  const BASE=location.pathname.replace(/\/site\/.*$/,'/');
+  const LANGp=(p.get('lang')||'en').toLowerCase();
+  let LANG=(LANGp==='ru'?'ru':'en');
+  const el=(id)=>document.getElementById(id);
+  const esc=s=>(s||'').toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  function pickText(field){ if(typeof field==='string') return field;
+    if(field&&typeof field==='object') return field[LANG]||field.en||Object.values(field).find(v=>typeof v==='string')||'';
+    return ''; }
+
+  function setLang(l){ LANG=(l==='ru'?'ru':'en');
+    document.getElementById('en').classList.toggle('active',LANG==='en');
+    document.getElementById('ru').classList.toggle('active',LANG==='ru');
+    load(); const q=new URLSearchParams(location.search); q.set('lang',LANG);
+    history.replaceState(null,'',location.pathname+'?'+q.toString());
+  }
+  document.getElementById('en').onclick=()=>setLang('en');
+  document.getElementById('ru').onclick=()=>setLang('ru');
+
+  async function load(){
+    if(!name){ el('title').textContent='No server name'; return; }
+    const url=BASE+'servers/'+encodeURIComponent(name)+'/mcp-server.json?v='+Date.now();
+    const r=await fetch(url,{cache:'no-store'});
+    if(!r.ok){ el('title').textContent='Not found'; return; }
+    const j=await r.json(), m=j.meta||{};
+    el('title').textContent=pickText(m.title)||name;
+    el('desc').textContent=pickText(m.description)||'';
+    el('meta').textContent=(m.category||'other');
+    el('badges').innerHTML=(Array.isArray(m.badges)?m.badges:[]).map(b=>`<span class="badge">${esc(b)}</span>`).join('');
+    const caps=(m.capabilities||[]);
+    el('caps').innerHTML=caps.length?caps.map(c=>`<span class="badge">${esc(c)}</span>`).join(' '):'<span style="color:#99a7b3">—</span>';
+    const links=[];
+    if(m.homepage) links.push(`<a href="${esc(m.homepage)}" target="_blank">homepage</a>`);
+    if(m.repo) links.push(`<a href="${esc(m.repo)}" target="_blank">repo</a>`);
+    el('links').innerHTML=links.length?('<li>'+links.join('</li><li>')+'</li>'):'<li style="color:#99a7b3">—</li>';
+    const qc=`{
+  "mcpServers": {
+    "${name}": {
+      "command": "node",
+      "args": ["path/to/server.js"],
+      "env": { /* your env here */ }
+    }
+  }
+}`;
+    el('qc').textContent=qc;
+    el('back').href='./index.html?lang='+LANG;
+  }
+  load();
+})();
+</script>
+</body></html>
