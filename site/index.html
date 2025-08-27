@@ -2,13 +2,13 @@
 <html lang="en" translate="no" class="notranslate">
 <head>
   <meta charset="utf-8" />
-  <title>MCP Catalog · Directory</title>
+  <title>MCP Catalog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- запрет автоперевода браузерами -->
-  <meta name="google" content="notranslate">
+  <meta name="google" content="notranslate" />
   <style>
     :root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330;--ok:#27c93f;--warn:#ffb020}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell}
     header{position:sticky;top:0;background:linear-gradient(180deg,var(--bg) 70%,transparent);padding:18px 16px 8px;z-index:10}
     .bar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;max-width:1100px;margin:0 auto}
     .title{font-size:20px;font-weight:700;margin-right:auto;white-space:nowrap}
@@ -34,13 +34,12 @@
     .empty{color:var(--muted);text-align:center;padding:32px}
     footer{max-width:1100px;margin:0 auto;padding:18px 16px;color:var(--muted);font-size:13px}
     .pill{padding:2px 8px;border-radius:999px;background:#182435;border:1px solid #223044;font-size:12px}
-    .notranslate{unicode-bidi: plaintext;}
   </style>
 </head>
 <body class="notranslate">
   <header>
     <div class="bar">
-      <div class="title"><span class="notranslate">MCP</span> Catalog</div>
+      <div class="title"><span class="notranslate">MCP</span> <span id="title-text">Catalog</span></div>
       <input id="q" type="search" placeholder="Search servers (title, keywords, description)…" />
       <div id="chips" class="chips"></div>
       <div id="count" class="count"></div>
@@ -53,7 +52,7 @@
 
   <main>
     <div id="grid" class="grid" aria-live="polite"></div>
-    <div id="empty" class="empty" hidden>Nothing found. Try another query or clear filters.</div>
+    <div id="empty" class="empty" hidden>Loading…</div>
   </main>
 
   <footer>
@@ -65,10 +64,11 @@
   </footer>
 
   <script>
-    // --- i18n strings (EN/RU) ---
+  (function(){
+    // ——— i18n UI strings ———
     const STR = {
       en: {
-        title: 'MCP Catalog',
+        title: 'Catalog',
         searchPh: 'Search servers (title, keywords, description)…',
         all: 'all',
         shown: (a,b)=>`${a} / ${b}`,
@@ -76,10 +76,10 @@
         homepage: 'homepage',
         repo: 'repo',
         nothing: 'Nothing found. Try another query or clear filters.',
-        footer: { ui: 'UI', registry: 'Registry JSON', servers: 'Servers', schema: 'Schema' }
+        loading: 'Loading…'
       },
       ru: {
-        title: 'Каталог MCP',
+        title: 'Каталог',
         searchPh: 'Поиск серверов (название, ключевые слова, описание)…',
         all: 'все',
         shown: (a,b)=>`Показано ${a} из ${b}`,
@@ -87,111 +87,103 @@
         homepage: 'сайт',
         repo: 'репозиторий',
         nothing: 'Ничего не найдено. Измените запрос или очистите фильтры.',
-        footer: { ui: 'UI', registry: 'Реестр JSON', servers: 'Серверы', schema: 'Схема' }
+        loading: 'Загрузка…'
       }
     };
 
-    // persist lang in URL (?lang=en|ru)
-    const urlParams = new URLSearchParams(location.search);
-    let LANG = (urlParams.get('lang')||'en').toLowerCase();
+    // detect lang from URL
+    const params = new URLSearchParams(location.search);
+    let LANG = (params.get('lang')||'en').toLowerCase();
     if (!['en','ru'].includes(LANG)) LANG='en';
 
+    // DOM refs
     const els = {
-      title: document.querySelector('.title'),
+      titleText: document.getElementById('title-text'),
       q: document.getElementById('q'),
       chips: document.getElementById('chips'),
       grid: document.getElementById('grid'),
       empty: document.getElementById('empty'),
       count: document.getElementById('count'),
-      langEn: document.getElementById('lang-en'),
-      langRu: document.getElementById('lang-ru'),
-      footer: document.querySelector('footer')
+      en: document.getElementById('lang-en'),
+      ru: document.getElementById('lang-ru'),
     };
 
-    function setLang(l){
-      LANG=l;
-      const p=new URLSearchParams(location.search);
-      p.set('lang', l);
-      history.replaceState(null,'',location.pathname+'?'+p.toString());
-      renderStaticText();
-      render(); // re-render cards with localized labels
-      els.langEn.classList.toggle('active', l==='en');
-      els.langRu.classList.toggle('active', l==='ru');
-      document.documentElement.lang = l;
+    // helpers
+    const escapeHTML = s => (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    function pickText(field) {
+      if (typeof field === 'string') return field;
+      if (field && typeof field === 'object') {
+        return field[LANG] || field.en || Object.values(field).find(v=>typeof v==='string') || '';
+      }
+      return '';
+    }
+    function pickKeywords(field) {
+      if (Array.isArray(field)) return field.map(String);
+      if (field && typeof field === 'object') {
+        return (field[LANG] || field.en || Object.values(field).find(v=>Array.isArray(v)) || []).map(String);
+      }
+      return [];
     }
 
-    els.langEn.onclick=()=>setLang('en');
-    els.langRu.onclick=()=>setLang('ru');
-
-    const escapeHTML = s => (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-
-    const BASE = location.pathname.replace(/return {
-            name: item.name,
-            category: item.category,
-            path: item.path,
-            homepage: item.homepage || meta.homepage || '',
-            repo: meta.repo || '',
-            title: pickText(meta.title || item.name, LANG) || item.name,
-            description: pickText(meta.description || '', LANG),
-            badges: Array.isArray(meta.badges) ? meta.badges : [],
-            keywords: pickKeywords(meta.keywords || [], LANG).join(' ')
-          };/sitereturn {
-            name: item.name,
-            category: item.category,
-            path: item.path,
-            homepage: item.homepage || meta.homepage || '',
-            repo: meta.repo || '',
-            title: pickText(meta.title || item.name, LANG) || item.name,
-            description: pickText(meta.description || '', LANG),
-            badges: Array.isArray(meta.badges) ? meta.badges : [],
-            keywords: pickKeywords(meta.keywords || [], LANG).join(' ')
-          };/.*$/, '/');
-    const REGISTRY_URL = BASE + 'registry/servers.index.json?v=' + Date.now();
+    // state
     const state = { q:'', cat:'all', items:[], cats:[] };
 
-    function renderStaticText(){
-      const T=STR[LANG];
-      els.title.innerHTML = `<span class="notranslate">MCP</span> ${escapeHTML(T.title.replace(/^Каталог MCP$/,'Каталог MCP'))}`;
-      els.q.placeholder = T.searchPh;
-      // footer links (labels only)
-      els.footer.innerHTML =
-        `<span class="pill">UI</span> ${LANG==='ru'?'загружает':'loads'} <code>registry/servers.index.json</code> ${LANG==='ru'?'и':''} ${LANG==='ru'?'meta каждого манифеста':'and each server manifest’s <code>meta</code>'}. |
-         <a href="../registry/servers.index.json">${STR[LANG].footer.registry}</a> ·
-         <a href="../servers/">${STR[LANG].footer.servers}</a> ·
-         <a href="../schema/">${STR[LANG].footer.schema}</a> ·
-         <a href="../README.md">README</a>`;
-      document.getElementById('empty').textContent = STR[LANG].nothing;
-    }
+    // base URLs + cache bust
+    const BASE = location.pathname.replace(/\/site\/.*$/, '/');
+    const REGISTRY_URL = BASE + 'registry/servers.index.json?v=' + Date.now();
 
-    function readQueryParams() {
+    // language wiring
+    function applyLang(){
+      document.documentElement.lang = LANG;
+      els.titleText.textContent = STR[LANG].title;
+      els.q.placeholder = STR[LANG].searchPh;
+      els.en.classList.toggle('active', LANG==='en');
+      els.ru.classList.toggle('active', LANG==='ru');
+      if (state.items.length===0) {
+        els.empty.hidden = false;
+        els.empty.textContent = STR[LANG].loading;
+      } else {
+        render();
+      }
+    }
+    function setLang(l){
+      LANG=l;
+      const p = new URLSearchParams(location.search);
+      p.set('lang', l);
+      history.replaceState(null,'',location.pathname + '?' + p.toString());
+      applyLang();
+    }
+    els.en.addEventListener('click', ()=>setLang('en'));
+    els.ru.addEventListener('click', ()=>setLang('ru'));
+
+    // filters
+    function renderFilters(){
+      els.chips.innerHTML='';
+      state.cats.forEach(cat=>{
+        const b = document.createElement('button');
+        b.className = 'chip' + (state.cat===cat ? ' active' : '');
+        b.textContent = (cat==='all' ? STR[LANG].all : cat);
+        b.onclick = ()=>{ state.cat=cat; render(); writeParams(); };
+        els.chips.appendChild(b);
+      });
+      els.q.oninput = e => { state.q = e.target.value.trim().toLowerCase(); render(); writeParams(); };
+    }
+    function writeParams(){
+      const p = new URLSearchParams(location.search);
+      p.set('lang', LANG);
+      if (state.cat!=='all') p.set('cat', state.cat); else p.delete('cat');
+      if (state.q) p.set('q', state.q); else p.delete('q');
+      history.replaceState(null,'',location.pathname + (p.toString()?('?'+p.toString()):''));
+    }
+    function readParams(){
       const p = new URLSearchParams(location.search);
       const cat = p.get('cat'); const q = p.get('q');
       if (cat) state.cat = cat;
       if (q) { state.q = q; els.q.value = q; }
     }
-    function writeQueryParams() {
-      const p = new URLSearchParams(location.search);
-      p.set('lang', LANG);
-      if (state.cat && state.cat!=='all') p.set('cat', state.cat); else p.delete('cat');
-      if (state.q) p.set('q', state.q); else p.delete('q');
-      history.replaceState(null,'',location.pathname+(p.toString()?('?'+p.toString()):''));
-    }
 
-    function renderFilters() {
-      els.chips.innerHTML = '';
-      const cats = state.cats;
-      cats.forEach(cat => {
-        const b = document.createElement('button');
-        b.className = 'chip' + (state.cat===cat ? ' active' : '');
-        b.textContent = (cat==='all' ? STR[LANG].all : cat);
-        b.onclick = () => { state.cat = cat; writeQueryParams(); render(); };
-        els.chips.appendChild(b);
-      });
-      els.q.oninput = (e) => { state.q = e.target.value.trim().toLowerCase(); writeQueryParams(); render(); };
-    }
-
-    function filterItems() {
-      return state.items.filter(x => {
+    function filterItems(){
+      return state.items.filter(x=>{
         const byCat = state.cat==='all' || x.category===state.cat;
         if (!state.q) return byCat;
         const hay = (x.title+' '+x.description+' '+(x.keywords||'')+' '+x.name).toLowerCase();
@@ -199,78 +191,77 @@
       });
     }
 
-    function render() {
+    function render(){
       const T=STR[LANG];
       const items = filterItems();
       els.count.textContent = T.shown(items.length, state.items.length);
-      els.grid.innerHTML = '';
-      els.empty.hidden = items.length !== 0;
+      els.grid.innerHTML='';
+      els.empty.hidden = items.length!==0;
+      if (items.length===0) els.empty.textContent = T.nothing;
 
-      for (const x of items) {
+      for (const x of items){
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className='card';
         card.innerHTML = `
           <h3 class="notranslate">${escapeHTML(x.title)}</h3>
           <div class="meta">
-            <span>${escapeHTML(x.category)}</span>
-            <span>•</span>
+            <span>${escapeHTML(x.category)}</span><span>•</span>
             <a class="links" href="../${encodeURI(x.path)}" target="_blank" rel="noopener">${escapeHTML(T.manifest)}</a>
           </div>
-          <div>${escapeHTML(x.description || '')}</div>
-          <div class="badges">
-            ${(Array.isArray(x.badges)?x.badges:[]).map(b => `<span class="badge ${b} notranslate">${escapeHTML(b)}</span>`).join('')}
-          </div>
+          <div>${escapeHTML(x.description||'')}</div>
+          <div class="badges">${(Array.isArray(x.badges)?x.badges:[]).map(b=>`<span class="badge ${b} notranslate">${escapeHTML(b)}</span>`).join('')}</div>
           <div class="links">
-            ${x.homepage ? `<a class="notranslate" href="${escapeHTML(x.homepage)}" target="_blank" rel="noopener">${escapeHTML(T.homepage)}</a>` : ''}
-            ${x.repo ? `<a class="notranslate" href="${escapeHTML(x.repo)}" target="_blank" rel="noopener">${escapeHTML(T.repo)}</a>` : ''}
-          </div>
-        `;
+            ${x.homepage?`<a class="notranslate" href="${escapeHTML(x.homepage)}" target="_blank" rel="noopener">${escapeHTML(T.homepage)}</a>`:''}
+            ${x.repo?`<a class="notranslate" href="${escapeHTML(x.repo)}" target="_blank" rel="noopener">${escapeHTML(T.repo)}</a>`:''}
+          </div>`;
         els.grid.appendChild(card);
       }
     }
 
-    async function loadRegistry() {
-      const res = await fetch(REGISTRY_URL, {cache:'no-store'});
-      const index = await res.json();
+    async function loadRegistry(){
+      try{
+        const res = await fetch(REGISTRY_URL, {cache:'no-store'});
+        if (!res.ok) throw new Error('registry http '+res.status);
+        const index = await res.json();
 
-      // categories from index
-      state.cats = ['all', ...Array.from(new Set(index.map(x => x.category))).sort()];
+        state.cats = ['all', ...Array.from(new Set(index.map(x=>x.category))).sort()];
 
-      // minimal meta fetch
-      state.items = await Promise.all(index.map(async item => {
-        const url = BASE + item.path;
-        try {
-          const r = await fetch(url, {cache:'no-store'});
-          const manifest = r.ok ? await r.json() : {};
-          const meta = manifest.meta || {};
-          return {
-            name: item.name,
-            category: item.category,
-            path: item.path,
-            homepage: item.homepage || meta.homepage || '',
-            repo: meta.repo || '',
-            title: meta.title || item.name,
-            description: meta.description || '',
-            badges: Array.isArray(meta.badges) ? meta.badges : [],
-            keywords: (meta.keywords || []).map(String).join(' ')
-          };
-        } catch {
-          return { name:item.name, category:item.category, path:item.path, title:item.name, description:'', badges:[], keywords:'' };
-        }
-      }));
+        state.items = await Promise.all(index.map(async item=>{
+          const url = BASE + item.path + '?v=' + Date.now();
+          try{
+            const r = await fetch(url, {cache:'no-store'});
+            const manifest = r.ok ? await r.json() : {};
+            const meta = manifest.meta || {};
+            return {
+              name: item.name,
+              category: item.category,
+              path: item.path,
+              homepage: item.homepage || meta.homepage || '',
+              repo: meta.repo || '',
+              title: pickText(meta.title) || item.name,
+              description: pickText(meta.description) || '',
+              badges: Array.isArray(meta.badges)?meta.badges:[],
+              keywords: pickKeywords(meta.keywords).join(' ')
+            };
+          }catch(e){
+            return { name:item.name, category:item.category, path:item.path, title:item.name, description:'', badges:[], keywords:'' };
+          }
+        }));
 
-      renderStaticText();
-      renderFilters();
-      readQueryParams();
-      render();
+        renderFilters();
+        readParams();
+        render();
+      }catch(e){
+        console.error(e);
+        els.empty.hidden=false;
+        els.empty.textContent = (LANG==='ru' ? 'Не удалось загрузить реестр.' : 'Failed to load registry.');
+      }
     }
 
     // init
-    renderStaticText();
-    loadRegistry().catch(err => {
-      els.grid.innerHTML=''; els.empty.hidden=false; els.empty.textContent = STR[LANG].nothing;
-      console.error(err);
-    });
+    applyLang();
+    loadRegistry();
+  })();
   </script>
 </body>
 </html>
