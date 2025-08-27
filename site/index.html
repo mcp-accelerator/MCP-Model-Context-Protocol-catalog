@@ -65,38 +65,14 @@
 
   <script>
   (function(){
-    // ——— i18n UI strings ———
     const STR = {
-      en: {
-        title: 'Catalog',
-        searchPh: 'Search servers (title, keywords, description)…',
-        all: 'all',
-        shown: (a,b)=>`${a} / ${b}`,
-        manifest: 'manifest',
-        homepage: 'homepage',
-        repo: 'repo',
-        nothing: 'Nothing found. Try another query or clear filters.',
-        loading: 'Loading…'
-      },
-      ru: {
-        title: 'Каталог',
-        searchPh: 'Поиск серверов (название, ключевые слова, описание)…',
-        all: 'все',
-        shown: (a,b)=>`Показано ${a} из ${b}`,
-        manifest: 'манифест',
-        homepage: 'сайт',
-        repo: 'репозиторий',
-        nothing: 'Ничего не найдено. Измените запрос или очистите фильтры.',
-        loading: 'Загрузка…'
-      }
+      en: { title:'Catalog', searchPh:'Search servers (title, keywords, description)…', all:'all', shown:(a,b)=>`${a} / ${b}`, manifest:'manifest', homepage:'homepage', repo:'repo', nothing:'Nothing found. Try another query or clear filters.', loading:'Loading…' },
+      ru: { title:'Каталог', searchPh:'Поиск серверов (название, ключевые слова, описание)…', all:'все', shown:(a,b)=>`Показано ${a} из ${b}`, manifest:'манифест', homepage:'сайт', repo:'репозиторий', nothing:'Ничего не найдено. Измените запрос или очистите фильтры.', loading:'Загрузка…' }
     };
-
-    // detect lang from URL
     const params = new URLSearchParams(location.search);
     let LANG = (params.get('lang')||'en').toLowerCase();
     if (!['en','ru'].includes(LANG)) LANG='en';
 
-    // DOM refs
     const els = {
       titleText: document.getElementById('title-text'),
       q: document.getElementById('q'),
@@ -108,112 +84,103 @@
       ru: document.getElementById('lang-ru'),
     };
 
-    // helpers
     const escapeHTML = s => (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
     function pickText(field, lang) {
       if (typeof field === 'string') return field;
       if (field && typeof field === 'object') {
-        const L = (lang || 'en').toLowerCase();
+        const L=(lang||'en').toLowerCase();
         return field[L] || field.en || Object.values(field).find(v=>typeof v==='string') || '';
       }
-      return '';
-    }
       return '';
     }
     function pickKeywords(field, lang) {
       if (Array.isArray(field)) return field.map(String);
       if (field && typeof field === 'object') {
-        const L = (lang || 'en').toLowerCase();
+        const L=(lang||'en').toLowerCase();
         const arr = field[L] || field.en || Object.values(field).find(v=>Array.isArray(v)) || [];
         return Array.isArray(arr) ? arr.map(String) : [];
       }
       return [];
     }
-      return [];
-    }
 
-    // state
-    const state = { q:'', cat:'all', items:[], cats:[] };
+    const state = { q:'', cat:'all', caps:new Set(), items:[], cats:[], allCaps:[] };
 
-    // base URLs + cache bust
     const BASE = location.pathname.replace(/\/site\/.*$/, '/');
     const REGISTRY_URL = BASE + 'registry/servers.index.json?v=' + Date.now();
 
-    // language wiring
-    function applyLang(){
+    function renderStatic(){
       document.documentElement.lang = LANG;
       els.titleText.textContent = STR[LANG].title;
       els.q.placeholder = STR[LANG].searchPh;
       els.en.classList.toggle('active', LANG==='en');
       els.ru.classList.toggle('active', LANG==='ru');
-      if (state.items.length===0) {
-        els.empty.hidden = false;
-        els.empty.textContent = STR[LANG].loading;
-      } else {
-        render();
-      }
     }
-    function setLang(l){
-      state.lang = (l==='ru'?'ru':'en');
-      document.documentElement.lang = state.lang;
-      els.en.classList.toggle('active', state.lang==='en');
-      els.ru.classList.toggle('active', state.lang==='ru');
-      renderStaticText();
-      makeChips();   // << важно: пересобрать чипы
-      render();
-      const p = new URLSearchParams(location.search);
-      p.set('lang', state.lang);
-      history.replaceState(null,'',location.pathname+'?'+p.toString());
-    }
-    els.en.addEventListener('click', ()=>setLang('en'));
-    els.ru.addEventListener('click', ()=>setLang('ru'));
 
-    // filters
-    function renderFilters(){
+    function makeChips(){
       els.chips.innerHTML='';
-      state.cats.forEach(cat=>{
-        const b = document.createElement('button');
-        b.className = 'chip' + (state.cat===cat ? ' active' : '');
+      // categories
+      const catWrap=document.createElement('div');
+      ['all', ...state.cats].forEach(cat=>{
+        const b=document.createElement('button');
+        b.className='chip'+((state.cat===cat)?' active':'');
         b.textContent = (cat==='all' ? STR[LANG].all : cat);
-        b.onclick = ()=>{ state.cat=cat; render(); writeParams(); };
-        els.chips.appendChild(b);
+        b.onclick=()=>{ state.cat=cat; writeParams(); render(); };
+        catWrap.appendChild(b);
       });
-      els.q.oninput = e => { state.q = e.target.value.trim().toLowerCase(); render(); writeParams(); };
+      els.chips.appendChild(catWrap);
+      // capabilities
+      const capsWrap=document.createElement('div'); capsWrap.style.marginTop='6px';
+      state.allCaps.forEach(cap=>{
+        const act = state.caps.has(cap);
+        const b=document.createElement('button');
+        b.className='chip'+(act?' active':''); b.textContent=cap;
+        b.onclick=()=>{ act?state.caps.delete(cap):state.caps.add(cap); writeParams(); render(); };
+        capsWrap.appendChild(b);
+      });
+      els.chips.appendChild(capsWrap);
+      els.q.oninput = e => { state.q=(e.target.value||'').trim().toLowerCase(); writeParams(); render(); };
     }
+
     function writeParams(){
-      const p = new URLSearchParams(location.search);
-      p.set('lang', LANG);
-      if (state.cat!=='all') p.set('cat', state.cat); else p.delete('cat');
-      if (state.q) p.set('q', state.q); else p.delete('q');
+      const p=new URLSearchParams(location.search);
+      p.set('lang',LANG);
+      if (state.cat!=='all') p.set('cat',state.cat); else p.delete('cat');
+      if (state.q) p.set('q',state.q); else p.delete('q');
+      if (state.caps.size) p.set('caps', [...state.caps].join(',')); else p.delete('caps');
       history.replaceState(null,'',location.pathname + (p.toString()?('?'+p.toString()):''));
     }
     function readParams(){
-      const p = new URLSearchParams(location.search);
-      const cat = p.get('cat'); const q = p.get('q');
-      if (cat) state.cat = cat;
-      if (q) { state.q = q; els.q.value = q; }
+      const p=new URLSearchParams(location.search);
+      const cat=p.get('cat'); const q=p.get('q'); const caps=p.get('caps');
+      if (cat) state.cat=cat;
+      if (q){ state.q=q; els.q.value=q; }
+      state.caps = new Set((caps||'').split(',').filter(Boolean));
     }
 
     function filterItems(){
       return state.items.filter(x=>{
         const byCat = state.cat==='all' || x.category===state.cat;
-        if (!state.q) return byCat;
-        const hay = (x.title+' '+x.description+' '+(x.keywords||'')+' '+x.name).toLowerCase();
-        return byCat && hay.includes(state.q);
+        if (!byCat) return false;
+        if (state.caps.size){
+          const ic = new Set(x.capabilities||[]);
+          for (const c of state.caps) if (!ic.has(c)) return false;
+        }
+        if (!state.q) return true;
+        const hay=(x.title+' '+x.description+' '+(x.keywords||'')+' '+x.name).toLowerCase();
+        return hay.includes(state.q);
       });
     }
 
     function render(){
       const T=STR[LANG];
-      const items = filterItems();
+      const items=filterItems();
       els.count.textContent = T.shown(items.length, state.items.length);
       els.grid.innerHTML='';
       els.empty.hidden = items.length!==0;
-      if (items.length===0) els.empty.textContent = T.nothing;
+      if (items.length===0){ els.empty.textContent=T.nothing; return; }
 
       for (const x of items){
-        const card = document.createElement('div');
-        card.className='card';
+        const card=document.createElement('div'); card.className='card';
         card.innerHTML = `
           <h3 class="notranslate">${escapeHTML(x.title)}</h3>
           <div class="meta">
@@ -225,44 +192,38 @@
           <div class="links">
             ${x.homepage?`<a class="notranslate" href="${escapeHTML(x.homepage)}" target="_blank" rel="noopener">${escapeHTML(T.homepage)}</a>`:''}
             ${x.repo?`<a class="notranslate" href="${escapeHTML(x.repo)}" target="_blank" rel="noopener">${escapeHTML(T.repo)}</a>`:''}
+            <a href="./server.html?name=${encodeURIComponent(x.name)}&lang=${LANG}" target="_blank" rel="noopener">View details</a>
           </div>`;
         els.grid.appendChild(card);
       }
     }
 
-    async function loadRegistry(){
+    async function load(){
       try{
-        const res = await fetch(REGISTRY_URL, {cache:'no-store'});
-        if (!res.ok) throw new Error('registry http '+res.status);
-        const index = await res.json();
-
-        state.cats = ['all', ...Array.from(new Set(index.map(x=>x.category))).sort()];
-
+        const r=await fetch(REGISTRY_URL,{cache:'no-store'});
+        if (!r.ok) throw new Error('registry '+r.status);
+        const index=await r.json();
+        state.cats = Array.from(new Set(index.map(x=>x.category))).sort();
         state.items = await Promise.all(index.map(async item=>{
           const url = BASE + item.path + '?v=' + Date.now();
           try{
-            const r = await fetch(url, {cache:'no-store'});
-            const manifest = r.ok ? await r.json() : {};
+            const m = await fetch(url,{cache:'no-store'});
+            const manifest = m.ok ? await m.json() : {};
             const meta = manifest.meta || {};
             return {
-              name: item.name,
-              category: item.category,
-              path: item.path,
-              homepage: item.homepage || meta.homepage || '',
+              name:item.name, category:item.category, path:item.path,
+              homepage:item.homepage || meta.homepage || '',
               repo: meta.repo || '',
-              title: pickText(meta.title, state.lang) || item.name,
-              description: pickText(meta.description, state.lang) || '',
+              title: pickText(meta.title||item.name, LANG) || item.name,
+              description: pickText(meta.description||'', LANG),
               badges: Array.isArray(meta.badges)?meta.badges:[],
-              keywords: pickKeywords(meta.keywords, state.lang).join(' ')
+              keywords: (Array.isArray(meta.keywords)?meta.keywords: pickKeywords(meta.keywords, LANG)).join(' '),
+              capabilities: Array.isArray(meta.capabilities)?meta.capabilities:[]
             };
-          }catch(e){
-            return { name:item.name, category:item.category, path:item.path, title:item.name, description:'', badges:[], keywords:'' };
-          }
+          }catch(_){ return {name:item.name,category:item.category,path:item.path,title:item.name,description:'',badges:[],keywords:'',capabilities:[]}; }
         }));
-
-        renderFilters();
-        readParams();
-        render();
+        state.allCaps = Array.from(new Set(state.items.flatMap(x=>x.capabilities||[]))).sort();
+        makeChips(); readParams(); render();
       }catch(e){
         console.error(e);
         els.empty.hidden=false;
@@ -270,9 +231,18 @@
       }
     }
 
-    // init
-    applyLang();
-    loadRegistry();
+    function setLang(l){
+      LANG = (l==='ru'?'ru':'en');
+      renderStatic(); makeChips(); render();
+      const p=new URLSearchParams(location.search); p.set('lang',LANG);
+      history.replaceState(null,'',location.pathname+'?'+p.toString());
+    }
+    els.en.addEventListener('click',()=>setLang('en'));
+    els.ru.addEventListener('click',()=>setLang('ru'));
+
+    renderStatic();
+    els.empty.hidden=false; els.empty.textContent=STR[LANG].loading;
+    load();
   })();
   </script>
 </body>
