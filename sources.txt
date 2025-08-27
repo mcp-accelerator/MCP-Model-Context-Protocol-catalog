@@ -1,0 +1,13 @@
+# GitHub organizations (все публичные репозитории)
+org:modelcontextprotocol
+org:openai
+org:anthropics
+org:vercel
+org:hashicorp
+
+# Отдельные репозитории
+repo:openai/openai-mcp-server-template
+repo:modelcontextprotocol/server-github
+
+# Прямые URL на манифесты (raw JSON)
+# url:https://raw.githubusercontent.com/<owner>/<repo>/<branch>/servers/foo/mcp-server.json
