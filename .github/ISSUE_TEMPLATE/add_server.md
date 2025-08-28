@@ -1,19 +1,17 @@
 ---
-name: "Add MCP server"
-about: Suggest a new MCP server for the catalog
-title: "[server] <name>"
-labels: ["add-server"]
-assignees: []
+name: "🚀 Add MCP Server"
+about: Добавить новый MCP-сервер в каталог
+title: "[Server] "
+labels: ["server", "community"]
 ---
 
-**Name**: 
-**Category**: 
-**Homepage**: 
-**Repo**: 
-**License**: 
-**Maintainers**: 
+### Server info
+- Name:
+- Repo:
+- Homepage:
+- Category: ai | devtools | messaging | productivity | storage | other
 
-Checklist:
-- [ ] Added `servers/<name>/mcp-server.json`
-- [ ] Updated `registry/servers.index.json`
-- [ ] Filled `meta` block
+### Checklist
+- [ ] Создан манифест `servers/<name>/mcp-server.json`
+- [ ] Добавлена запись в `registry/servers.index.json`
+- [ ] Проверка пройдена (`ajv validate` / `check_pages.sh`)

@@ -1,8 +1,12 @@
-## Summary
-- What does this PR change?
+# 📌 Pull Request
 
-## Checklist
-- [ ] JSON passes AJV validation
-- [ ] Index updated (registry/servers.index.json)
-- [ ] Meta filled (title, description, category, homepage, license, badges)
-- [ ] Docs updated if needed
+### Изменения
+- 
+
+### Checklist
+- [ ] Код/манифесты валидны (`ajv validate`)
+- [ ] Проверка CI прошла успешно
+- [ ] Добавлена документация (если нужно)
+
+### Связанные Issue
+Closes #
