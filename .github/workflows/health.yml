@@ -1,0 +1,42 @@
+name: Catalog health
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show repo ref
+        run: |
+          echo "REPO=$GITHUB_REPOSITORY"
+          echo "SHA=$GITHUB_SHA"
+
+      - name: Check Pages UI
+        run: |
+          BASE="https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog"
+          set -eux
+          curl -fsSI "$BASE/site/index.html" | sed -n '1,20p'
+
+      - name: Check registry index
+        run: |
+          BASE="https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog"
+          set -eux
+          curl -fsSI "$BASE/registry/servers.index.json" | sed -n '1,20p'
+          curl -fsS  "$BASE/registry/servers.index.json?v=$(date +%s)" | jq 'length'
+
+      - name: Validate manifests by schema
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: |
+          set -eux
+          npm -g i ajv-cli@5
+          ajv validate -s schema/mcp-server.schema.json -d "servers/*/mcp-server.json"
