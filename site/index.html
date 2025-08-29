@@ -1,249 +1,169 @@
 <!doctype html>
-<html lang="en" translate="no" class="notranslate">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>MCP Catalog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="google" content="notranslate" />
-  <style>
-    :root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330;--ok:#27c93f;--warn:#ffb020}
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell}
-    header{position:sticky;top:0;background:linear-gradient(180deg,var(--bg) 70%,transparent);padding:18px 16px 8px;z-index:10}
-    .bar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;max-width:1100px;margin:0 auto}
-    .title{font-size:20px;font-weight:700;margin-right:auto;white-space:nowrap}
-    .lang{display:flex;gap:6px}
-    .lang button{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
-    .lang button.active{outline:2px solid var(--brand)}
-    input[type="search"]{flex:1;min-width:220px;background:var(--card);border:1px solid #223044;color:var(--ink);border-radius:10px;padding:10px 12px;outline:none}
-    .chips{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
-    .chip.active{outline:2px solid var(--brand)}
-    .count{color:var(--muted);font-size:13px}
-    main{max-width:1100px;margin:14px auto;padding:0 16px 40px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-    .card{background:var(--card);border:1px solid #223044;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
-    .card h3{margin:0 0 4px 0;font-size:18px}
-    .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
-    .badges{display:flex;gap:6px;flex-wrap:wrap}
-    .badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid #27415a;background:#14202e}
-    .badge.verified{border-color:var(--ok);color:#c7ffd8;background:#13241a}
-    .badge.community{border-color:var(--warn);background:#2a210f}
-    .links{display:flex;gap:10px;flex-wrap:wrap}
-    .links a{font-size:13px;color:var(--brand);text-decoration:none}
-    .empty{color:var(--muted);text-align:center;padding:32px}
-    footer{max-width:1100px;margin:0 auto;padding:18px 16px;color:var(--muted);font-size:13px}
-    .pill{padding:2px 8px;border-radius:999px;background:#182435;border:1px solid #223044;font-size:12px}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MCP Catalog</title>
+<style>
+:root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui}
+main{max-width:1100px;margin:24px auto;padding:0 16px 40px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+h1{margin:0;font-size:24px}
+.controls{display:flex;gap:8px;align-items:center}
+input[type=search]{width:360px;max-width:60vw;background:#0f1520;border:1px solid #223044;color:var(--ink);border-radius:10px;padding:8px 10px}
+.lang button,.chip{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
+.lang button.active,.chip.active{outline:2px solid var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.card{background:var(--card);border:1px solid #223044;border-radius:14px;padding:12px}
+.card h3{margin:0 0 6px 0}
+.meta{color:var(--muted);font-size:12px;margin-bottom:6px}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.badge{font-size:11px;border:1px solid #27415a;background:#14202e;border-radius:999px;padding:3px 7px}
+.links a{color:var(--brand);margin-right:10px;text-decoration:none}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.footer{margin-top:16px;color:var(--muted);font-size:12px}
+</style>
 </head>
-<body class="notranslate">
+<body>
+<main>
   <header>
-    <div class="bar">
-      <div class="title"><span class="notranslate">MCP</span> <span id="title-text">Catalog</span></div>
+    <h1 id="title">MCP Catalog</h1>
+    <div class="controls">
       <input id="q" type="search" placeholder="Search servers (title, keywords, description)…" />
-      <div id="chips" class="chips"></div>
-      <div id="count" class="count"></div>
       <div class="lang">
-        <button id="lang-en" class="active">EN</button>
-        <button id="lang-ru">RU</button>
+        <button id="b-en" class="active">EN</button>
+        <button id="b-ru">RU</button>
       </div>
     </div>
   </header>
 
-  <main>
-    <div id="grid" class="grid" aria-live="polite"></div>
-    <div id="empty" class="empty" hidden>Loading…</div>
-  </main>
+  <div class="toolbar" id="cats"></div>
+  <div class="grid" id="list"></div>
+  <div class="footer" id="foot"></div>
+</main>
 
-  <footer>
-    <span class="pill">UI</span> loads <code>registry/servers.index.json</code> and each server manifest’s <code>meta</code>. |
-    <a href="../registry/servers.index.json">Registry JSON</a> ·
-    <a href="../servers/">Servers</a> ·
-    <a href="../schema/">Schema</a> ·
-    <a href="../README.md">README</a>
-  </footer>
+<script>
+const UI = {
+  en: {
+    title: "MCP Catalog",
+    search: "Search servers (title, keywords, description)…",
+    all: "all",
+    count: (n, tot) => `${n} / ${tot}`,
+    manifest: "manifest",
+    homepage: "homepage",
+    repo: "repo"
+  },
+  ru: {
+    title: "MCP Каталог",
+    search: "Поиск серверов (название, ключевые слова, описание)…",
+    all: "все",
+    count: (n, tot) => `Показано ${n} из ${tot}`,
+    manifest: "манифест",
+    homepage: "сайт",
+    repo: "репозиторий"
+  }
+};
+const CATS = ["all","ai","devtools","messaging","productivity","storage","other"];
+let LANG = (new URL(location.href).searchParams.get("lang") || localStorage.getItem("LANG") || "en");
+if(!UI[LANG]) LANG = "en";
+const els = { q: document.getElementById("q"), list: document.getElementById("list"), cats: document.getElementById("cats"), title: document.getElementById("title"), foot: document.getElementById("foot") };
 
-  <script>
-  (function(){
-    const STR = {
-      en: { title:'Catalog', searchPh:'Search servers (title, keywords, description)…', all:'all', shown:(a,b)=>`${a} / ${b}`, manifest:'manifest', homepage:'homepage', repo:'repo', nothing:'Nothing found. Try another query or clear filters.', loading:'Loading…' },
-      ru: { title:'Каталог', searchPh:'Поиск серверов (название, ключевые слова, описание)…', all:'все', shown:(a,b)=>`Показано ${a} из ${b}`, manifest:'манифест', homepage:'сайт', repo:'репозиторий', nothing:'Ничего не найдено. Измените запрос или очистите фильтры.', loading:'Загрузка…' }
-    };
-    const params = new URLSearchParams(location.search);
-    let LANG = (params.get('lang')||'en').toLowerCase();
-    if (!['en','ru'].includes(LANG)) LANG='en';
+function t(k,...a){ const s = UI[LANG][k]; return typeof s === "function" ? s(...a) : s; }
+function pickText(field){
+  if (!field) return "";
+  if (typeof field === "string") return field;
+  if (typeof field === "object") return field[LANG] || field.en || Object.values(field).find(v=>typeof v==="string") || "";
+  return "";
+}
+function pickKeywords(field){
+  if (Array.isArray(field)) return field.map(String);
+  if (field && typeof field === "object") {
+    if (Array.isArray(field[LANG])) return field[LANG].map(String);
+    if (Array.isArray(field.en)) return field.en.map(String);
+    for (const v of Object.values(field)) if (Array.isArray(v)) return v.map(String);
+  }
+  return [];
+}
+function setLang(newLang){
+  LANG = newLang; localStorage.setItem("LANG", LANG);
+  document.getElementById("b-en").classList.toggle("active", LANG==="en");
+  document.getElementById("b-ru").classList.toggle("active", LANG==="ru");
+  els.title.textContent = t("title");
+  els.q.placeholder = t("search");
+  render();
+}
+document.getElementById("b-en").onclick = ()=>setLang("en");
+document.getElementById("b-ru").onclick = ()=>setLang("ru");
 
-    const els = {
-      titleText: document.getElementById('title-text'),
-      q: document.getElementById('q'),
-      chips: document.getElementById('chips'),
-      grid: document.getElementById('grid'),
-      empty: document.getElementById('empty'),
-      count: document.getElementById('count'),
-      en: document.getElementById('lang-en'),
-      ru: document.getElementById('lang-ru'),
-    };
+let ALL = [], FILTER_CAT="all", QUERY="";
+function render(){
+  const tot = ALL.length;
+  const q = QUERY.trim().toLowerCase();
+  const items = ALL.filter(it=>{
+    if (FILTER_CAT!=="all" && it.category!==FILTER_CAT) return false;
+    if (!q) return true;
+    const s = (it.title+" "+it.desc+" "+(it.keywords||[]).join(" ")).toLowerCase();
+    return s.includes(q);
+  });
+  els.cats.innerHTML = CATS.map(c=>{
+    const lbl = c==="all" ? t("all") : c;
+    return `<button class="chip ${FILTER_CAT===c?'active':''}" data-cat="${c}">${lbl}</button>`;
+  }).join("");
+  for (const b of els.cats.querySelectorAll(".chip")) b.onclick = ()=>{ FILTER_CAT=b.dataset.cat; render(); };
 
-    const escapeHTML = s => (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-    function pickText(field, lang) {
-      if (typeof field === 'string') return field;
-      if (field && typeof field === 'object') {
-        const L=(lang||'en').toLowerCase();
-        return field[L] || field.en || Object.values(field).find(v=>typeof v==='string') || '';
-      }
-      return '';
-    }
-    function pickKeywords(field, lang) {
-      if (Array.isArray(field)) return field.map(String);
-      if (field && typeof field === 'object') {
-        const L=(lang||'en').toLowerCase();
-        const arr = field[L] || field.en || Object.values(field).find(v=>Array.isArray(v)) || [];
-        return Array.isArray(arr) ? arr.map(String) : [];
-      }
-      return [];
-    }
+  els.list.innerHTML = items.map(s=>`
+    <div class="card">
+      <div class="meta">${s.category}</div>
+      <h3>${s.title}</h3>
+      <div class="meta">${s.badges.map(b=>`<span class="badge">${b}</span>`).join(" ")}</div>
+      <div>${s.desc || ""}</div>
+      <div class="links" style="margin-top:8px">
+        <a href="../${s.path}" target="_blank">${t("manifest")}</a>
+        ${s.homepage?`<a href="${s.homepage}" target="_blank">${t("homepage")}</a>`:""}
+        ${s.repo?`<a href="${s.repo}" target="_blank">${t("repo")}</a>`:""}
+      </div>
+    </div>
+  `).join("");
+  els.foot.textContent = t("count")(items.length, tot);
+}
+els.q.addEventListener("input", e=>{ QUERY=e.target.value; render(); });
 
-    const state = { q:'', cat:'all', caps:new Set(), items:[], cats:[], allCaps:[] };
+async function safeJson(url){
+  const res = await fetch(url, {cache:"no-store"});
+  if (!res.ok) throw new Error("HTTP "+res.status+" @ "+url);
+  return res.json();
+}
 
-    const BASE = location.pathname.replace(/\/site\/.*$/, '/');
-    const REGISTRY_URL = BASE + 'registry/servers.index.json?v=' + Date.now();
-
-    function renderStatic(){
-      document.documentElement.lang = LANG;
-      els.titleText.textContent = STR[LANG].title;
-      els.q.placeholder = STR[LANG].searchPh;
-      els.en.classList.toggle('active', LANG==='en');
-      els.ru.classList.toggle('active', LANG==='ru');
-    }
-
-    function makeChips(){
-      els.chips.innerHTML='';
-      // categories
-      const catWrap=document.createElement('div');
-      ['all', ...state.cats].forEach(cat=>{
-        const b=document.createElement('button');
-        b.className='chip'+((state.cat===cat)?' active':'');
-        b.textContent = (cat==='all' ? STR[LANG].all : cat);
-        b.onclick=()=>{ state.cat=cat; writeParams(); render(); };
-        catWrap.appendChild(b);
-      });
-      els.chips.appendChild(catWrap);
-      // capabilities
-      const capsWrap=document.createElement('div'); capsWrap.style.marginTop='6px';
-      state.allCaps.forEach(cap=>{
-        const act = state.caps.has(cap);
-        const b=document.createElement('button');
-        b.className='chip'+(act?' active':''); b.textContent=cap;
-        b.onclick=()=>{ act?state.caps.delete(cap):state.caps.add(cap); writeParams(); render(); };
-        capsWrap.appendChild(b);
-      });
-      els.chips.appendChild(capsWrap);
-      els.q.oninput = e => { state.q=(e.target.value||'').trim().toLowerCase(); writeParams(); render(); };
-    }
-
-    function writeParams(){
-      const p=new URLSearchParams(location.search);
-      p.set('lang',LANG);
-      if (state.cat!=='all') p.set('cat',state.cat); else p.delete('cat');
-      if (state.q) p.set('q',state.q); else p.delete('q');
-      if (state.caps.size) p.set('caps', [...state.caps].join(',')); else p.delete('caps');
-      history.replaceState(null,'',location.pathname + (p.toString()?('?'+p.toString()):''));
-    }
-    function readParams(){
-      const p=new URLSearchParams(location.search);
-      const cat=p.get('cat'); const q=p.get('q'); const caps=p.get('caps');
-      if (cat) state.cat=cat;
-      if (q){ state.q=q; els.q.value=q; }
-      state.caps = new Set((caps||'').split(',').filter(Boolean));
-    }
-
-    function filterItems(){
-      return state.items.filter(x=>{
-        const byCat = state.cat==='all' || x.category===state.cat;
-        if (!byCat) return false;
-        if (state.caps.size){
-          const ic = new Set(x.capabilities||[]);
-          for (const c of state.caps) if (!ic.has(c)) return false;
-        }
-        if (!state.q) return true;
-        const hay=(x.title+' '+x.description+' '+(x.keywords||'')+' '+x.name).toLowerCase();
-        return hay.includes(state.q);
-      });
-    }
-
-    function render(){
-      const T=STR[LANG];
-      const items=filterItems();
-      els.count.textContent = T.shown(items.length, state.items.length);
-      els.grid.innerHTML='';
-      els.empty.hidden = items.length!==0;
-      if (items.length===0){ els.empty.textContent=T.nothing; return; }
-
-      for (const x of items){
-        const card=document.createElement('div'); card.className='card';
-        card.innerHTML = `
-          <h3 class="notranslate">${escapeHTML(x.title)}</h3>
-          <div class="meta">
-            <span>${escapeHTML(x.category)}</span><span>•</span>
-            <a class="links" href="../${encodeURI(x.path)}" target="_blank" rel="noopener">${escapeHTML(T.manifest)}</a>
-          </div>
-          <div>${escapeHTML(x.description||'')}</div>
-          <div class="badges">${(Array.isArray(x.badges)?x.badges:[]).map(b=>`<span class="badge ${b} notranslate">${escapeHTML(b)}</span>`).join('')}</div>
-          <div class="links">
-            ${x.homepage?`<a class="notranslate" href="${escapeHTML(x.homepage)}" target="_blank" rel="noopener">${escapeHTML(T.homepage)}</a>`:''}
-            ${x.repo?`<a class="notranslate" href="${escapeHTML(x.repo)}" target="_blank" rel="noopener">${escapeHTML(T.repo)}</a>`:''}
-            <a href="./server.html?name=${encodeURIComponent(x.name)}&lang=${LANG}" target="_blank" rel="noopener">View details</a>
-          </div>`;
-        els.grid.appendChild(card);
-      }
-    }
-
-    async function load(){
+async function load(){
+  try{
+    const idx = await safeJson("../registry/servers.index.json?v="+Date.now());
+    const arr = [];
+    for (const it of idx){
       try{
-        const r=await fetch(REGISTRY_URL,{cache:'no-store'});
-        if (!r.ok) throw new Error('registry '+r.status);
-        const index=await r.json();
-        state.cats = Array.from(new Set(index.map(x=>x.category))).sort();
-        state.items = await Promise.all(index.map(async item=>{
-          const url = BASE + item.path + '?v=' + Date.now();
-          try{
-            const m = await fetch(url,{cache:'no-store'});
-            const manifest = m.ok ? await m.json() : {};
-            const meta = manifest.meta || {};
-            return {
-              name:item.name, category:item.category, path:item.path,
-              homepage:item.homepage || meta.homepage || '',
-              repo: meta.repo || '',
-              title: pickText(meta.title||item.name, LANG) || item.name,
-              description: pickText(meta.description||'', LANG),
-              badges: Array.isArray(meta.badges)?meta.badges:[],
-              keywords: (Array.isArray(meta.keywords)?meta.keywords: pickKeywords(meta.keywords, LANG)).join(' '),
-              capabilities: Array.isArray(meta.capabilities)?meta.capabilities:[]
-            };
-          }catch(_){ return {name:item.name,category:item.category,path:item.path,title:item.name,description:'',badges:[],keywords:'',capabilities:[]}; }
-        }));
-        state.allCaps = Array.from(new Set(state.items.flatMap(x=>x.capabilities||[]))).sort();
-        makeChips(); readParams(); render();
-      }catch(e){
-        console.error(e);
-        els.empty.hidden=false;
-        els.empty.textContent = (LANG==='ru' ? 'Не удалось загрузить реестр.' : 'Failed to load registry.');
-      }
+        const m = await safeJson("../"+it.path+"?v="+Date.now());
+        const meta = m.meta || {};
+        arr.push({
+          name: m.name || it.name,
+          path: it.path,
+          category: (meta.category || it.category || "other"),
+          title: pickText(meta.title) || it.name,
+          desc: pickText(meta.description) || "",
+          keywords: pickKeywords(meta.keywords),
+          homepage: meta.homepage || it.homepage || "",
+          repo: meta.repo || "",
+          badges: (meta.badges || it.badges || [])
+        });
+      }catch(e){ console.warn("manifest fail", it, e); }
     }
-
-    function setLang(l){
-      LANG = (l==='ru'?'ru':'en');
-      renderStatic(); makeChips(); render();
-      const p=new URLSearchParams(location.search); p.set('lang',LANG);
-      history.replaceState(null,'',location.pathname+'?'+p.toString());
-    }
-    els.en.addEventListener('click',()=>setLang('en'));
-    els.ru.addEventListener('click',()=>setLang('ru'));
-
-    renderStatic();
-    els.empty.hidden=false; els.empty.textContent=STR[LANG].loading;
-    load();
-  })();
-  </script>
+    ALL = arr;
+    render();
+  }catch(e){
+    els.list.innerHTML = `<div class="card"><b>Load error</b><div class="meta">${String(e)}</div></div>`;
+  }
+}
+setLang(LANG);
+load();
+</script>
 </body>
 </html>
