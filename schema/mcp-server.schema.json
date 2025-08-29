@@ -1,8 +1,8 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mcp-accelerator.github.io/schemas/mcp-server.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "MCP Server Manifest",
   "type": "object",
+  "required": ["name", "version", "base_url", "meta"],
   "additionalProperties": true,
 
   "properties": {
@@ -12,44 +12,25 @@
 
     "auth": {
       "type": "object",
-      "additionalProperties": true,
-      "properties": {
-        "type": { "type": "string" },
-        "env": { "type": "string" },
-        "header": { "type": "string" },
-        "query": { "type": "string" }
-      }
+      "additionalProperties": true
     },
 
     "headers": {
       "type": "object",
       "additionalProperties": {
-        "anyOf": [
+        "oneOf": [
           { "type": "string" },
-          { "type": "number" },
-          { "type": "boolean" }
+          { "type": "array", "items": { "type": "string" } },
+          { "type": "object", "additionalProperties": true }
         ]
       }
     },
 
     "capabilities": {
-      "type": "array",
-      "description": "Either string tags or detailed tool definitions",
-      "items": {
-        "oneOf": [
-          { "type": "string" },
-          {
-            "type": "object",
-            "additionalProperties": true,
-            "properties": {
-              "tool": { "type": "string" },
-              "method": { "type": "string" },
-              "path": { "type": "string" },
-              "inputs": { "type": "object", "additionalProperties": true }
-            }
-          }
-        ]
-      }
+      "oneOf": [
+        { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        { "type": "object", "additionalProperties": true }
+      ]
     },
 
     "meta": {
@@ -57,36 +38,41 @@
       "additionalProperties": true,
       "properties": {
         "title": {
-          "anyOf": [
+          "oneOf": [
             { "type": "string" },
             {
               "type": "object",
-              "additionalProperties": { "type": "string" },
-              "description": "i18n map, e.g. {\"en\":\"…\",\"ru\":\"…\"}"
+              "patternProperties": {
+                "^[a-z]{2}(-[A-Z]{2})?$": { "type": "string" }
+              },
+              "additionalProperties": false
             }
           ]
         },
         "description": {
-          "anyOf": [
+          "oneOf": [
             { "type": "string" },
             {
               "type": "object",
-              "additionalProperties": { "type": "string" }
+              "patternProperties": {
+                "^[a-z]{2}(-[A-Z]{2})?$": { "type": "string" }
+              },
+              "additionalProperties": false
             }
           ]
         },
         "keywords": {
-          "anyOf": [
-            {
-              "type": "array",
-              "items": { "type": "string" }
-            },
+          "oneOf": [
+            { "type": "array", "items": { "type": "string" } },
             {
               "type": "object",
-              "additionalProperties": {
-                "type": "array",
-                "items": { "type": "string" }
-              }
+              "patternProperties": {
+                "^[a-z]{2}(-[A-Z]{2})?$": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "additionalProperties": false
             }
           ]
         },
@@ -103,12 +89,9 @@
         },
         "capabilities": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Human-readable capability tags for the UI"
+          "items": { "type": "string" }
         }
       }
     }
-  },
-
-  "required": ["meta"]
+  }
 }
