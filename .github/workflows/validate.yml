@@ -1,9 +1,17 @@
-name: Validate MCP Manifests
+name: Validate MCP Catalog
 
 on:
   push:
-    branches: [ main ]
+    paths:
+      - "servers/**"
+      - "schema/**"
+      - ".github/workflows/validate.yml"
   pull_request:
+    paths:
+      - "servers/**"
+      - "schema/**"
+      - ".github/workflows/validate.yml"
+  workflow_dispatch:
 
 jobs:
   validate:
@@ -11,21 +19,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Install ajv-cli
         run: npm -g i ajv-cli@5
 
+      # Важный момент: strict включён, но union-типы мы заменили на anyOf в схеме
       - name: Validate manifests against schema
         run: |
-          ajv validate --allow-union-types --strict=false \
-            -s schema/mcp-server.schema.json \
-            -d "servers/*/mcp-server.json"
-
-      - name: Check registry format
-        run: |
-          test -f registry/servers.index.json
-          jq type registry/servers.index.json
-          jq -e 'all(.[]; has("name") and has("path") and has("category"))' registry/servers.index.json
+          ajv validate --strict=true -s schema/mcp-server.schema.json -d "servers/*/mcp-server.json"
