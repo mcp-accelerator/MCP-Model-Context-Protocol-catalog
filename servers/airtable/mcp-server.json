@@ -41,10 +41,7 @@
   ],
   "meta": {
     "title": "Airtable",
-    "description": {
-      "en": "Read and write Airtable tables/records",
-      "ru": "Чтение и запись таблиц/записей Airtable"
-    },
+    "description": "Read and write Airtable tables/records",
     "category": "storage",
     "homepage": "https://airtable.com/developers/web/api/introduction",
     "repo": "https://github.com/modelcontextprotocol/server-airtable",

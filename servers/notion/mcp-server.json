@@ -21,10 +21,7 @@
   ],
   "meta": {
     "title": "Notion",
-    "description": {
-      "en": "Create pages and databases",
-      "ru": "Создание страниц и базы данных"
-    },
+    "description": "Create pages and databases",
     "category": "productivity",
     "homepage": "https://developers.notion.com/",
     "repo": "https://github.com",

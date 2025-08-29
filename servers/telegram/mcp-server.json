@@ -18,10 +18,7 @@
   ],
   "meta": {
     "title": "Telegram",
-    "description": {
-      "en": "Send messages in Telegram",
-      "ru": "Отправка сообщений в Telegram"
-    },
+    "description": "Send messages in Telegram",
     "category": "messaging",
     "homepage": "https://core.telegram.org/bots/api",
     "repo": "https://github.com",

@@ -36,10 +36,7 @@
   ],
   "meta": {
     "title": "Trello",
-    "description": {
-      "en": "Create and move cards on Trello boards",
-      "ru": "Создание и перемещение карточек на досках Trello"
-    },
+    "description": "Create and move cards on Trello boards",
     "category": "productivity",
     "homepage": "https://developer.atlassian.com/cloud/trello/rest",
     "repo": "https://github.com/modelcontextprotocol/server-trello",

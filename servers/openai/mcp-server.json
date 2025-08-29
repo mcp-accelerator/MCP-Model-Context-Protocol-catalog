@@ -21,10 +21,7 @@
   ],
   "meta": {
     "title": "OpenAI",
-    "description": {
-      "en": "LLM requests (compatible API)",
-      "ru": "LLM-запросы (совместимый API)"
-    },
+    "description": "LLM requests (compatible API)",
     "category": "ai",
     "homepage": "https://platform.openai.com/docs",
     "repo": "https://github.com",

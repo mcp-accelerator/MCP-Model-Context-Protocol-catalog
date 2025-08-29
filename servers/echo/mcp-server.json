@@ -12,10 +12,7 @@
   ],
   "meta": {
     "title": "Echo",
-    "description": {
-      "en": "Demo httpbin endpoints",
-      "ru": "Демо эндпоинты httpbin"
-    },
+    "description": "Demo httpbin endpoints",
     "category": "other",
     "homepage": "https://httpbin.org/",
     "repo": "https://github.com",

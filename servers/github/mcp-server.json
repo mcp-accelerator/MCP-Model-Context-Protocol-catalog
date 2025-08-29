@@ -45,10 +45,7 @@
   ],
   "meta": {
     "title": "GitHub",
-    "description": {
-      "en": "Issues, PRs, repositories",
-      "ru": "Issues, PRs, репозитории"
-    },
+    "description": "Issues, PRs, repositories",
     "category": "devtools",
     "homepage": "https://docs.github.com/en/rest",
     "repo": "https://github.com/modelcontextprotocol/server-github",

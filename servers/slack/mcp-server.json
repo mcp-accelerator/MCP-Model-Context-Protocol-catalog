@@ -25,10 +25,7 @@
   ],
   "meta": {
     "title": "Slack",
-    "description": {
-      "en": "Post messages to Slack",
-      "ru": "Публикация сообщений"
-    },
+    "description": "Post messages to Slack",
     "category": "messaging",
     "homepage": "https://api.slack.com",
     "repo": "https://github.com",
