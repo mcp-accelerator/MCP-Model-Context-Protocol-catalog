@@ -1,5 +1,6 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcp-accelerator.github.io/schemas/mcp-server.schema.json",
   "title": "MCP Server Manifest",
   "type": "object",
   "additionalProperties": true,
@@ -11,23 +12,42 @@
 
     "auth": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "properties": {
+        "type": { "type": "string" },
+        "env": { "type": "string" },
+        "header": { "type": "string" },
+        "query": { "type": "string" }
+      }
     },
 
     "headers": {
       "type": "object",
       "additionalProperties": {
-        "type": ["string", "number", "boolean"]
+        "anyOf": [
+          { "type": "string" },
+          { "type": "number" },
+          { "type": "boolean" }
+        ]
       }
     },
 
     "capabilities": {
-      "description": "Array of strings or tool objects; both are allowed.",
       "type": "array",
+      "description": "Either string tags or detailed tool definitions",
       "items": {
         "oneOf": [
           { "type": "string" },
-          { "type": "object", "additionalProperties": true }
+          {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "tool": { "type": "string" },
+              "method": { "type": "string" },
+              "path": { "type": "string" },
+              "inputs": { "type": "object", "additionalProperties": true }
+            }
+          }
         ]
       }
     },
@@ -37,76 +57,58 @@
       "additionalProperties": true,
       "properties": {
         "title": {
-          "oneOf": [
+          "anyOf": [
             { "type": "string" },
             {
               "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "en": { "type": "string" },
-                "ru": { "type": "string" }
-              },
-              "minProperties": 1
+              "additionalProperties": { "type": "string" },
+              "description": "i18n map, e.g. {\"en\":\"…\",\"ru\":\"…\"}"
             }
           ]
         },
-
         "description": {
-          "oneOf": [
+          "anyOf": [
             { "type": "string" },
             {
               "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "en": { "type": "string" },
-                "ru": { "type": "string" }
-              },
-              "minProperties": 1
+              "additionalProperties": { "type": "string" }
             }
           ]
         },
-
-        "category": {
-          "type": "string",
-          "enum": ["ai", "devtools", "messaging", "productivity", "storage", "other"]
-        },
-
-        "homepage": { "type": "string" },
-        "repo": { "type": "string" },
-        "license": { "type": "string" },
-
-        "badges": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-
         "keywords": {
-          "oneOf": [
+          "anyOf": [
             {
               "type": "array",
               "items": { "type": "string" }
             },
             {
               "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "en": {
-                  "type": "array",
-                  "items": { "type": "string" }
-                },
-                "ru": {
-                  "type": "array",
-                  "items": { "type": "string" }
-                }
-              },
-              "minProperties": 1
+              "additionalProperties": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
             }
           ]
+        },
+        "category": {
+          "type": "string",
+          "enum": ["ai", "devtools", "messaging", "productivity", "storage", "other"]
+        },
+        "homepage": { "type": "string" },
+        "repo": { "type": "string" },
+        "license": { "type": "string" },
+        "badges": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Human-readable capability tags for the UI"
         }
-      },
-      "required": ["title", "category"]
+      }
     }
   },
 
-  "required": ["name", "meta"]
+  "required": ["meta"]
 }
