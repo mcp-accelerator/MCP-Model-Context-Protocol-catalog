@@ -1,0 +1,65 @@
+name: Fix manifests to EN-only
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-meta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Ensure jq present
+        run: |
+          if ! command -v jq >/dev/null 2>&1; then
+            sudo apt-get update -y
+            sudo apt-get install -y jq
+          fi
+
+      - name: Normalize meta.title/description to EN
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          changed=0
+          for f in servers/*/mcp-server.json; do
+            echo "Processing $f"
+            tmp="$(mktemp)"
+            jq '
+              if .meta.title and (.meta.title | type == "object") then
+                .meta.title = (.meta.title.en // .meta.title | tostring)
+              else . end
+              | if .meta.description and (.meta.description | type == "object") then
+                .meta.description = (.meta.description.en // .meta.description | tostring)
+              else . end
+            ' "$f" > "$tmp"
+            # only replace if actually changed
+            if ! diff -q "$f" "$tmp" >/dev/null 2>&1; then
+              mv "$tmp" "$f"
+              changed=$((changed+1))
+            else
+              rm -f "$tmp"
+            fi
+          done
+          echo "files_changed=$changed" >> $GITHUB_ENV
+          echo "Changed files: $changed"
+
+      - name: Commit & push if changed
+        if: env.files_changed != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add servers/*/mcp-server.json || true
+          git commit -m "fix(manifests): unify meta.title/description to EN-only for schema compliance"
+          git push origin HEAD:main
+
+      - name: No changes
+        if: env.files_changed == '0'
+        run: echo "Nothing to change — manifests already EN-only."
