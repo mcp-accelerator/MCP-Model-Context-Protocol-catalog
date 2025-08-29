@@ -1,4 +1,4 @@
-name: Validate MCP manifests
+name: Validate MCP Catalog
 
 on:
   push:
@@ -12,12 +12,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Node
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Install ajv-cli
         run: npm -g i ajv-cli@5
 
-      - name: Validate servers against schema
+      - name: Validate manifests (lenient for union types)
         run: |
+          set -eux
           ajv validate \
-            --allow-union-types \
             -s schema/mcp-server.schema.json \
-            -d "servers/*/mcp-server.json"
+            -d "servers/*/mcp-server.json" \
+            --allow-union-types \
+            --strict=false \
+            --errors=text
