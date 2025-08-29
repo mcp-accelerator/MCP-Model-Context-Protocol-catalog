@@ -1,16 +1,9 @@
-name: Validate MCP Catalog
+name: Validate MCP manifests
 
 on:
   push:
-    paths:
-      - "servers/**"
-      - "schema/**"
-      - ".github/workflows/validate.yml"
+    branches: [ main ]
   pull_request:
-    paths:
-      - "servers/**"
-      - "schema/**"
-      - ".github/workflows/validate.yml"
   workflow_dispatch:
 
 jobs:
@@ -22,7 +15,9 @@ jobs:
       - name: Install ajv-cli
         run: npm -g i ajv-cli@5
 
-      # Важный момент: strict включён, но union-типы мы заменили на anyOf в схеме
-      - name: Validate manifests against schema
+      - name: Validate servers against schema
         run: |
-          ajv validate --strict=true -s schema/mcp-server.schema.json -d "servers/*/mcp-server.json"
+          ajv validate \
+            --allow-union-types \
+            -s schema/mcp-server.schema.json \
+            -d "servers/*/mcp-server.json"
