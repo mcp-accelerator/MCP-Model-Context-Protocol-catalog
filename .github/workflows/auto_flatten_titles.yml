@@ -1,0 +1,49 @@
+name: Auto-flatten meta.title to string
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  flatten:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Flatten meta.title in all server manifests
+        run: |
+          set -euo pipefail
+          changed=0
+          for f in servers/*/mcp-server.json; do
+            [ -f "$f" ] || continue
+            tmp="$(mktemp)"
+            jq '
+              .meta as $m
+              | if ($m|type=="object" and ($m.title|type)=="object")
+                then .meta.title = ($m.title.en // $m.title // ([$m.title[]]|first // "" ))
+                else .
+                end
+            ' "$f" > "$tmp"
+            if ! diff -q "$f" "$tmp" >/dev/null 2>&1; then
+              mv "$tmp" "$f"
+              echo "patched: $f"
+              changed=$((changed+1))
+            else
+              rm -f "$tmp"
+            fi
+          done
+          echo "CHANGED=$changed" >> $GITHUB_ENV
+
+      - name: Commit changes (if any)
+        if: env.CHANGED != '0'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "fix(meta): flatten meta.title to string for schema validation"
+          branch: main
