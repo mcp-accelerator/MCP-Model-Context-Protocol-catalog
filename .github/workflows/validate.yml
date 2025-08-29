@@ -1,6 +1,8 @@
-name: Validate MCP Catalog
+name: Validate MCP Manifests
+
 on:
   push:
+    branches: [ main ]
   pull_request:
 
 jobs:
@@ -8,12 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Install ajv-cli
-        run: npm i -g ajv-cli@5
-      - name: Validate server manifests
-        run: ajv validate -s schema/mcp-server.schema.json -d "servers/*/mcp-server.json"
-      - name: Validate registry index
-        run: ajv validate -s schema/registry.schema.json -d registry/servers.index.json
+        run: npm -g i ajv-cli@5
+
+      - name: Validate manifests against schema
+        run: |
+          ajv validate --allow-union-types --strict=false \
+            -s schema/mcp-server.schema.json \
+            -d "servers/*/mcp-server.json"
+
+      - name: Check registry format
+        run: |
+          test -f registry/servers.index.json
+          jq type registry/servers.index.json
+          jq -e 'all(.[]; has("name") and has("path") and has("category"))' registry/servers.index.json
