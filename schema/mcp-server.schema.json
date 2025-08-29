@@ -22,7 +22,7 @@
     },
 
     "capabilities": {
-      "description": "Array of strings or tool objects; we allow both.",
+      "description": "Array of strings or tool objects; both are allowed.",
       "type": "array",
       "items": {
         "oneOf": [
@@ -36,8 +36,35 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "title": { "type": "string" },
-        "description": { "type": "string" },
+        "title": {
+          "oneOf": [
+            { "type": "string" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "en": { "type": "string" },
+                "ru": { "type": "string" }
+              },
+              "minProperties": 1
+            }
+          ]
+        },
+
+        "description": {
+          "oneOf": [
+            { "type": "string" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "en": { "type": "string" },
+                "ru": { "type": "string" }
+              },
+              "minProperties": 1
+            }
+          ]
+        },
 
         "category": {
           "type": "string",
@@ -54,8 +81,27 @@
         },
 
         "keywords": {
-          "type": "array",
-          "items": { "type": "string" }
+          "oneOf": [
+            {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "en": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "ru": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "minProperties": 1
+            }
+          ]
         }
       },
       "required": ["title", "category"]
