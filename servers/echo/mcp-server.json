@@ -11,10 +11,7 @@
     }
   ],
   "meta": {
-    "title": {
-      "en": "Echo",
-      "ru": "Echo"
-    },
+    "title": "Echo",
     "description": {
       "en": "Demo httpbin endpoints",
       "ru": "Демо эндпоинты httpbin"

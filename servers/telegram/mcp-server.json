@@ -17,10 +17,7 @@
     }
   ],
   "meta": {
-    "title": {
-      "en": "Telegram",
-      "ru": "Telegram"
-    },
+    "title": "Telegram",
     "description": {
       "en": "Send messages in Telegram",
       "ru": "Отправка сообщений в Telegram"

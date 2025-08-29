@@ -20,10 +20,7 @@
     }
   ],
   "meta": {
-    "title": {
-      "en": "Notion",
-      "ru": "Notion"
-    },
+    "title": "Notion",
     "description": {
       "en": "Create pages and databases",
       "ru": "Создание страниц и базы данных"

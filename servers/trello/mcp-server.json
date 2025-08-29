@@ -35,10 +35,7 @@
     }
   ],
   "meta": {
-    "title": {
-      "en": "Trello",
-      "ru": "Trello"
-    },
+    "title": "Trello",
     "description": {
       "en": "Create and move cards on Trello boards",
       "ru": "Создание и перемещение карточек на досках Trello"

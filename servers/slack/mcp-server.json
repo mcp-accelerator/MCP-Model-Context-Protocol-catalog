@@ -24,10 +24,7 @@
     }
   ],
   "meta": {
-    "title": {
-      "en": "Slack",
-      "ru": "Slack"
-    },
+    "title": "Slack",
     "description": {
       "en": "Post messages to Slack",
       "ru": "Публикация сообщений"

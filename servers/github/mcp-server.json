@@ -44,10 +44,7 @@
     }
   ],
   "meta": {
-    "title": {
-      "en": "GitHub",
-      "ru": "GitHub"
-    },
+    "title": "GitHub",
     "description": {
       "en": "Issues, PRs, repositories",
       "ru": "Issues, PRs, репозитории"

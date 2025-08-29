@@ -40,10 +40,7 @@
     }
   ],
   "meta": {
-    "title": {
-      "en": "Airtable",
-      "ru": "Airtable"
-    },
+    "title": "Airtable",
     "description": {
       "en": "Read and write Airtable tables/records",
       "ru": "Чтение и запись таблиц/записей Airtable"

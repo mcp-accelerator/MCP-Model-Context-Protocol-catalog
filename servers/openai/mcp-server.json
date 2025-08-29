@@ -20,10 +20,7 @@
     }
   ],
   "meta": {
-    "title": {
-      "en": "OpenAI",
-      "ru": "OpenAI"
-    },
+    "title": "OpenAI",
     "description": {
       "en": "LLM requests (compatible API)",
       "ru": "LLM-запросы (совместимый API)"
