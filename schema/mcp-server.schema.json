@@ -1,97 +1,36 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "MCP Server Manifest",
   "type": "object",
-  "required": ["name", "version", "base_url", "meta"],
-  "additionalProperties": true,
-
   "properties": {
     "name": { "type": "string" },
     "version": { "type": "string" },
     "base_url": { "type": "string" },
-
-    "auth": {
-      "type": "object",
-      "additionalProperties": true
-    },
-
+    "auth": { "type": "object" },
     "headers": {
       "type": "object",
       "additionalProperties": {
-        "oneOf": [
-          { "type": "string" },
-          { "type": "array", "items": { "type": "string" } },
-          { "type": "object", "additionalProperties": true }
-        ]
+        "type": ["string", "number", "boolean"]
       }
     },
-
     "capabilities": {
-      "oneOf": [
-        { "type": "array", "items": { "type": "object", "additionalProperties": true } },
-        { "type": "object", "additionalProperties": true }
-      ]
+      "type": "array",
+      "items": { "type": "object" }
     },
-
     "meta": {
       "type": "object",
-      "additionalProperties": true,
       "properties": {
-        "title": {
-          "oneOf": [
-            { "type": "string" },
-            {
-              "type": "object",
-              "patternProperties": {
-                "^[a-z]{2}(-[A-Z]{2})?$": { "type": "string" }
-              },
-              "additionalProperties": false
-            }
-          ]
-        },
-        "description": {
-          "oneOf": [
-            { "type": "string" },
-            {
-              "type": "object",
-              "patternProperties": {
-                "^[a-z]{2}(-[A-Z]{2})?$": { "type": "string" }
-              },
-              "additionalProperties": false
-            }
-          ]
-        },
-        "keywords": {
-          "oneOf": [
-            { "type": "array", "items": { "type": "string" } },
-            {
-              "type": "object",
-              "patternProperties": {
-                "^[a-z]{2}(-[A-Z]{2})?$": {
-                  "type": "array",
-                  "items": { "type": "string" }
-                }
-              },
-              "additionalProperties": false
-            }
-          ]
-        },
-        "category": {
-          "type": "string",
-          "enum": ["ai", "devtools", "messaging", "productivity", "storage", "other"]
-        },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
         "homepage": { "type": "string" },
         "repo": { "type": "string" },
         "license": { "type": "string" },
-        "badges": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "capabilities": {
-          "type": "array",
-          "items": { "type": "string" }
-        }
-      }
+        "badges": { "type": "array", "items": { "type": "string" } },
+        "keywords": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["title"]
     }
-  }
+  },
+  "required": ["meta"]
 }
