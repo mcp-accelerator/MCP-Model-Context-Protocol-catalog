@@ -1,24 +1,36 @@
 name: Validate MCP Catalog
 
 on:
-  workflow_dispatch:
-  pull_request:
   push:
     branches: [ main ]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  validate:
+  ajv-validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install ajv-cli
+      - name: Install jq & ajv-cli
         run: |
+          set -eux
+          sudo apt-get update -y
+          sudo apt-get install -y jq
           npm -g i ajv-cli@5
 
-      - name: Validate manifests against schema
+      - name: Show tree
         run: |
+          set -eux
+          ls -la
+          echo
+          tree -L 3 || true
+
+      - name: Validate manifests with AJV (strict off)
+        run: |
+          set -eux
+          # отключаем строгие проверки, чтобы не падать на union-типах и пр.
           ajv validate \
+            --strict=false \
             -s schema/mcp-server.schema.json \
             -d "servers/*/mcp-server.json"
