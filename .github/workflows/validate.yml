@@ -17,7 +17,6 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,11 +25,12 @@ jobs:
 
       - name: Show tree for debugging
         run: |
-          pwd
+          set -eux
           ls -la
           echo
-          [ -d schema ] && ls -la schema || true
-          [ -d servers ] && find servers -maxdepth 2 -type f -name "mcp-server.json" -print | sort || true
+          ls -la schema || true
+          echo
+          find servers -maxdepth 2 -type f -name "mcp-server.json" -print | sort || true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -42,19 +42,20 @@ jobs:
 
       - name: Validate manifests with AJV
         run: |
-          set -e
+          set -eux
           if [ ! -f schema/mcp-server.schema.json ]; then
-            echo "::warning file=schema/mcp-server.schema.json::Schema not found. Skipping validation."
-            exit 0
+            echo "::error ::schema/mcp-server.schema.json not found"
+            exit 1
           fi
-
-          # Валидация всех манифестов серверов
-          ajv validate \
-            --strict=false \
-            -s schema/mcp-server.schema.json \
-            -d "servers/*/mcp-server.json"
+          ajv validate --strict=false -s schema/mcp-server.schema.json -d "servers/*/mcp-server.json"
 
       - name: Summary
         if: ${{ success() }}
         run: |
-          echo "✅ All server manifests are valid against schema/mcp-server.schema.json"
+          {
+            echo "### ✅ AJV validation passed"
+            echo
+            echo "- Schema: \`schema/mcp-server.schema.json\`"
+            echo "- Docs found:" 
+            find servers -maxdepth 2 -name mcp-server.json -print | sed 's/^/- /'
+          } >> "$GITHUB_STEP_SUMMARY"
