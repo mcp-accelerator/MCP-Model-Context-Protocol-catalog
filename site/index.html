@@ -2,167 +2,166 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>MCP Catalog</title>
 <style>
 :root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui}
-main{max-width:1100px;margin:24px auto;padding:0 16px 40px}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-h1{margin:0;font-size:24px}
-.controls{display:flex;gap:8px;align-items:center}
-input[type=search]{width:360px;max-width:60vw;background:#0f1520;border:1px solid #223044;color:var(--ink);border-radius:10px;padding:8px 10px}
-.lang button,.chip{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
-.lang button.active,.chip.active{outline:2px solid var(--brand)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
-.card{background:var(--card);border:1px solid #223044;border-radius:14px;padding:12px}
-.card h3{margin:0 0 6px 0}
-.meta{color:var(--muted);font-size:12px;margin-bottom:6px}
-.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.badge{font-size:11px;border:1px solid #27415a;background:#14202e;border-radius:999px;padding:3px 7px}
-.links a{color:var(--brand);margin-right:10px;text-decoration:none}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-.footer{margin-top:16px;color:var(--muted);font-size:12px}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui}
+main{max-width:1000px;margin:24px auto;padding:0 16px 40px}
+h1{margin:0 0 12px 0;font-size:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid #223044;border-radius:14px;padding:14px}
+.meta{color:var(--muted);font-size:13px;margin:6px 0}
+a{color:var(--brand);text-decoration:none}
+input[type=search]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #223044;background:#0e1520;color:var(--ink)}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.badge{display:inline-block;margin-right:6px;margin-bottom:6px;padding:4px 8px;border-radius:999px;background:#14202e;border:1px solid #27415a;font-size:12px}
+.lang{margin-left:auto;display:flex;gap:6px}
+.lang button{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
+.lang button.active{outline:2px solid var(--brand)}
+.note{color:var(--muted);font-size:13px;margin-top:10px}
+.err{background:#2a1111;border:1px solid #553; padding:10px;border-radius:10px;margin:10px 0}
 </style>
 </head>
 <body>
 <main>
-  <header>
-    <h1 id="title">MCP Catalog</h1>
-    <div class="controls">
-      <input id="q" type="search" placeholder="Search servers (title, keywords, description)…" />
-      <div class="lang">
-        <button id="b-en" class="active">EN</button>
-        <button id="b-ru">RU</button>
-      </div>
+  <h1 id="title">MCP Catalog</h1>
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="Search servers (title, keywords, description)…">
+    <div class="lang">
+      <button id="en" class="active">EN</button>
+      <button id="ru">RU</button>
     </div>
-  </header>
-
-  <div class="toolbar" id="cats"></div>
-  <div class="grid" id="list"></div>
-  <div class="footer" id="foot"></div>
+  </div>
+  <div id="chips" class="toolbar"></div>
+  <div id="counts" class="meta"></div>
+  <div id="error" class="err" style="display:none"></div>
+  <div id="grid" class="grid"></div>
+  <div class="note" id="footer">
+    UI loads <code>registry/servers.index.json</code> and each server manifest’s <code>meta</code>. |
+    <a href="../registry/servers.index.json">Registry JSON</a> ·
+    <a href="../servers/">Servers</a> ·
+    <a href="../schema/mcp-server.schema.json">Schema</a> ·
+    <a href="https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog">README</a>
+  </div>
 </main>
-
 <script>
-const UI = {
-  en: {
-    title: "MCP Catalog",
-    search: "Search servers (title, keywords, description)…",
-    all: "all",
-    count: (n, tot) => `${n} / ${tot}`,
-    manifest: "manifest",
-    homepage: "homepage",
-    repo: "repo"
-  },
-  ru: {
-    title: "MCP Каталог",
-    search: "Поиск серверов (название, ключевые слова, описание)…",
-    all: "все",
-    count: (n, tot) => `Показано ${n} из ${tot}`,
-    manifest: "манифест",
-    homepage: "сайт",
-    repo: "репозиторий"
-  }
-};
-const CATS = ["all","ai","devtools","messaging","productivity","storage","other"];
-let LANG = (new URL(location.href).searchParams.get("lang") || localStorage.getItem("LANG") || "en");
-if(!UI[LANG]) LANG = "en";
-const els = { q: document.getElementById("q"), list: document.getElementById("list"), cats: document.getElementById("cats"), title: document.getElementById("title"), foot: document.getElementById("foot") };
+const LANGS = { en: {all:'all', manifest:'manifest', homepage:'homepage', repo:'repo', shown:(n,t)=>`${n} / ${t}`},
+                ru: {all:'все', manifest:'манифест', homepage:'сайт', repo:'репозиторий', shown:(n,t)=>`Показано ${n} из ${t}`} };
+let LANG = (new URLSearchParams(location.search).get('lang')||'en');
+if (!LANGS[LANG]) LANG='en';
+document.getElementById('en').classList.toggle('active', LANG==='en');
+document.getElementById('ru').classList.toggle('active', LANG==='ru');
+document.getElementById('en').onclick = ()=>location.search='?lang=en';
+document.getElementById('ru').onclick = ()=>location.search='?lang=ru';
 
-function t(k,...a){ const s = UI[LANG][k]; return typeof s === "function" ? s(...a) : s; }
-function pickText(field){
-  if (!field) return "";
-  if (typeof field === "string") return field;
-  if (typeof field === "object") return field[LANG] || field.en || Object.values(field).find(v=>typeof v==="string") || "";
-  return "";
-}
-function pickKeywords(field){
-  if (Array.isArray(field)) return field.map(String);
-  if (field && typeof field === "object") {
-    if (Array.isArray(field[LANG])) return field[LANG].map(String);
-    if (Array.isArray(field.en)) return field.en.map(String);
-    for (const v of Object.values(field)) if (Array.isArray(v)) return v.map(String);
-  }
-  return [];
-}
-function setLang(newLang){
-  LANG = newLang; localStorage.setItem("LANG", LANG);
-  document.getElementById("b-en").classList.toggle("active", LANG==="en");
-  document.getElementById("b-ru").classList.toggle("active", LANG==="ru");
-  els.title.textContent = t("title");
-  els.q.placeholder = t("search");
-  render();
-}
-document.getElementById("b-en").onclick = ()=>setLang("en");
-document.getElementById("b-ru").onclick = ()=>setLang("ru");
+const BASE = location.origin + location.pathname.replace(/\/site\/.*$/, '/');
+const REGISTRY_URL = BASE + 'registry/servers.index.json?v=' + Date.now();
 
-let ALL = [], FILTER_CAT="all", QUERY="";
+const CATS = ['ai','devtools','messaging','productivity','storage','other'];
+let registry = [], manifests = [], filterCat = null, q = '';
+
+const chipsDiv = document.getElementById('chips');
+const grid = document.getElementById('grid');
+const counts = document.getElementById('counts');
+const errorBox = document.getElementById('error');
+const qInput = document.getElementById('q');
+
+function t(key){ return LANGS[LANG][key] || key; }
+
+function chip(label, active, onclick){
+  const a = document.createElement('a');
+  a.className = 'badge';
+  a.href = '#';
+  a.textContent = label;
+  if (active) a.style.outline = '2px solid var(--brand)';
+  a.onclick = (e)=>{e.preventDefault(); onclick();};
+  return a;
+}
+
+function pick(v){ return (typeof v==='string') ? v : ''; }
+
 function render(){
-  const tot = ALL.length;
-  const q = QUERY.trim().toLowerCase();
-  const items = ALL.filter(it=>{
-    if (FILTER_CAT!=="all" && it.category!==FILTER_CAT) return false;
-    if (!q) return true;
-    const s = (it.title+" "+it.desc+" "+(it.keywords||[]).join(" ")).toLowerCase();
-    return s.includes(q);
+  errorBox.style.display = 'none';
+  grid.innerHTML = '';
+  chipsDiv.innerHTML = '';
+  chipsDiv.appendChild(chip(t('all'), !filterCat, ()=>{filterCat=null; render();}));
+  CATS.forEach(c=>{
+    chipsDiv.appendChild(chip(c, filterCat===c, ()=>{filterCat=(filterCat===c?null:c); render();}));
   });
-  els.cats.innerHTML = CATS.map(c=>{
-    const lbl = c==="all" ? t("all") : c;
-    return `<button class="chip ${FILTER_CAT===c?'active':''}" data-cat="${c}">${lbl}</button>`;
-  }).join("");
-  for (const b of els.cats.querySelectorAll(".chip")) b.onclick = ()=>{ FILTER_CAT=b.dataset.cat; render(); };
 
-  els.list.innerHTML = items.map(s=>`
-    <div class="card">
-      <div class="meta">${s.category}</div>
-      <h3>${s.title}</h3>
-      <div class="meta">${s.badges.map(b=>`<span class="badge">${b}</span>`).join(" ")}</div>
-      <div>${s.desc || ""}</div>
-      <div class="links" style="margin-top:8px">
-        <a href="../${s.path}" target="_blank">${t("manifest")}</a>
-        ${s.homepage?`<a href="${s.homepage}" target="_blank">${t("homepage")}</a>`:""}
-        ${s.repo?`<a href="${s.repo}" target="_blank">${t("repo")}</a>`:""}
+  const qlc = q.trim().toLowerCase();
+  const items = manifests.filter(m=>{
+    if (filterCat && (m.meta?.category!==filterCat)) return false;
+    const title = pick(m.meta?.title).toLowerCase();
+    const desc  = pick(m.meta?.description||'').toLowerCase();
+    const kws   = (m.meta?.keywords||[]).join(' ').toLowerCase();
+    return [title,desc,kws].some(s=>s.includes(qlc));
+  });
+
+  counts.textContent = t('shown')(items.length, manifests.length);
+
+  items.forEach(m=>{
+    const div = document.createElement('div'); div.className='card';
+    const title = pick(m.meta?.title) || m.name || '—';
+    const desc  = pick(m.meta?.description||'');
+    const cat   = pick(m.meta?.category||'');
+    const home  = pick(m.meta?.homepage||'');
+    const repo  = pick(m.meta?.repo||'');
+    const path  = m.__path || '';
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong>${title}</strong>
+        <span class="meta">${cat}</span>
       </div>
-    </div>
-  `).join("");
-  els.foot.textContent = t("count")(items.length, tot);
-}
-els.q.addEventListener("input", e=>{ QUERY=e.target.value; render(); });
+      <div class="meta">${desc||'—'}</div>
+      <div class="meta">
+        <a class="badge" href="${BASE}${path}" target="_blank">${t('manifest')}</a>
+        ${home?`<a class="badge" href="${home}" target="_blank">${t('homepage')}</a>`:''}
+        ${repo?`<a class="badge" href="${repo}" target="_blank">${t('repo')}</a>`:''}
+      </div>
+    `;
+    grid.appendChild(div);
+  });
 
-async function safeJson(url){
-  const res = await fetch(url, {cache:"no-store"});
-  if (!res.ok) throw new Error("HTTP "+res.status+" @ "+url);
-  return res.json();
+  if (!manifests.length){
+    errorBox.style.display='block';
+    errorBox.textContent = 'No servers loaded. Check that registry and manifests are published under /registry and /servers on GitHub Pages.';
+  }
 }
+
+qInput.oninput = ()=>{ q = qInput.value; render(); };
 
 async function load(){
   try{
-    const idx = await safeJson("../registry/servers.index.json?v="+Date.now());
-    const arr = [];
-    for (const it of idx){
-      try{
-        const m = await safeJson("../"+it.path+"?v="+Date.now());
-        const meta = m.meta || {};
-        arr.push({
-          name: m.name || it.name,
-          path: it.path,
-          category: (meta.category || it.category || "other"),
-          title: pickText(meta.title) || it.name,
-          desc: pickText(meta.description) || "",
-          keywords: pickKeywords(meta.keywords),
-          homepage: meta.homepage || it.homepage || "",
-          repo: meta.repo || "",
-          badges: (meta.badges || it.badges || [])
-        });
-      }catch(e){ console.warn("manifest fail", it, e); }
-    }
-    ALL = arr;
-    render();
+    const r = await fetch(REGISTRY_URL, {cache:'no-store'});
+    if (!r.ok) throw new Error('Registry HTTP '+r.status);
+    registry = await r.json();
   }catch(e){
-    els.list.innerHTML = `<div class="card"><b>Load error</b><div class="meta">${String(e)}</div></div>`;
+    errorBox.style.display='block';
+    errorBox.textContent = 'Failed to load registry: ' + e.message + ' ('+REGISTRY_URL+')';
+    registry = [];
   }
+
+  manifests = [];
+  for (const it of registry){
+    const url = BASE + (it.path || it.manifest || '');
+    try{
+      const r = await fetch(url + '?v=' + Date.now(), {cache:'no-store'});
+      if (!r.ok) throw new Error('HTTP '+r.status);
+      const m = await r.json();
+      m.__path = it.path || it.manifest || '';
+      // Нормализуем meta.title строго в строку
+      if (m.meta && typeof m.meta.title !== 'string') {
+        m.meta.title = '';
+      }
+      manifests.push(m);
+    }catch(e){
+      console.warn('Manifest load failed for', url, e);
+    }
+  }
+  render();
 }
-setLang(LANG);
 load();
 </script>
 </body>
