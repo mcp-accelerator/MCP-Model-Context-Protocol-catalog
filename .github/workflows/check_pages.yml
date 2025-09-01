@@ -1,0 +1,25 @@
+name: Check deployed Pages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check top-level and key files
+        run: |
+          set -e
+          BASE="https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog"
+          echo "== HEADERS =="
+          echo "-- UI (site/index.html)"
+          curl -I "$BASE/site/index.html" || true
+          echo
+          echo "-- Registry (registry/servers.index.json)"
+          curl -I "$BASE/registry/servers.index.json" || true
+          echo
+          echo "-- Example manifest (servers/github/mcp-server.json)"
+          curl -I "$BASE/servers/github/mcp-server.json" || true
+          echo
+          echo "== PREVIEW JSON (first lines) =="
+          curl -fsS "$BASE/registry/servers.index.json?v=$(date +%s)" | head -n 40 || true
