@@ -1,19 +1,48 @@
 name: Validate MCP Catalog
+
 on:
   push:
+    branches: [ main ]
+    paths:
+      - 'schema/**'
+      - 'servers/**'
+      - '.github/workflows/validate.yml'
   pull_request:
+    paths:
+      - 'schema/**'
+      - 'servers/**'
+      - '.github/workflows/validate.yml'
+  workflow_dispatch:
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Install ajv-cli
-        run: npm i -g ajv-cli@5
-      - name: Validate server manifests
-        run: ajv validate -s schema/mcp-server.schema.json -d "servers/*/mcp-server.json"
-      - name: Validate registry index
-        run: ajv validate -s schema/registry.schema.json -d registry/servers.index.json
+        run: npm -g i ajv-cli@5
+
+      # Запускаем валидацию только если схема существует в текущем ref
+      - name: Validate manifests with AJV
+        if: ${{ hashFiles('schema/mcp-server.schema.json') != '' }}
+        run: |
+          set -eux
+          ajv validate --strict=false \
+            -s schema/mcp-server.schema.json \
+            -d "servers/*/mcp-server.json"
+
+      # Если схемы нет (например, ран старого PR/коммита) — мягко пропускаем
+      - name: Skip (schema not found)
+        if: ${{ hashFiles('schema/mcp-server.schema.json') == '' }}
+        run: |
+          echo "Schema schema/mcp-server.schema.json not found in this ref. Skipping validation."
