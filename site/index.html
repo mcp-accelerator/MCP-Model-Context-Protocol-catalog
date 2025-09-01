@@ -2,167 +2,267 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>MCP Catalog</title>
 <style>
-:root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui}
-main{max-width:1000px;margin:24px auto;padding:0 16px 40px}
-h1{margin:0 0 12px 0;font-size:28px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.card{background:var(--card);border:1px solid #223044;border-radius:14px;padding:14px}
-.meta{color:var(--muted);font-size:13px;margin:6px 0}
-a{color:var(--brand);text-decoration:none}
-input[type=search]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #223044;background:#0e1520;color:var(--ink)}
-.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}
-.badge{display:inline-block;margin-right:6px;margin-bottom:6px;padding:4px 8px;border-radius:999px;background:#14202e;border:1px solid #27415a;font-size:12px}
-.lang{margin-left:auto;display:flex;gap:6px}
-.lang button{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
+:root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#9fb0bf;--brand:#5aa7ff;--chip:#162233;--border:#223044}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,Segoe UI,Roboto}
+main{max-width:1000px;margin:24px auto;padding:0 16px 48px}
+.header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:24px;margin:0 8px 0 0}
+.lang{margin-left:auto;display:flex;gap:8px}
+.lang button{background:var(--chip);border:1px solid var(--border);color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
 .lang button.active{outline:2px solid var(--brand)}
-.note{color:var(--muted);font-size:13px;margin-top:10px}
-.err{background:#2a1111;border:1px solid #553; padding:10px;border-radius:10px;margin:10px 0}
+.search{margin:14px 0}
+.search input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#0d141d;color:var(--ink)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.chip{background:var(--chip);border:1px solid var(--border);padding:6px 10px;border-radius:999px;font-size:13px;cursor:pointer}
+.chip.active{outline:2px solid var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.meta{color:var(--muted);font-size:12px}
+.badge{display:inline-block;margin-right:6px;margin-top:2px;padding:3px 8px;border-radius:999px;background:#14202e;border:1px solid #27415a;font-size:11px}
+a{color:var(--brand);text-decoration:none}
+.footer{margin-top:16px;color:var(--muted);font-size:12px}
+.count{color:var(--muted);font-size:13px;margin-left:6px}
+.links{display:flex;gap:10px;flex-wrap:wrap}
+.link{font-size:13px}
 </style>
 </head>
 <body>
 <main>
-  <h1 id="title">MCP Catalog</h1>
-  <div class="toolbar">
-    <input id="q" type="search" placeholder="Search servers (title, keywords, description)…">
+  <div class="header">
+    <h1 id="title">MCP Catalog</h1>
+    <span class="count" id="count"></span>
     <div class="lang">
-      <button id="en" class="active">EN</button>
-      <button id="ru">RU</button>
+      <button id="btn-en" class="active">EN</button>
+      <button id="btn-ru">RU</button>
     </div>
   </div>
-  <div id="chips" class="toolbar"></div>
-  <div id="counts" class="meta"></div>
-  <div id="error" class="err" style="display:none"></div>
-  <div id="grid" class="grid"></div>
-  <div class="note" id="footer">
-    UI loads <code>registry/servers.index.json</code> and each server manifest’s <code>meta</code>. |
-    <a href="../registry/servers.index.json">Registry JSON</a> ·
-    <a href="../servers/">Servers</a> ·
-    <a href="../schema/mcp-server.schema.json">Schema</a> ·
-    <a href="https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog">README</a>
+
+  <div class="search">
+    <input id="q" placeholder="Search servers (title, keywords, description)…" />
   </div>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="footer" id="footer"></div>
 </main>
+
 <script>
-const LANGS = { en: {all:'all', manifest:'manifest', homepage:'homepage', repo:'repo', shown:(n,t)=>`${n} / ${t}`},
-                ru: {all:'все', manifest:'манифест', homepage:'сайт', repo:'репозиторий', shown:(n,t)=>`Показано ${n} из ${t}`} };
-let LANG = (new URLSearchParams(location.search).get('lang')||'en');
-if (!LANGS[LANG]) LANG='en';
-document.getElementById('en').classList.toggle('active', LANG==='en');
-document.getElementById('ru').classList.toggle('active', LANG==='ru');
-document.getElementById('en').onclick = ()=>location.search='?lang=en';
-document.getElementById('ru').onclick = ()=>location.search='?lang=ru';
-
-const BASE = location.origin + location.pathname.replace(/\/site\/.*$/, '/');
-const REGISTRY_URL = BASE + 'registry/servers.index.json?v=' + Date.now();
-
-const CATS = ['ai','devtools','messaging','productivity','storage','other'];
-let registry = [], manifests = [], filterCat = null, q = '';
-
-const chipsDiv = document.getElementById('chips');
-const grid = document.getElementById('grid');
-const counts = document.getElementById('counts');
-const errorBox = document.getElementById('error');
-const qInput = document.getElementById('q');
-
-function t(key){ return LANGS[LANG][key] || key; }
-
-function chip(label, active, onclick){
-  const a = document.createElement('a');
-  a.className = 'badge';
-  a.href = '#';
-  a.textContent = label;
-  if (active) a.style.outline = '2px solid var(--brand)';
-  a.onclick = (e)=>{e.preventDefault(); onclick();};
-  return a;
-}
-
-function pick(v){ return (typeof v==='string') ? v : ''; }
-
-function render(){
-  errorBox.style.display = 'none';
-  grid.innerHTML = '';
-  chipsDiv.innerHTML = '';
-  chipsDiv.appendChild(chip(t('all'), !filterCat, ()=>{filterCat=null; render();}));
-  CATS.forEach(c=>{
-    chipsDiv.appendChild(chip(c, filterCat===c, ()=>{filterCat=(filterCat===c?null:c); render();}));
-  });
-
-  const qlc = q.trim().toLowerCase();
-  const items = manifests.filter(m=>{
-    if (filterCat && (m.meta?.category!==filterCat)) return false;
-    const title = pick(m.meta?.title).toLowerCase();
-    const desc  = pick(m.meta?.description||'').toLowerCase();
-    const kws   = (m.meta?.keywords||[]).join(' ').toLowerCase();
-    return [title,desc,kws].some(s=>s.includes(qlc));
-  });
-
-  counts.textContent = t('shown')(items.length, manifests.length);
-
-  items.forEach(m=>{
-    const div = document.createElement('div'); div.className='card';
-    const title = pick(m.meta?.title) || m.name || '—';
-    const desc  = pick(m.meta?.description||'');
-    const cat   = pick(m.meta?.category||'');
-    const home  = pick(m.meta?.homepage||'');
-    const repo  = pick(m.meta?.repo||'');
-    const path  = m.__path || '';
-    div.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <strong>${title}</strong>
-        <span class="meta">${cat}</span>
-      </div>
-      <div class="meta">${desc||'—'}</div>
-      <div class="meta">
-        <a class="badge" href="${BASE}${path}" target="_blank">${t('manifest')}</a>
-        ${home?`<a class="badge" href="${home}" target="_blank">${t('homepage')}</a>`:''}
-        ${repo?`<a class="badge" href="${repo}" target="_blank">${t('repo')}</a>`:''}
-      </div>
-    `;
-    grid.appendChild(div);
-  });
-
-  if (!manifests.length){
-    errorBox.style.display='block';
-    errorBox.textContent = 'No servers loaded. Check that registry and manifests are published under /registry and /servers on GitHub Pages.';
-  }
-}
-
-qInput.oninput = ()=>{ q = qInput.value; render(); };
-
-async function load(){
-  try{
-    const r = await fetch(REGISTRY_URL, {cache:'no-store'});
-    if (!r.ok) throw new Error('Registry HTTP '+r.status);
-    registry = await r.json();
-  }catch(e){
-    errorBox.style.display='block';
-    errorBox.textContent = 'Failed to load registry: ' + e.message + ' ('+REGISTRY_URL+')';
-    registry = [];
-  }
-
-  manifests = [];
-  for (const it of registry){
-    const url = BASE + (it.path || it.manifest || '');
-    try{
-      const r = await fetch(url + '?v=' + Date.now(), {cache:'no-store'});
-      if (!r.ok) throw new Error('HTTP '+r.status);
-      const m = await r.json();
-      m.__path = it.path || it.manifest || '';
-      // Нормализуем meta.title строго в строку
-      if (m.meta && typeof m.meta.title !== 'string') {
-        m.meta.title = '';
-      }
-      manifests.push(m);
-    }catch(e){
-      console.warn('Manifest load failed for', url, e);
+(() => {
+  // ---- i18n (UI labels only; data uses canonical keys) ----
+  const I18N = {
+    en: {
+      title: "MCP Catalog",
+      search: "Search servers (title, keywords, description)…",
+      cats: {
+        all: "all",
+        ai: "ai",
+        devtools: "devtools",
+        messaging: "messaging",
+        productivity: "productivity",
+        storage: "storage",
+        other: "other",
+      },
+      manifest: "manifest",
+      homepage: "homepage",
+      repo: "repo",
+      shown: (n, total) => `${n} / ${total}`,
+      footer: `UI loads registry/servers.index.json and each server manifest’s meta. | Registry JSON · Servers · Schema · README`,
+    },
+    ru: {
+      title: "MCP Каталог",
+      search: "Поиск серверов (название, ключевые слова, описание)…",
+      cats: {
+        all: "все",
+        ai: "ai",
+        devtools: "devtools",
+        messaging: "messaging",
+        productivity: "productivity",
+        storage: "storage",
+        other: "other",
+      },
+      manifest: "манифест",
+      homepage: "сайт",
+      repo: "репозиторий",
+      shown: (n, total) => `Показано ${n} из ${total}`,
+      footer: `UI загружает registry/servers.index.json и метаданные каждого манифеста. | Registry JSON · Servers · Schema · README`,
     }
+  };
+
+  // ---- helpers ----
+  const qs = (s, r=document) => r.querySelector(s);
+  const el = (tag, attrs={}, children=[]) => {
+    const n = document.createElement(tag);
+    Object.entries(attrs).forEach(([k,v]) => {
+      if (k === "class") n.className = v;
+      else if (k === "text") n.textContent = v;
+      else n.setAttribute(k, v);
+    });
+    children.forEach(c => n.appendChild(c));
+    return n;
+  };
+
+  // ---- state ----
+  const url = new URL(location.href);
+  let lang = (url.searchParams.get("lang") || "en").toLowerCase();
+  if (!I18N[lang]) lang = "en";
+  let activeCat = "all";
+  let query = "";
+
+  // Compute absolute base for Pages (works under a path prefix)
+  const BASE = `${location.origin}${location.pathname.replace(/\/site\/.*$/, "")}`;
+  const v = Date.now();
+  const REG_URL = `${BASE}/registry/servers.index.json?v=${v}`;
+
+  const titleNode = qs("#title");
+  const countNode = qs("#count");
+  const qNode = qs("#q");
+  const chipsNode = qs("#chips");
+  const gridNode = qs("#grid");
+  const footerNode = qs("#footer");
+  const btnEn = qs("#btn-en");
+  const btnRu = qs("#btn-ru");
+
+  function applyLang() {
+    const L = I18N[lang];
+    titleNode.textContent = L.title;
+    qNode.placeholder = L.search;
+    footerNode.textContent = L.footer;
+
+    btnEn.classList.toggle("active", lang === "en");
+    btnRu.classList.toggle("active", lang === "ru");
+
+    // Rebuild chips (labels depend on lang)
+    chipsNode.innerHTML = "";
+    const cats = ["all","ai","devtools","messaging","productivity","storage","other"];
+    cats.forEach(k => {
+      const chip = el("button", { class:"chip"+(activeCat===k?" active":""), type:"button" });
+      chip.textContent = I18N[lang].cats[k];
+      chip.addEventListener("click", () => {
+        activeCat = k; render();
+        // update active visuals
+        [...chipsNode.children].forEach(b => b.classList.remove("active"));
+        chip.classList.add("active");
+      });
+      chipsNode.appendChild(chip);
+    });
   }
-  render();
-}
-load();
+
+  btnEn.addEventListener("click", () => {
+    lang = "en"; url.searchParams.set("lang","en"); history.replaceState({},"",url);
+    applyLang(); render();
+  });
+  btnRu.addEventListener("click", () => {
+    lang = "ru"; url.searchParams.set("lang","ru"); history.replaceState({},"",url);
+    applyLang(); render();
+  });
+
+  qNode.addEventListener("input", () => { query = qNode.value.trim().toLowerCase(); render(); });
+
+  // ---- data load ----
+  let registry = [];
+  let cards = []; // normalized view-model
+
+  async function load() {
+    // 1) registry
+    const regRes = await fetch(REG_URL);
+    if (!regRes.ok) throw new Error(`Registry HTTP ${regRes.status}`);
+    registry = await regRes.json();
+
+    // 2) fetch all manifests
+    const promises = registry.map(async item => {
+      const path = item.path.startsWith("/") ? item.path : `/${item.path}`;
+      const manUrl = `${BASE}${path}?v=${v}`;
+      try {
+        const r = await fetch(manUrl);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const m = await r.json();
+        // meta.title теперь ожидается строкой (EN-only), но бережно fallback’им:
+        const title = (m.meta && typeof m.meta.title === "string") ? m.meta.title
+                     : (m.meta && m.meta.title && (m.meta.title.en || m.meta.title.ru)) || m.name || item.name || "Unknown";
+        const desc = (m.meta && (m.meta.description || m.description)) || "";
+        const category = (m.meta && m.meta.category) || item.category || "other";
+        const homepage = (m.meta && m.meta.homepage) || item.homepage || "";
+        const repo = (m.meta && m.meta.repo) || "";
+        const badges = (m.meta && Array.isArray(m.meta.badges) ? m.meta.badges : (item.badges||[]));
+        const keywords = (m.meta && Array.isArray(m.meta.keywords) ? m.meta.keywords : []);
+        return {
+          name: item.name || m.name || "unknown",
+          path: item.path,
+          title, desc, category, homepage, repo, badges, keywords
+        };
+      } catch (e) {
+        // не валим страницу из-за одного манифеста
+        return {
+          name: item.name || "unknown",
+          path: item.path,
+          title: item.name || "Unknown",
+          desc: "Failed to load manifest.",
+          category: item.category || "other",
+          homepage: item.homepage || "",
+          repo: "",
+          badges: (item.badges||[]).concat(["error"]),
+          keywords: []
+        };
+      }
+    });
+
+    cards = (await Promise.all(promises)).filter(Boolean);
+    applyLang();
+    render();
+  }
+
+  function render() {
+    const L = I18N[lang];
+    const total = cards.length;
+
+    let list = cards;
+
+    // category filter uses canonical keys only
+    if (activeCat !== "all") {
+      list = list.filter(c => (c.category||"other") === activeCat);
+    }
+
+    // text search across title/desc/keywords
+    if (query) {
+      list = list.filter(c => {
+        const blob = `${c.title} ${c.desc} ${(c.keywords||[]).join(" ")}`.toLowerCase();
+        return blob.includes(query);
+      });
+    }
+
+    countNode.textContent = L.shown(list.length, total);
+
+    gridNode.innerHTML = "";
+    list.forEach(c => {
+      const card = el("div",{class:"card"});
+      card.appendChild(el("div",{class:"meta",text:c.category}));
+      card.appendChild(el("div",{class:"",text:c.title}));
+      if (c.desc) card.appendChild(el("div",{class:"meta",text:c.desc}));
+
+      const badges = el("div",{});
+      (c.badges||[]).forEach(b => badges.appendChild(el("span",{class:"badge",text:b})));
+      card.appendChild(badges);
+
+      const links = el("div",{class:"links"});
+      const manUrl = `${BASE}/${c.path}`;
+      links.appendChild(el("a",{class:"link",href:`${manUrl}`,text:L.manifest}));
+      if (c.homepage) links.appendChild(el("a",{class:"link",href:c.homepage,text:L.homepage}));
+      if (c.repo) links.appendChild(el("a",{class:"link",href:c.repo,text:L.repo}));
+      card.appendChild(links);
+
+      gridNode.appendChild(card);
+    });
+  }
+
+  load().catch(err => {
+    gridNode.innerHTML = `<div class="meta">Failed to load registry: ${String(err)}</div>`;
+  });
+})();
 </script>
 </body>
 </html>
