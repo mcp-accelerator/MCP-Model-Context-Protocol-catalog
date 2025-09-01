@@ -1,0 +1,36 @@
+name: Healthcheck (Pages + Registry)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show context
+        run: |
+          echo "Repo: $GITHUB_REPOSITORY"
+          echo "Run:  $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+      - name: Curl Pages (UI, Registry, GitHub manifest)
+        run: |
+          set -eux
+          BASE="https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog"
+          echo "== UI =="
+          curl -I "$BASE/site/index.html" || exit 1
+          echo
+          echo "== Registry =="
+          curl -I "$BASE/registry/servers.index.json" || exit 1
+          echo
+          echo "== GitHub manifest =="
+          curl -I "$BASE/servers/github/mcp-server.json" || exit 1
+          echo
+
+      - name: Fetch and sanity-check registry JSON
+        run: |
+          set -eux
+          BASE="https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog"
+          curl -fsS "$BASE/registry/servers.index.json?v=$(date +%s)" -o /tmp/registry.json
+          jq '. | length as $n | "Total: \($n) items"' /tmp/registry.json
+          # убедимся, что есть базовые поля у каждого элемента
+          jq -e 'all(.[]; has("name") and has("path"))' /tmp/registry.json >/dev/null
