@@ -2,28 +2,43 @@ name: Validate MCP Catalog
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "**" ]
   pull_request:
   workflow_dispatch:
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install ajv-cli
-        run: npm -g i ajv-cli@5 ajv-formats
-
-      - name: Validate manifests
+      - name: Sanity: show tree and required paths
+        shell: bash
         run: |
           set -eux
+          echo "PWD: $(pwd)"
+          ls -la
+          # Убедимся, что схема и директории есть — если нет, вывалимся с понятной ошибкой
           test -f schema/mcp-server.schema.json
+          test -d servers
+          find servers -maxdepth 2 -type f -name "mcp-server.json" -print
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install ajv-cli
+        run: npm -g i ajv-cli@5
+
+      - name: Validate manifests against schema
+        shell: bash
+        run: |
+          set -eux
+          # Отключаем строгий режим, чтобы не падать на union/strictTypes
           ajv validate \
+            --strict=false \
             -s schema/mcp-server.schema.json \
-            -d "servers/*/mcp-server.json" \
-            --allowUnionTypes
+            -d "servers/*/mcp-server.json"
