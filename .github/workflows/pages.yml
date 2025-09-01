@@ -1,9 +1,9 @@
 name: Publish MCP Catalog (Pages)
 
 on:
-  workflow_dispatch:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -16,21 +16,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Собираем артефакт для Pages
-      - name: Build dist
+      - name: Prepare dist
         run: |
-          set -e
-          mkdir -p dist
-          # каталоги
-          cp -r registry dist/registry
-          cp -r servers  dist/servers
-          cp -r site     dist/site
-          # корневые файлы (если есть)
-          [ -f index.html ] && cp index.html dist/index.html || true
-          [ -f README.md ] && cp README.md dist/README.md || true
+          set -eux
+          rm -rf dist
+          mkdir -p dist/registry dist/servers dist/site
+          cp -r registry/servers.index.json dist/registry/
+          cp -r servers/* dist/servers/ || true
+          cp -r site/* dist/site/
+          # корневые файлы (не обязательно, но удобно)
+          [ -f index.html ] && cp index.html dist/index.html
+          [ -f README.md ] && cp README.md dist/README.md
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
