@@ -1,36 +1,65 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "MCP Server Manifest",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MCP Server Manifest (stable draft-07)",
   "type": "object",
+  "additionalProperties": true,
+
+  "required": ["name", "version", "base_url", "capabilities"],
   "properties": {
-    "name": { "type": "string" },
-    "version": { "type": "string" },
-    "base_url": { "type": "string" },
-    "auth": { "type": "object" },
-    "headers": {
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "minLength": 1 },
+    "base_url": { "type": "string", "minLength": 1 },
+
+    "auth": {
       "type": "object",
-      "additionalProperties": {
-        "type": ["string", "number", "boolean"]
+      "additionalProperties": true,
+      "properties": {
+        "type": { "type": "string", "enum": ["bearer", "apikey"] },
+        "env":  { "type": "string" },
+        "in":   { "type": "string", "enum": ["header", "query"] },
+        "header": { "type": "string" },
+        "query":  { "type": "string" }
       }
     },
+
     "capabilities": {
-      "type": "array",
-      "items": { "type": "object" }
+      "type": "object",
+      "additionalProperties": true
     },
+
+    "endpoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["path", "method"],
+        "properties": {
+          "path":   { "type": "string" },
+          "method": { "type": "string" },
+          "headers": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "query": {
+            "type": "object",
+            "additionalProperties": { "type": ["string", "number", "boolean"] }
+          }
+        }
+      }
+    },
+
     "meta": {
       "type": "object",
+      "additionalProperties": true,
       "properties": {
-        "title": { "type": "string" },
+        "title":       { "type": "string" },
         "description": { "type": "string" },
-        "category": { "type": "string" },
-        "homepage": { "type": "string" },
-        "repo": { "type": "string" },
-        "license": { "type": "string" },
-        "badges": { "type": "array", "items": { "type": "string" } },
-        "keywords": { "type": "array", "items": { "type": "string" } }
-      },
-      "required": ["title"]
+        "keywords": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "homepage": { "type": "string" }
+      }
     }
-  },
-  "required": ["meta"]
+  }
 }
