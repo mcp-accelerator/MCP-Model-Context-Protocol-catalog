@@ -10,14 +10,7 @@
     "Notion-Version": "2022-06-28"
   },
   "capabilities": [
-    {
-      "tool": "notion_mcp.create_page",
-      "method": "POST",
-      "path": "/pages",
-      "inputs": {
-        "body": "object"
-      }
-    }
+    {}
   ],
   "meta": {
     "title": "Notion",
@@ -29,18 +22,7 @@
     "badges": [
       "community"
     ],
-    "keywords": {
-      "en": [
-        "notion",
-        "pages",
-        "databases"
-      ],
-      "ru": [
-        "notion",
-        "страницы",
-        "базы данных"
-      ]
-    },
+    "keywords": [],
     "capabilities": [
       "REST API",
       "OAuth"

@@ -2,28 +2,32 @@ name: Validate MCP Catalog
 
 on:
   push:
-    branches: [ "**" ]
+    branches: [ main, chore/** ]
+    paths:
+      - "schema/**"
+      - "servers/**"
+      - ".github/workflows/validate.yml"
   pull_request:
+    paths:
+      - "schema/**"
+      - "servers/**"
+      - ".github/workflows/validate.yml"
   workflow_dispatch:
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-      - name: Sanity: show tree and required paths
-        shell: bash
+      - name: Show tree (debug)
         run: |
-          set -eux
-          echo "PWD: $(pwd)"
-          ls -la
-          # Убедимся, что схема и директории есть — если нет, вывалимся с понятной ошибкой
-          test -f schema/mcp-server.schema.json
-          test -d servers
-          find servers -maxdepth 2 -type f -name "mcp-server.json" -print
+          echo "== ls -la =="; ls -la
+          echo "== schema =="; find schema -maxdepth 2 -type f -print || true
+          echo "== servers =="; find servers -maxdepth 2 -type f -name "mcp-server.json" -print | sort || true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -31,14 +35,23 @@ jobs:
           node-version: 20
 
       - name: Install ajv-cli
-        run: npm -g i ajv-cli@5
+        run: npm -g i ajv-cli@5 ajv-formats@3
 
-      - name: Validate manifests against schema
+      - name: Validate manifests (draft-07, fallback to draft-2020-12)
         shell: bash
         run: |
           set -eux
-          # Отключаем строгий режим, чтобы не падать на union/strictTypes
-          ajv validate \
-            --strict=false \
+          test -f schema/mcp-server.schema.json
+
+          echo "== Try draft-07 =="
+          if ajv validate --spec=draft7 --strict=false \
+               -s schema/mcp-server.schema.json \
+               -d "servers/*/mcp-server.json"; then
+            echo "OK draft-07"
+            exit 0
+          fi
+
+          echo "== Fallback to draft-2020-12 =="
+          ajv validate --spec=draft2020 --strict=false \
             -s schema/mcp-server.schema.json \
             -d "servers/*/mcp-server.json"

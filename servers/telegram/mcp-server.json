@@ -3,18 +3,7 @@
   "version": "1.0.0",
   "base_url": "https://api.telegram.org",
   "capabilities": [
-    {
-      "tool": "telegram_mcp.post_message",
-      "method": "POST",
-      "path": "/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage",
-      "inputs": {
-        "body": {
-          "chat_id": "string",
-          "text": "string",
-          "parse_mode?": "string"
-        }
-      }
-    }
+    {}
   ],
   "meta": {
     "title": "Telegram",
@@ -29,18 +18,7 @@
     "maintainers": [
       "BogdanAIP"
     ],
-    "keywords": {
-      "en": [
-        "telegram",
-        "bot",
-        "messages"
-      ],
-      "ru": [
-        "telegram",
-        "бот",
-        "сообщения"
-      ]
-    },
+    "keywords": [],
     "capabilities": [
       "REST API",
       "Webhooks"

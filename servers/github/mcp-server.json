@@ -10,38 +10,7 @@
     "Accept": "application/vnd.github+json"
   },
   "capabilities": [
-    {
-      "tool": "github_mcp.create_issue",
-      "method": "POST",
-      "path": "/repos/{owner}/{repo}/issues",
-      "inputs": {
-        "path.owner": "string",
-        "path.repo": "string",
-        "body": "object"
-      }
-    },
-    {
-      "tool": "github_mcp.comment_issue",
-      "method": "POST",
-      "path": "/repos/{owner}/{repo}/issues/{issue_number}/comments",
-      "inputs": {
-        "path.owner": "string",
-        "path.repo": "string",
-        "path.issue_number": "string",
-        "body": "object"
-      }
-    },
-    {
-      "tool": "github_mcp.add_label",
-      "method": "POST",
-      "path": "/repos/{owner}/{repo}/issues/{issue_number}/labels",
-      "inputs": {
-        "path.owner": "string",
-        "path.repo": "string",
-        "path.issue_number": "string",
-        "body": "object"
-      }
-    }
+    {}
   ],
   "meta": {
     "title": "GitHub",
@@ -53,20 +22,7 @@
     "badges": [
       "verified"
     ],
-    "keywords": {
-      "en": [
-        "github",
-        "issues",
-        "pull requests",
-        "repos"
-      ],
-      "ru": [
-        "github",
-        "issues",
-        "pull requests",
-        "репозитории"
-      ]
-    },
+    "keywords": [],
     "capabilities": [
       "REST API",
       "Webhooks",

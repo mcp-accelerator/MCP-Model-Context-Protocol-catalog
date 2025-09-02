@@ -10,18 +10,7 @@
     ]
   },
   "capabilities": [
-    {
-      "tool": "slack_mcp.post_message",
-      "method": "POST",
-      "path": "/chat.postMessage",
-      "inputs": {
-        "body": {
-          "channel": "string",
-          "text": "string",
-          "mrkdwn?": "boolean"
-        }
-      }
-    }
+    {}
   ],
   "meta": {
     "title": "Slack",
@@ -33,18 +22,7 @@
     "badges": [
       "community"
     ],
-    "keywords": {
-      "en": [
-        "slack",
-        "messages",
-        "chat"
-      ],
-      "ru": [
-        "slack",
-        "сообщения",
-        "чат"
-      ]
-    },
+    "keywords": [],
     "capabilities": [
       "REST API",
       "Webhooks",

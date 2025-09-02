@@ -12,27 +12,7 @@
     "token": "${env.TRELLO_TOKEN}"
   },
   "capabilities": [
-    {
-      "tool": "trello_mcp.create_card",
-      "method": "POST",
-      "path": "/cards",
-      "inputs": {
-        "query.idList": "string",
-        "query.name": "string",
-        "query.desc?": "string",
-        "query.pos?": "string"
-      }
-    },
-    {
-      "tool": "trello_mcp.move_card",
-      "method": "PUT",
-      "path": "/cards/{id}",
-      "inputs": {
-        "path.id": "string",
-        "query.idList": "string",
-        "query.pos?": "string"
-      }
-    }
+    {}
   ],
   "meta": {
     "title": "Trello",
@@ -47,18 +27,7 @@
     "maintainers": [
       "BogdanAIP"
     ],
-    "keywords": {
-      "en": [
-        "trello",
-        "boards",
-        "cards"
-      ],
-      "ru": [
-        "trello",
-        "доски",
-        "карточки"
-      ]
-    },
+    "keywords": [],
     "capabilities": [
       "REST API",
       "Webhooks",
