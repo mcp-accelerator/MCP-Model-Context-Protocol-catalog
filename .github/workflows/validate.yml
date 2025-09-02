@@ -2,22 +2,21 @@ name: Validate MCP Catalog
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, chore/** ]
     paths:
-      - 'schema/**'
-      - 'servers/**'
-      - '.github/workflows/validate.yml'
+      - "schema/**"
+      - "servers/**"
+      - ".github/workflows/validate.yml"
   pull_request:
     paths:
-      - 'schema/**'
-      - 'servers/**'
-      - '.github/workflows/validate.yml'
+      - "schema/**"
+      - "servers/**"
+      - ".github/workflows/validate.yml"
   workflow_dispatch:
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,24 +25,33 @@ jobs:
 
       - name: Show tree (debug)
         run: |
-          echo "::group::tree"
-          ls -la
-          echo
-          echo "---- schema ----"
-          ls -la schema || true
-          echo "::endgroup::"
+          echo "== ls -la =="; ls -la
+          echo "== schema =="; find schema -maxdepth 2 -type f -print || true
+          echo "== servers =="; find servers -maxdepth 2 -type f -name "mcp-server.json" -print | sort || true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: Install ajv-cli
-        run: |
-          npm -g i ajv-cli@5 ajv-formats@3
+        run: npm -g i ajv-cli@5 ajv-formats@3
 
-      - name: Validate manifests (draft-2020-12, strict off)
+      - name: Validate manifests (draft-07, fallback to draft-2020-12)
+        shell: bash
         run: |
-          if [ ! -f schema/mcp-server.schema.json ]; then
-            echo "⚠️ schema/mcp-server.schema.json not found — skipping validation."
+          set -eux
+          test -f schema/mcp-server.schema.json
+
+          echo "== Try draft-07 =="
+          if ajv validate --spec=draft7 --strict=false \
+               -s schema/mcp-server.schema.json \
+               -d "servers/*/mcp-server.json"; then
+            echo "OK draft-07"
             exit 0
           fi
+
+          echo "== Fallback to draft-2020-12 =="
           ajv validate --spec=draft2020 --strict=false \
             -s schema/mcp-server.schema.json \
             -d "servers/*/mcp-server.json"
-          echo "✅ All server manifests are valid against schema/mcp-server.schema.json"
