@@ -9,7 +9,9 @@
   "headers": {
     "Accept": "application/vnd.github+json"
   },
-  "capabilities": {},
+  "capabilities": [
+    {}
+  ],
   "meta": {
     "title": "GitHub",
     "description": "Issues, PRs, repositories",

@@ -2,7 +2,9 @@
   "name": "telegram_mcp",
   "version": "1.0.0",
   "base_url": "https://api.telegram.org",
-  "capabilities": {},
+  "capabilities": [
+    {}
+  ],
   "meta": {
     "title": "Telegram",
     "description": "Send messages in Telegram",

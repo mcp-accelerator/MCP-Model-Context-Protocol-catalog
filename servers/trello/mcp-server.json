@@ -11,7 +11,9 @@
   "query_defaults": {
     "token": "${env.TRELLO_TOKEN}"
   },
-  "capabilities": {},
+  "capabilities": [
+    {}
+  ],
   "meta": {
     "title": "Trello",
     "description": "Create and move cards on Trello boards",

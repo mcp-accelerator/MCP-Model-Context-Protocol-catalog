@@ -6,7 +6,9 @@
     "type": "bearer",
     "env": "AIRTABLE_API_KEY"
   },
-  "capabilities": {},
+  "capabilities": [
+    {}
+  ],
   "meta": {
     "title": "Airtable",
     "description": "Read and write Airtable tables/records",

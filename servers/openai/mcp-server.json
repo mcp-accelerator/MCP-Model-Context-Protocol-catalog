@@ -6,7 +6,9 @@
     "type": "bearer",
     "env": "OPENAI_API_KEY"
   },
-  "capabilities": {},
+  "capabilities": [
+    {}
+  ],
   "meta": {
     "title": "OpenAI",
     "description": "LLM requests (compatible API)",
