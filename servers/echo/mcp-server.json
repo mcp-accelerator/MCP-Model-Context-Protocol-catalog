@@ -2,14 +2,7 @@
   "name": "echo",
   "version": "1.0.0",
   "base_url": "https://httpbin.org",
-  "capabilities": [
-    {
-      "tool": "echo.get_ip",
-      "method": "GET",
-      "path": "/ip",
-      "inputs": {}
-    }
-  ],
+  "capabilities": {},
   "meta": {
     "title": "Echo",
     "description": "Demo httpbin endpoints",
@@ -20,18 +13,7 @@
     "badges": [
       "community"
     ],
-    "keywords": {
-      "en": [
-        "demo",
-        "httpbin",
-        "echo"
-      ],
-      "ru": [
-        "демо",
-        "httpbin",
-        "echo"
-      ]
-    },
+    "keywords": [],
     "capabilities": [
       "REST API"
     ]

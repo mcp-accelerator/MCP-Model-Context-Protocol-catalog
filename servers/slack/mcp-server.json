@@ -9,20 +9,7 @@
       "chat:write"
     ]
   },
-  "capabilities": [
-    {
-      "tool": "slack_mcp.post_message",
-      "method": "POST",
-      "path": "/chat.postMessage",
-      "inputs": {
-        "body": {
-          "channel": "string",
-          "text": "string",
-          "mrkdwn?": "boolean"
-        }
-      }
-    }
-  ],
+  "capabilities": {},
   "meta": {
     "title": "Slack",
     "description": "Post messages to Slack",
@@ -33,18 +20,7 @@
     "badges": [
       "community"
     ],
-    "keywords": {
-      "en": [
-        "slack",
-        "messages",
-        "chat"
-      ],
-      "ru": [
-        "slack",
-        "сообщения",
-        "чат"
-      ]
-    },
+    "keywords": [],
     "capabilities": [
       "REST API",
       "Webhooks",

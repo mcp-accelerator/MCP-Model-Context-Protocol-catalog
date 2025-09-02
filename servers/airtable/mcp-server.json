@@ -6,39 +6,7 @@
     "type": "bearer",
     "env": "AIRTABLE_API_KEY"
   },
-  "capabilities": [
-    {
-      "tool": "airtable_mcp.list_records",
-      "method": "GET",
-      "path": "/{base_id}/{table_name}",
-      "inputs": {
-        "path.base_id": "string",
-        "path.table_name": "string",
-        "query.maxRecords?": "string",
-        "query.view?": "string"
-      }
-    },
-    {
-      "tool": "airtable_mcp.create_record",
-      "method": "POST",
-      "path": "/{base_id}/{table_name}",
-      "inputs": {
-        "path.base_id": "string",
-        "path.table_name": "string",
-        "body": "object"
-      }
-    },
-    {
-      "tool": "airtable_mcp.update_record",
-      "method": "PATCH",
-      "path": "/{base_id}/{table_name}",
-      "inputs": {
-        "path.base_id": "string",
-        "path.table_name": "string",
-        "body": "object"
-      }
-    }
-  ],
+  "capabilities": {},
   "meta": {
     "title": "Airtable",
     "description": "Read and write Airtable tables/records",
@@ -52,18 +20,7 @@
     "maintainers": [
       "BogdanAIP"
     ],
-    "keywords": {
-      "en": [
-        "airtable",
-        "tables",
-        "records"
-      ],
-      "ru": [
-        "airtable",
-        "таблицы",
-        "записи"
-      ]
-    },
+    "keywords": [],
     "capabilities": [
       "REST API",
       "SDK Support",

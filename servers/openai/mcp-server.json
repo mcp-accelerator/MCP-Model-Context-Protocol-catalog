@@ -6,19 +6,7 @@
     "type": "bearer",
     "env": "OPENAI_API_KEY"
   },
-  "capabilities": [
-    {
-      "tool": "openai_mcp.chat_completion",
-      "method": "POST",
-      "path": "/chat/completions",
-      "inputs": {
-        "body": {
-          "model": "string",
-          "messages": "array"
-        }
-      }
-    }
-  ],
+  "capabilities": {},
   "meta": {
     "title": "OpenAI",
     "description": "LLM requests (compatible API)",
@@ -29,18 +17,7 @@
     "badges": [
       "community"
     ],
-    "keywords": {
-      "en": [
-        "openai",
-        "llm",
-        "api"
-      ],
-      "ru": [
-        "openai",
-        "llm",
-        "api"
-      ]
-    },
+    "keywords": [],
     "capabilities": [
       "REST API",
       "SDK Support"
