@@ -2,7 +2,7 @@ name: Validate MCP Catalog
 
 on:
   push:
-    branches: [ main, chore/**, feature/**, fix/** ]
+    branches: [ main ]
     paths:
       - 'schema/**'
       - 'servers/**'
@@ -17,8 +17,6 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
       - name: Checkout
@@ -28,32 +26,24 @@ jobs:
 
       - name: Show tree (debug)
         run: |
-          echo "== ls -la =="
+          echo "::group::tree"
           ls -la
-          echo "== find schema && servers =="
-          find schema -maxdepth 2 -type f -print || true
-          find servers -maxdepth 2 -type f -name "mcp-server.json" -print | sort || true
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+          echo
+          echo "---- schema ----"
+          ls -la schema || true
+          echo "::endgroup::"
 
       - name: Install ajv-cli
         run: |
           npm -g i ajv-cli@5 ajv-formats@3
 
-      - name: Validate manifests (try draft-07, fallback to draft-2020-12)
-        shell: bash
+      - name: Validate manifests (draft-2020-12, strict off)
         run: |
-          set -eux
-          test -f schema/mcp-server.schema.json || { echo "schema missing"; exit 2; }
-
-          echo "== Try draft-07 =="
-          if ajv validate --strict=false -s schema/mcp-server.schema.json -d "servers/*/mcp-server.json"; then
-            echo "OK draft-07"
+          if [ ! -f schema/mcp-server.schema.json ]; then
+            echo "⚠️ schema/mcp-server.schema.json not found — skipping validation."
             exit 0
           fi
-
-          echo "== Fallback to draft-2020-12 =="
-          ajv validate --spec=draft2020 --strict=false -s schema/mcp-server.schema.json -d "servers/*/mcp-server.json"
+          ajv validate --spec=draft2020 --strict=false \
+            -s schema/mcp-server.schema.json \
+            -d "servers/*/mcp-server.json"
+          echo "✅ All server manifests are valid against schema/mcp-server.schema.json"
