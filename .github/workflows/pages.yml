@@ -1,39 +1,18 @@
-name: Publish MCP Catalog (Pages)
-
+name: Deploy Pages
 on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
+  workflow_run:
+    workflows: [ "Build Catalog Index" ]
+    types: [ completed ]
 permissions:
   contents: read
   pages: write
   id-token: write
-
+concurrency:
+  group: pages
+  cancel-in-progress: true
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Prepare dist
-        run: |
-          set -eux
-          rm -rf dist
-          mkdir -p dist/registry dist/servers dist/site
-          cp -r registry/servers.index.json dist/registry/
-          cp -r servers/* dist/servers/ || true
-          cp -r site/* dist/site/
-          # корневые файлы (не обязательно, но удобно)
-          [ -f index.html ] && cp index.html dist/index.html
-          [ -f README.md ] && cp README.md dist/README.md
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
   deploy:
-    needs: build
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages

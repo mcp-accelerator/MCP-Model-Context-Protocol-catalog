@@ -1,0 +1,23 @@
+name: Build Catalog Index
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'registry/**','site/**','.github/workflows/build-catalog.yml' ]
+  workflow_dispatch:
+permissions: { contents: read }
+concurrency: { group: build-${{ github.ref }}, cancel-in-progress: true }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build aggregated index
+        shell: bash
+        run: |
+          set -e
+          mkdir -p dist/site dist/registry
+          rsync -a site/ dist/site/
+          jq -c . registry/servers.index.json > dist/registry/servers.index.json
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist }
