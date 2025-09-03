@@ -1,0 +1,2 @@
+schema schema/mcp-server.schema.json is invalid
+error: no schema with key or ref "https://json-schema.org/draft/2020-12/schema"
