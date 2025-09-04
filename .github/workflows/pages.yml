@@ -19,13 +19,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Кладём registry внутрь site
       - name: Prepare site
         run: |
           rm -rf site/registry
           mkdir -p site/registry
           cp -R registry/* site/registry/
-          echo "Prepared site with registry JSONs"
+          echo "== site layout =="
+          find site -maxdepth 2 -type f -printf "%P\n"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
