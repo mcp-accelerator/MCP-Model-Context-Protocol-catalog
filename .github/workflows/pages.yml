@@ -18,20 +18,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Prepare site
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Install deps (if any)
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm i; fi
+      - name: Build static site from registry
+        run: node tools/build-site.mjs
+      - name: Bundle registry into site
         run: |
           rm -rf site/registry
           mkdir -p site/registry
           cp -R registry/* site/registry/
-          echo "== site layout =="
-          find site -maxdepth 2 -type f -printf "%P\n"
-
+          echo "site contents:"; find site -maxdepth 2 -type f -printf "%P\n"
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./site
-
   deploy:
     needs: build
     runs-on: ubuntu-latest

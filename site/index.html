@@ -1,54 +1,370 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8" />
-  <title>MCP Catalog — Servers</title>
-  <meta property="og:title" content="MCP Catalog — публичный каталог MCP-серверов">
-  <meta property="og:description" content="Индекс MCP-серверов с поиском, фильтрами и проверкой схем.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/site/">
-  <meta property="og:image" content="https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/site/og.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="./style.css" />
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Organization","name":"MCP Accelerator","url":"https://github.com/mcp-accelerator","logo":"https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/site/og.png","sameAs":["https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog"]}
-  </script>
-</head>
+<!doctype html>
+<html lang="en"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MCP Catalog — Servers</title>
+<link rel="stylesheet" href="./style.css">
 <body>
-  <header class="site-header" role="banner">
-    <h1>MCP Catalog</h1>
-    <p class="muted">Публичный каталог MCP-серверов. Поиск, фильтры, метаданные.</p>
-    <nav aria-label="Главная навигация">
-      <a href="#/">Каталог</a>
-      <a href="https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog">GitHub Repo</a>
-    </nav>
-    <div class="controls">
-      <input id="search" type="search" placeholder="Поиск по названию/описанию…" aria-label="Поиск">
-      <select id="category" aria-label="Фильтр по категории">
-        <option value="">Все категории</option>
-        <option value="ai">AI</option>
-        <option value="storage">Storage</option>
-        <option value="devtools">DevTools</option>
-      </select>
-      <select id="sort" aria-label="Сортировка">
-        <option value="name">По имени</option>
-        <option value="stars">По звёздам GitHub</option>
-        <option value="updated">По обновлению</option>
-      </select>
+  <header class="top">
+    <h1>MCP Catalog — Servers</h1>
+    <div class="actions">
+      <a href="https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog" target="_blank" rel="noopener">GitHub Repo</a>
+      <a href="https://modelcontextprotocol.io/docs/getting-started/intro" target="_blank" rel="noopener">MCP Intro</a>
     </div>
+    <p class="hint">Источник данных: <code>registry/servers.index.json</code>. Показаны локальные и hosted/reference.</p>
   </header>
+  <main class="grid">
+    
+  <article class="card">
+    <header>
+      <a class="title" href="https://airtable.com/developers/web/api/introduction" target="_blank" rel="noopener noreferrer">airtable_mcp</a>
+    </header>
+    <div class="meta">
+      <span class="badge">storage</span>
+      <span class="badge">draft</span>
+      
+    </div>
+    <p class="desc">Read and write Airtable tables/records</p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://airtable.com/developers/web/api/introduction" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/modelcontextprotocol/server-airtable" target="_blank" rel="noopener">Repo</a>
+      <a href="servers/airtable/mcp-server.json"  target="_blank" rel="noopener">Manifest</a>
+    </nav>
+  </article>
 
-  <main id="app" role="main">
-    <div id="skeleton" class="skeleton-list" aria-hidden="true"></div>
-    <div id="list" class="cards" aria-live="polite"></div>
-    <div id="pager" class="pager" role="navigation" aria-label="Пагинация"></div>
+  <article class="card">
+    <header>
+      <a class="title" href="https://httpbin.org/" target="_blank" rel="noopener noreferrer">echo</a>
+    </header>
+    <div class="meta">
+      <span class="badge">other</span>
+      <span class="badge">draft</span>
+      
+    </div>
+    <p class="desc">Demo httpbin endpoints</p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://httpbin.org/" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com" target="_blank" rel="noopener">Repo</a>
+      <a href="servers/echo/mcp-server.json"  target="_blank" rel="noopener">Manifest</a>
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">Fetch (reference)</a>
+    </header>
+    <div class="meta">
+      <span class="badge">reference</span>
+      <span class="badge">stable</span>
+      
+    </div>
+    <p class="desc"></p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> stdio</li>
+      <li><strong>Primitives:</strong> tools · resources</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">Repo</a>
+      
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">Filesystem (reference)</a>
+    </header>
+    <div class="meta">
+      <span class="badge">reference</span>
+      <span class="badge">stable</span>
+      
+    </div>
+    <p class="desc"></p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> stdio</li>
+      <li><strong>Primitives:</strong> tools · resources</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">Repo</a>
+      
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">Git (reference)</a>
+    </header>
+    <div class="meta">
+      <span class="badge">reference</span>
+      <span class="badge">stable</span>
+      
+    </div>
+    <p class="desc"></p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> stdio</li>
+      <li><strong>Primitives:</strong> tools · resources</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">Repo</a>
+      
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://api.githubcopilot.com/mcp/" target="_blank" rel="noopener noreferrer">GitHub MCP (hosted)</a>
+    </header>
+    <div class="meta">
+      <span class="badge">official</span>
+      <span class="badge">stable</span>
+      
+    </div>
+    <p class="desc"></p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools · resources</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://api.githubcopilot.com/mcp/" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.blog/ai-and-ml/generative-ai/a-practical-guide-on-how-to-use-the-github-mcp-server/" target="_blank" rel="noopener">Repo</a>
+      
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://docs.github.com/en/rest" target="_blank" rel="noopener noreferrer">github_mcp</a>
+    </header>
+    <div class="meta">
+      <span class="badge">devtools</span>
+      <span class="badge">draft</span>
+      
+    </div>
+    <p class="desc">Issues, PRs, repositories</p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://docs.github.com/en/rest" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/modelcontextprotocol/server-github" target="_blank" rel="noopener">Repo</a>
+      <a href="servers/github/mcp-server.json"  target="_blank" rel="noopener">Manifest</a>
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">Memory (reference)</a>
+    </header>
+    <div class="meta">
+      <span class="badge">reference</span>
+      <span class="badge">stable</span>
+      
+    </div>
+    <p class="desc"></p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> stdio</li>
+      <li><strong>Primitives:</strong> tools · resources</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">Repo</a>
+      
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://developers.notion.com/" target="_blank" rel="noopener noreferrer">notion_mcp</a>
+    </header>
+    <div class="meta">
+      <span class="badge">productivity</span>
+      <span class="badge">draft</span>
+      
+    </div>
+    <p class="desc">Create pages and databases</p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://developers.notion.com/" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com" target="_blank" rel="noopener">Repo</a>
+      <a href="servers/notion/mcp-server.json"  target="_blank" rel="noopener">Manifest</a>
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://platform.openai.com/docs" target="_blank" rel="noopener noreferrer">openai_mcp</a>
+    </header>
+    <div class="meta">
+      <span class="badge">ai</span>
+      <span class="badge">draft</span>
+      
+    </div>
+    <p class="desc">LLM requests (compatible API)</p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://platform.openai.com/docs" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com" target="_blank" rel="noopener">Repo</a>
+      <a href="servers/openai/mcp-server.json"  target="_blank" rel="noopener">Manifest</a>
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://docs.sentry.io/product/sentry-mcp/" target="_blank" rel="noopener noreferrer">Sentry MCP (hosted)</a>
+    </header>
+    <div class="meta">
+      <span class="badge">official</span>
+      <span class="badge">stable</span>
+      
+    </div>
+    <p class="desc"></p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools · resources</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://docs.sentry.io/product/sentry-mcp/" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/getsentry/sentry-mcp" target="_blank" rel="noopener">Repo</a>
+      
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">Sequential Thinking (reference)</a>
+    </header>
+    <div class="meta">
+      <span class="badge">reference</span>
+      <span class="badge">stable</span>
+      
+    </div>
+    <p class="desc"></p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> stdio</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">Repo</a>
+      
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://api.slack.com" target="_blank" rel="noopener noreferrer">slack_mcp</a>
+    </header>
+    <div class="meta">
+      <span class="badge">messaging</span>
+      <span class="badge">draft</span>
+      
+    </div>
+    <p class="desc">Post messages to Slack</p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://api.slack.com" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com" target="_blank" rel="noopener">Repo</a>
+      <a href="servers/slack/mcp-server.json"  target="_blank" rel="noopener">Manifest</a>
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://core.telegram.org/bots/api" target="_blank" rel="noopener noreferrer">telegram_mcp</a>
+    </header>
+    <div class="meta">
+      <span class="badge">messaging</span>
+      <span class="badge">draft</span>
+      
+    </div>
+    <p class="desc">Send messages in Telegram</p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://core.telegram.org/bots/api" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com" target="_blank" rel="noopener">Repo</a>
+      <a href="servers/telegram/mcp-server.json"  target="_blank" rel="noopener">Manifest</a>
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">Time (reference)</a>
+    </header>
+    <div class="meta">
+      <span class="badge">reference</span>
+      <span class="badge">stable</span>
+      
+    </div>
+    <p class="desc"></p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> stdio</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">Repo</a>
+      
+    </nav>
+  </article>
+
+  <article class="card">
+    <header>
+      <a class="title" href="https://developer.atlassian.com/cloud/trello/rest" target="_blank" rel="noopener noreferrer">trello_mcp</a>
+    </header>
+    <div class="meta">
+      <span class="badge">productivity</span>
+      <span class="badge">draft</span>
+      
+    </div>
+    <p class="desc">Create and move cards on Trello boards</p>
+    <ul class="kv">
+      <li><strong>Transports:</strong> streamable_http</li>
+      <li><strong>Primitives:</strong> tools</li>
+      <li><strong>Protocol:</strong> 2025-06-18</li>
+    </ul>
+    <nav class="links">
+      <a href="https://developer.atlassian.com/cloud/trello/rest" target="_blank" rel="noopener">Docs</a>
+      <a href="https://github.com/modelcontextprotocol/server-trello" target="_blank" rel="noopener">Repo</a>
+      <a href="servers/trello/mcp-server.json"  target="_blank" rel="noopener">Manifest</a>
+    </nav>
+  </article>
   </main>
-
-  <footer class="site-footer" role="contentinfo">
-    <small>© MCP Accelerator. Данные из <code>registry/servers.index.json</code>.</small>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7"></script>
-  <script src="./app.js"></script>
-</body>
-</html>
+  <footer class="foot">© MCP Accelerator</footer>
+</body></html>
