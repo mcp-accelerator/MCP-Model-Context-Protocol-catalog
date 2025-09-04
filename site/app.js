@@ -77,7 +77,7 @@ function gotoPage(p){ STATE.page = p; setHash(); renderList(); }
 
 async function main(){
   parseHash(); showSkeleton();
-  const res = await fetch("../registry/servers.index.json", { cache: "no-cache" });
+  const res = await fetch("./registry/servers.index.json", { cache: "no-cache" });
   const json = await res.json();
   STATE.all = Array.isArray(json.servers) ? json.servers : [];
   STATE.fuse = new Fuse(STATE.all, { threshold: 0.35, minMatchCharLength: 2, keys: ["name","meta.description","meta.tags"] });

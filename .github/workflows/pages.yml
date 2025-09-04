@@ -18,11 +18,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # индекс собирается локально; если хочешь — можно запускать npm run build:index тут
+
+      # Кладём registry внутрь site
+      - name: Prepare site
+        run: |
+          rm -rf site/registry
+          mkdir -p site/registry
+          cp -R registry/* site/registry/
+          echo "Prepared site with registry JSONs"
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./site
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
