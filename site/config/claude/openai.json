@@ -5,7 +5,9 @@
       "args": [
         "./servers/openai/dist/index.js"
       ],
-      "env": {}
+      "env": {
+        "OPENAI_API_KEY": ""
+      }
     }
   }
 }

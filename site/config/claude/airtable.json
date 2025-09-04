@@ -5,7 +5,9 @@
       "args": [
         "./servers/airtable/dist/index.js"
       ],
-      "env": {}
+      "env": {
+        "AIRTABLE_PAT": ""
+      }
     }
   }
 }

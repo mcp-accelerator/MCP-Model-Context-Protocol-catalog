@@ -5,7 +5,9 @@
       "args": [
         "./servers/github/dist/index.js"
       ],
-      "env": {}
+      "env": {
+        "GITHUB_TOKEN": ""
+      }
     }
   }
 }

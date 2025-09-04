@@ -5,7 +5,9 @@
       "args": [
         "./servers/slack/dist/index.js"
       ],
-      "env": {}
+      "env": {
+        "SLACK_BOT_TOKEN": ""
+      }
     }
   }
 }

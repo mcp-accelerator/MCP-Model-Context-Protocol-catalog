@@ -5,7 +5,9 @@
       "args": [
         "./servers/telegram/dist/index.js"
       ],
-      "env": {}
+      "env": {
+        "TELEGRAM_BOT_TOKEN": ""
+      }
     }
   }
 }

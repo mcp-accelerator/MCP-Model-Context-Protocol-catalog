@@ -12,10 +12,13 @@ a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap}
 .btn{display:inline-block;border:1px solid var(--bd);background:#fff;padding:6px 10px;border-radius:8px}
 .btn.ghost{background:#f8f8f8}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;display:flex;flex-direction:column}
-.card-title{margin:0 0 4px 0;font-weight:700}
-.meta{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 8px 0}
+.card-head{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.logo{width:36px;height:36px;border-radius:8px;border:1px solid var(--bd);background:#fff}
+.head-txt{display:flex;flex-direction:column}
+.card-title{margin:0 0 2px 0;font-weight:700}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 6px 0}
 .badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:#eee;border:1px solid #ddd}
 .desc{color:var(--muted);min-height:2em}
 .kv{list-style:none;padding:0;margin:8px 0}
@@ -28,3 +31,12 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
 .site-foot{margin-top:20px;padding:16px;border-top:1px solid var(--bd);color:var(--muted)}
 .muted{color:var(--muted)}
 .steps{padding-left:18px}
+
+/* page backgrounds */
+.page--home .site-top{background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%)}
+.page--catalog { background:linear-gradient(180deg,#ffffff 0%,#f7f7ff 100%) }
+.page--prompts  { background:linear-gradient(180deg,#ffffff 0%,#fff7f7 100%) }
+.page--generator{ background:linear-gradient(180deg,#ffffff 0%,#f7fffb 100%) }
+.page--protocol { background:linear-gradient(180deg,#ffffff 0%,#fffdf5 100%) }
+.page--sdk      { background:linear-gradient(180deg,#ffffff 0%,#f6fbff 100%) }
+.page--faq      { background:linear-gradient(180deg,#ffffff 0%,#fdf7ff 100%) }

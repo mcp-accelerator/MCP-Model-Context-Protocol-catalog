@@ -5,7 +5,9 @@
       "args": [
         "./servers/notion/dist/index.js"
       ],
-      "env": {}
+      "env": {
+        "NOTION_TOKEN": ""
+      }
     }
   }
 }

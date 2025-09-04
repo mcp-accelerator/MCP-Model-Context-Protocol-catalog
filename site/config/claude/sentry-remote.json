@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "sentry-remote": {
-      "url": "https://docs.sentry.io/product/sentry-mcp/"
+      "url": "https://mcp.sentry.dev/mcp"
     }
   }
 }

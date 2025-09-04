@@ -1,20 +1,20 @@
 import fs from "node:fs";
 import path from "node:path";
 
-// ---------- helpers ----------
 const readJSON = p => JSON.parse(fs.readFileSync(p, "utf8"));
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
 const href = s => s ? String(s).replace(/"/g,"%22") : "";
 const exists = p => { try { fs.accessSync(p); return true; } catch { return false; } };
 
 function layout({ title, active, body, extraHead = "" }) {
+  const bodyClass = `page page--${active||"home"}`;
   return `<!doctype html>
 <html lang="en"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title>
 <link rel="stylesheet" href="./assets/style.css">
 ${extraHead}
-<body>
+<body class="${bodyClass}">
 <header class="site-top">
   <a class="brand notranslate" translate="no" href="./index.html">MCP Catalog</a>
   <nav class="menu">
@@ -36,11 +36,11 @@ ${extraHead}
 </body></html>`;
 }
 
-// ---------- load registry ----------
+// load registry
 const reg = readJSON("registry/servers.index.json");
 const servers = Array.isArray(reg.servers) ? reg.servers.slice() : [];
 
-// ---------- build: Home ----------
+// ---------- Home ----------
 const home = layout({
   title: "Home — MCP Catalog",
   active: "home",
@@ -53,24 +53,17 @@ const home = layout({
     <a class="btn ghost" href="./generator.html">Build your server</a>
   </div>
 </section>
-
 <section>
   <h2>How to use this site</h2>
   <ol class="steps">
     <li>Pick a server in the <a href="./catalog.html">Catalog</a>.</li>
     <li>Open <strong>Endpoint/Manifest</strong>, copy <strong>Claude config</strong> or <strong>Inspector</strong> command.</li>
-    <li>Fill secrets in <code class="notranslate" translate="no">.env</code> template locally (never share keys here).</li>
+    <li>Fill secrets in <code class="notranslate" translate="no">.env</code> locally (the site never collects keys).</li>
   </ol>
-</section>
-
-<section>
-  <h2>What is MCP?</h2>
-  <p>MCP is like <em>USB-C for AI</em>: a standard way clients connect to external tools and data. See <a href="./protocol.html">Protocol</a> for a quick intro.</p>
-</section>
-`
+</section>`
 });
 
-// ---------- build: Catalog ----------
+// ---------- Catalog ----------
 servers.sort((a,b)=>(a.name||a.id||"").localeCompare(b.name||b.id||""));
 
 function cardHTML(s){
@@ -82,38 +75,25 @@ function cardHTML(s){
   const cat = s.meta?.category || (isLocal ? "local" : "hosted");
   const desc = s.meta?.description || "";
 
-  // Manifest/Endpoint
-  let manifestHref = "", endpointHref = "";
-  if (isLocal && s.manifest) manifestHref = "./" + s.manifest; // will be copied into site/
-  if (!isLocal) {
-    endpointHref = s.connect?.endpoint_url || s.meta?.homepage || s.homepage || s.repo || "";
-    // fallback for known hosted ids
-    if (!endpointHref && s.id === "github-remote") endpointHref = "https://api.githubcopilot.com/mcp/";
-    if (!endpointHref && s.id === "sentry-remote") endpointHref = "https://mcp.sentry.dev/mcp";
-  }
+  // strictly only explicit endpoint for hosted
+  const endpointHref = !isLocal ? (s.connect?.endpoint_url || "") : "";
+  // manifest only for local
+  const manifestHref = isLocal && s.manifest ? "./" + s.manifest : "";
 
-  // Claude config (download)
+  // Claude config
   const claudeCfg = isLocal
-    ? {
-        mcpServers: {
-          [s.id]: {
-            command: "node",
-            args: ["./servers/"+s.id+"/dist/index.js"],
-            env: Object.fromEntries((s.meta?.env_vars || []).map(k => [k,""]))
-          }
-        }
-      }
+    ? { mcpServers: { [s.id]: { command: "node", args: ["./servers/"+s.id+"/dist/index.js"], env: Object.fromEntries((s.meta?.env_vars||[]).map(k=>[k,""])) } } }
     : { mcpServers: { [s.id]: { url: endpointHref || "" } } };
 
-  // .env template (optional)
+  // env template
   const envVars = s.meta?.env_vars || [];
 
-  // Inspector quick command
+  // Inspector
   const inspectorCmd = isLocal
     ? `npx @modelcontextprotocol/inspector -- node ./servers/${s.id}/dist/index.js`
     : (endpointHref ? `npx @modelcontextprotocol/inspector --cli ${endpointHref} --transport http --method tools/list` : "");
 
-  // files to write for downloads
+  // write downloadable files
   const cfgPath = `site/config/claude/${s.id}.json`;
   fs.mkdirSync(path.dirname(cfgPath), { recursive: true });
   fs.writeFileSync(cfgPath, JSON.stringify(claudeCfg, null, 2));
@@ -125,13 +105,19 @@ function cardHTML(s){
     fs.writeFileSync(envPath, envVars.map(v => `${v}=""`).join("\n")+"\n");
   }
 
+  // logos: expect pre-committed assets; fallback to _default.svg
+  const logoRel = exists(`site/assets/logos/${s.id}.svg`) ? `./assets/logos/${s.id}.svg` : `./assets/logos/_default.svg`;
+
+  // Get keys (only for token-based flows with guide)
+  const tokenGuide = (s.auth?.type === "token" && s.auth?.token_guide_url) ? s.auth.token_guide_url : "";
+
   return `
   <article class="card">
-    <header>
-      <h3 class="card-title notranslate" translate="no">${esc(title)}</h3>
-      <div class="meta">
-        <span class="badge">${esc(cat)}</span>
-        <span class="badge">${esc(status)}</span>
+    <header class="card-head">
+      <img class="logo" src="${logoRel}" alt="" aria-hidden="true">
+      <div class="head-txt">
+        <h3 class="card-title notranslate" translate="no">${esc(title)}</h3>
+        <div class="meta"><span class="badge">${esc(cat)}</span><span class="badge">${esc(status)}</span></div>
       </div>
     </header>
     <p class="desc">${esc(desc)}</p>
@@ -141,6 +127,7 @@ function cardHTML(s){
       <li><strong>Protocol:</strong> ${esc(s.protocol_min || "—")}</li>
     </ul>
     <nav class="links">
+      ${tokenGuide ? `<a class="btn" href="${href(tokenGuide)}" target="_blank" rel="noopener">Get keys</a>` : ``}
       ${manifestHref ? `<a class="btn" href="${href(manifestHref)}" target="_blank" rel="noopener">Open manifest</a>` : ``}
       ${endpointHref ? `<a class="btn" href="${href(endpointHref)}" target="_blank" rel="noopener" translate="no" class="notranslate">Open endpoint</a>` : ``}
       <a class="btn ghost" href="${href("./config/claude/"+s.id+".json")}" download translate="no" class="notranslate">Claude config</a>
@@ -173,10 +160,25 @@ const catalog = layout({
   <div id="cards" class="grid">
     ${servers.map(cardHTML).join("\n")}
   </div>
+</section>
+
+<section>
+  <h2>Feedback</h2>
+  <p>Questions or suggestions? Leave a comment below.</p>
+  <section id="comments">
+    <script src="https://utteranc.es/client.js"
+            repo="mcp-accelerator/MCP-Model-Context-Protocol-catalog"
+            issue-term="pathname"
+            label="comments"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </section>
 </section>`
 });
 
-// ---------- build: Prompts (reads ./prompts/*) ----------
+// ---------- Prompts ----------
 let promptsHTML = "";
 const PDIR = "prompts";
 if (exists(PDIR)) {
@@ -215,7 +217,7 @@ const promptsPage = layout({
 </section>`
 });
 
-// ---------- build: Generator (skeleton for now) ----------
+// ---------- Generator ----------
 const generator = layout({
   title: "Generator — MCP Catalog",
   active: "generator",
@@ -233,17 +235,32 @@ const generator = layout({
     <li>Get manifests, configs, and ZIP</li>
   </ol>
   <p class="muted">We do not collect any keys. Secrets remain on your machine.</p>
+</section>
+
+<section>
+  <h2>Feedback</h2>
+  <p>Tell us which templates and languages you want first.</p>
+  <section id="comments">
+    <script src="https://utteranc.es/client.js"
+            repo="mcp-accelerator/MCP-Model-Context-Protocol-catalog"
+            issue-term="pathname"
+            label="comments"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </section>
 </section>`
 });
 
-// ---------- build: Protocol ----------
+// ---------- Protocol ----------
 const protocol = layout({
   title: "Protocol — MCP Catalog",
   active: "protocol",
   body: `
 <section>
   <h1>Model Context Protocol (MCP)</h1>
-  <p>MCP is a protocol that standardizes how AI clients connect to external tools and data sources. It supports transports like STDIO (local) and HTTP (hosted), and primitives such as tools, resources, and prompts.</p>
+  <p>MCP standardizes how AI clients connect to external tools and data sources. It supports transports like STDIO (local) and HTTP (hosted), and primitives such as tools, resources, and prompts.</p>
   <ul>
     <li>Use <strong>Local (STDIO)</strong> servers for private data on your machine.</li>
     <li>Use <strong>Hosted (HTTP)</strong> servers to connect to SaaS providers.</li>
@@ -251,7 +268,7 @@ const protocol = layout({
 </section>`
 });
 
-// ---------- build: SDK & Tools ----------
+// ---------- SDK & Tools ----------
 const sdk = layout({
   title: "SDK & Tools — MCP Catalog",
   active: "sdk",
@@ -265,21 +282,72 @@ const sdk = layout({
 </section>`
 });
 
-// ---------- build: FAQ ----------
+// ---------- FAQ ----------
 const faq = layout({
   title: "FAQ — MCP Catalog",
   active: "faq",
   body: `
 <section>
   <h1>FAQ</h1>
-  <details><summary>What is the difference between Local and Hosted?</summary>
-  <p>Local (STDIO) runs on your machine; Hosted (HTTP) is a remote endpoint. Both expose the same MCP primitives.</p></details>
-  <details><summary>Where do I put API keys?</summary>
-  <p>Never on this site. Put them in your local <code class="notranslate" translate="no">.env</code> or OS keychain, and pass via environment variables.</p></details>
+
+  <details><summary>What is MCP in two sentences?</summary>
+    <p>MCP is a JSON-RPC based protocol that lets AI clients connect to external tools and data. Servers expose primitives (tools/resources/prompts) over STDIO or HTTP.</p>
+  </details>
+
+  <details><summary>Local (STDIO) vs Hosted (HTTP)?</summary>
+    <p>Local runs on your machine, great for private data. Hosted is a remote endpoint (HTTPS), great for SaaS. Both expose the same primitives.</p>
+  </details>
+
+  <details><summary>Which clients support MCP?</summary>
+    <p>Claude Desktop (local servers) and GitHub Copilot Chat (hosted), plus Inspector for testing.</p>
+  </details>
+
+  <details><summary>How do I test a server without a client?</summary>
+    <p>Use MCP Inspector (UI/CLI). It can attach to a local process or call a hosted endpoint and list tools/resources/prompts.</p>
+  </details>
+
+  <details><summary>Do I need a manifest file to connect?</summary>
+    <p>No. Clients negotiate via MCP methods. We also publish optional HTTP metadata so catalog cards can show endpoints, auth and configs.</p>
+  </details>
+
+  <details><summary>Where do I get API keys?</summary>
+    <p>Use “Get keys” on each card (Telegram BotFather, Slack apps, Notion integration tokens, Trello key+token, Airtable PAT, OpenAI API key, etc.).</p>
+  </details>
+
+  <details><summary>GitHub and Sentry endpoints?</summary>
+    <p>GitHub MCP: <code class="notranslate" translate="no">https://api.githubcopilot.com/mcp/</code>. Sentry MCP: <code class="notranslate" translate="no">https://mcp.sentry.dev/mcp</code>.</p>
+  </details>
+
+  <details><summary>Is this secure?</summary>
+    <p>Keys stay local in your <code class="notranslate" translate="no">.env</code> or OS keychain. Hosted connections should use HTTPS and minimal scopes. The site never collects secrets.</p>
+  </details>
+
+  <details><summary>Can I mix tools and resources?</summary>
+    <p>Yes. A server can declare any combination of primitives; clients will discover them.</p>
+  </details>
+
+  <details><summary>How to start building a server?</summary>
+    <p>Define 1–2 tools, pick transport (STDIO/HTTP), add Inspector for tests, write README, ship a <code class="notranslate" translate="no">.env.example</code>. Then submit a card to the catalog.</p>
+  </details>
+
+  <section>
+    <h2>Feedback</h2>
+    <p>Found a gap? Ask below.</p>
+    <section id="comments">
+      <script src="https://utteranc.es/client.js"
+              repo="mcp-accelerator/MCP-Model-Context-Protocol-catalog"
+              issue-term="pathname"
+              label="comments"
+              theme="github-light"
+              crossorigin="anonymous"
+              async>
+      </script>
+    </section>
+  </section>
 </section>`
 });
 
-// ---------- write out pages ----------
+// ---------- write pages ----------
 fs.mkdirSync("site", { recursive: true });
 fs.writeFileSync("site/index.html", home);
 fs.writeFileSync("site/catalog.html", catalog);

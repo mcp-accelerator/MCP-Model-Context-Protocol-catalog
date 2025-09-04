@@ -4,7 +4,7 @@
 <title>Home — MCP Catalog</title>
 <link rel="stylesheet" href="./assets/style.css">
 
-<body>
+<body class="page page--home">
 <header class="site-top">
   <a class="brand notranslate" translate="no" href="./index.html">MCP Catalog</a>
   <nav class="menu">
@@ -29,21 +29,14 @@
     <a class="btn ghost" href="./generator.html">Build your server</a>
   </div>
 </section>
-
 <section>
   <h2>How to use this site</h2>
   <ol class="steps">
     <li>Pick a server in the <a href="./catalog.html">Catalog</a>.</li>
     <li>Open <strong>Endpoint/Manifest</strong>, copy <strong>Claude config</strong> or <strong>Inspector</strong> command.</li>
-    <li>Fill secrets in <code class="notranslate" translate="no">.env</code> template locally (never share keys here).</li>
+    <li>Fill secrets in <code class="notranslate" translate="no">.env</code> locally (the site never collects keys).</li>
   </ol>
-</section>
-
-<section>
-  <h2>What is MCP?</h2>
-  <p>MCP is like <em>USB-C for AI</em>: a standard way clients connect to external tools and data. See <a href="./protocol.html">Protocol</a> for a quick intro.</p>
-</section>
-</main>
+</section></main>
 <footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
 <script src="./assets/app.js"></script>
 </body></html>

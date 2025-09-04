@@ -24,7 +24,14 @@
           "community"
         ],
         "homepage": "https://airtable.com/developers/web/api/introduction",
-        "repo": "https://github.com/modelcontextprotocol/server-airtable"
+        "repo": "https://github.com/modelcontextprotocol/server-airtable",
+        "env_vars": [
+          "AIRTABLE_PAT"
+        ]
+      },
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://airtable.com/developers/web/guides/personal-access-tokens"
       }
     },
     {
@@ -163,6 +170,9 @@
             "tools"
           ]
         }
+      },
+      "connect": {
+        "endpoint_url": "https://api.githubcopilot.com/mcp/"
       }
     },
     {
@@ -188,7 +198,14 @@
           "verified"
         ],
         "homepage": "https://docs.github.com/en/rest",
-        "repo": "https://github.com/modelcontextprotocol/server-github"
+        "repo": "https://github.com/modelcontextprotocol/server-github",
+        "env_vars": [
+          "GITHUB_TOKEN"
+        ]
+      },
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://docs.github.com/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens"
       }
     },
     {
@@ -241,7 +258,14 @@
           "community"
         ],
         "homepage": "https://developers.notion.com/",
-        "repo": "https://github.com"
+        "repo": "https://github.com",
+        "env_vars": [
+          "NOTION_TOKEN"
+        ]
+      },
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://developers.notion.com/docs/create-a-notion-integration"
       }
     },
     {
@@ -267,7 +291,14 @@
           "community"
         ],
         "homepage": "https://platform.openai.com/docs",
-        "repo": "https://github.com"
+        "repo": "https://github.com",
+        "env_vars": [
+          "OPENAI_API_KEY"
+        ]
+      },
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://platform.openai.com/api-keys"
       }
     },
     {
@@ -297,6 +328,9 @@
             "resources"
           ]
         }
+      },
+      "connect": {
+        "endpoint_url": "https://mcp.sentry.dev/mcp"
       }
     },
     {
@@ -347,7 +381,14 @@
           "community"
         ],
         "homepage": "https://api.slack.com",
-        "repo": "https://github.com"
+        "repo": "https://github.com",
+        "env_vars": [
+          "SLACK_BOT_TOKEN"
+        ]
+      },
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://api.slack.com/apps"
       }
     },
     {
@@ -373,7 +414,14 @@
           "community"
         ],
         "homepage": "https://core.telegram.org/bots/api",
-        "repo": "https://github.com"
+        "repo": "https://github.com",
+        "env_vars": [
+          "TELEGRAM_BOT_TOKEN"
+        ]
+      },
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://core.telegram.org/bots/features#botfather"
       }
     },
     {
@@ -424,7 +472,15 @@
           "community"
         ],
         "homepage": "https://developer.atlassian.com/cloud/trello/rest",
-        "repo": "https://github.com/modelcontextprotocol/server-trello"
+        "repo": "https://github.com/modelcontextprotocol/server-trello",
+        "env_vars": [
+          "TRELLO_KEY",
+          "TRELLO_TOKEN"
+        ]
+      },
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://trello.com/app-key"
       }
     }
   ]

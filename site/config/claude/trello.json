@@ -5,7 +5,10 @@
       "args": [
         "./servers/trello/dist/index.js"
       ],
-      "env": {}
+      "env": {
+        "TRELLO_KEY": "",
+        "TRELLO_TOKEN": ""
+      }
     }
   }
 }
