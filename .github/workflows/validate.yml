@@ -28,9 +28,9 @@ jobs:
       - name: Install ajv-cli
         run: npm i -g ajv-cli jq
       - name: Validate servers.index.json
-        run: ajv validate -s schema/servers.index.schema.json -d registry/servers.index.json --strict=true
+        run: node tools/validate-index.mjs
       - name: Validate each server manifest
         run: |
           jq -r '.servers[].manifest' registry/servers.index.json | while read f; do
-            ajv validate -s schema/mcp-server.schema.json -d "$f" --strict=true
+            node tools/validate-manifests.mjs
           done
