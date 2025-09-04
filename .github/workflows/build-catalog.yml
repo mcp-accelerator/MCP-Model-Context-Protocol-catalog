@@ -10,6 +10,7 @@ on:
 
 # даём права и на билд, и на деплой (в одном run'е)
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
