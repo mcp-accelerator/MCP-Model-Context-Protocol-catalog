@@ -1,0 +1,14 @@
+{
+  "name": "mcp-catalog-tools",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "scripts": {
+    "validate:index": "node tools/validate-index.mjs",
+    "validate:manifests": "node tools/validate-manifests.mjs",
+    "build:index": "node tools/merge-index.mjs"
+  }
+}

@@ -1,36 +1,34 @@
-name: Validate Catalog
+name: Validate
+
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'registry/**'
-      - 'schema/**'
-      - '.github/workflows/validate.yml'
   pull_request:
-    paths:
-      - 'registry/**'
-      - 'schema/**'
-permissions:
-  contents: read
-concurrency:
-  group: validate-${{ github.ref }}
-  cancel-in-progress: true
+
 jobs:
-  ajv:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install ajv-cli
-        run: npm i -g ajv-cli jq
-      - name: Validate servers.index.json
-        run: node tools/validate-index.mjs
-      - name: Validate each server manifest
+
+      - name: Install deps
         run: |
-          jq -r '.servers[].manifest' registry/servers.index.json | while read f; do
-            node tools/validate-manifests.mjs
-          done
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm i
+          fi
+
+      - name: Build (optional) merged index
+        if: ${{ hashFiles('tools/merge-index.mjs') != '' }}
+        run: node tools/merge-index.mjs
+
+      - name: Validate index (draft-07)
+        run: node tools/validate-index.mjs
+
+      - name: Validate local manifests (draft-07)
+        run: node tools/validate-manifests.mjs
