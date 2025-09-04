@@ -1,24 +1,36 @@
-# (полный YAML из секции Artifacts)
 name: Validate Catalog
 on:
   push:
     branches: [ main ]
-    paths: [ 'registry/**','schema/**','.github/workflows/validate.yml' ]
+    paths:
+      - 'registry/**'
+      - 'schema/**'
+      - '.github/workflows/validate.yml'
   pull_request:
-    paths: [ 'registry/**','schema/**' ]
-permissions: { contents: read }
-concurrency: { group: validate-${{ github.ref }}, cancel-in-progress: true }
+    paths:
+      - 'registry/**'
+      - 'schema/**'
+permissions:
+  contents: read
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   ajv:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - run: npm i -g ajv-cli
-      - run: ajv validate -s schema/servers.index.schema.json -d registry/servers.index.json --strict=true
-      - run: |
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install ajv-cli
+        run: npm i -g ajv-cli jq
+      - name: Validate servers.index.json
+        run: ajv validate -s schema/servers.index.schema.json -d registry/servers.index.json --strict=true
+      - name: Validate each server manifest
+        run: |
           jq -r '.servers[].manifest' registry/servers.index.json | while read f; do
             ajv validate -s schema/mcp-server.schema.json -d "$f" --strict=true
           done
