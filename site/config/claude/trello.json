@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "trello": {
+      "command": "node",
+      "args": [
+        "./servers/trello/dist/index.js"
+      ],
+      "env": {}
+    }
+  }
+}

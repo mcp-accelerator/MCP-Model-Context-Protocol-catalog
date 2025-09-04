@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "openai": {
+      "command": "node",
+      "args": [
+        "./servers/openai/dist/index.js"
+      ],
+      "env": {}
+    }
+  }
+}

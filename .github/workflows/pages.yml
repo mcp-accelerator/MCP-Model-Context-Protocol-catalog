@@ -20,21 +20,36 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
+
       - name: Install deps (if any)
         run: |
           if [ -f package-lock.json ]; then npm ci; else npm i; fi
-      - name: Build static site from registry
-        run: node tools/build-site.mjs
-      - name: Bundle registry into site
+
+      - name: Merge index (optional)
+        if: ${{ hashFiles('tools/merge-index.mjs') != '' }}
+        run: node tools/merge-index.mjs
+
+      - name: Build all static pages
+        run: node tools/site-build.mjs
+
+      - name: Bundle registry, manifests and prompts into site
         run: |
-          rm -rf site/registry
-          mkdir -p site/registry
+          rm -rf site/registry site/servers site/prompts
+          mkdir -p site/registry site/servers site/prompts
           cp -R registry/* site/registry/
+          # copy local manifests so "Open manifest" never 404s
+          find servers -name "mcp-server.json" -print0 | while IFS= read -r -d '' f; do
+            d="site/$(dirname "$f")"; mkdir -p "$d"; cp "$f" "$d/"
+          done
+          # copy prompts for download links
+          if [ -d prompts ]; then cp -R prompts/* site/prompts/ 2>/dev/null || true; fi
           echo "site contents:"; find site -maxdepth 2 -type f -printf "%P\n"
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./site
+
   deploy:
     needs: build
     runs-on: ubuntu-latest

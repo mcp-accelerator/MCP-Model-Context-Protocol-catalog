@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "slack": {
+      "command": "node",
+      "args": [
+        "./servers/slack/dist/index.js"
+      ],
+      "env": {}
+    }
+  }
+}

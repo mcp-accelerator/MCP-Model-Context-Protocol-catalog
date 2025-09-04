@@ -1,0 +1,90 @@
+[
+  {
+    "id": "filesystem",
+    "name": "Filesystem (reference)",
+    "protocol_min": "2025-06-18",
+    "transports": ["stdio"],
+    "primitives": ["tools","resources"],
+    "status": "stable",
+    "repo": "https://github.com/modelcontextprotocol/servers",
+    "homepage": "https://modelcontextprotocol.io",
+    "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools","resources"], "chatgpt":["tools"] } }
+  },
+  {
+    "id": "fetch",
+    "name": "Fetch (reference)",
+    "protocol_min": "2025-06-18",
+    "transports": ["stdio"],
+    "primitives": ["tools","resources"],
+    "status": "stable",
+    "repo": "https://github.com/modelcontextprotocol/servers",
+    "homepage": "https://modelcontextprotocol.io",
+    "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools","resources"], "chatgpt":["tools"] } }
+  },
+  {
+    "id": "git",
+    "name": "Git (reference)",
+    "protocol_min": "2025-06-18",
+    "transports": ["stdio"],
+    "primitives": ["tools","resources"],
+    "status": "stable",
+    "repo": "https://github.com/modelcontextprotocol/servers",
+    "homepage": "https://modelcontextprotocol.io",
+    "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools","resources"], "chatgpt":["tools"] } }
+  },
+  {
+    "id": "memory",
+    "name": "Memory (reference)",
+    "protocol_min": "2025-06-18",
+    "transports": ["stdio"],
+    "primitives": ["tools","resources"],
+    "status": "stable",
+    "repo": "https://github.com/modelcontextprotocol/servers",
+    "homepage": "https://modelcontextprotocol.io",
+    "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools","resources"], "chatgpt":["tools"] } }
+  },
+  {
+    "id": "sequential-thinking",
+    "name": "Sequential Thinking (reference)",
+    "protocol_min": "2025-06-18",
+    "transports": ["stdio"],
+    "primitives": ["tools"],
+    "status": "stable",
+    "repo": "https://github.com/modelcontextprotocol/servers",
+    "homepage": "https://modelcontextprotocol.io",
+    "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools"], "chatgpt":["tools"] } }
+  },
+  {
+    "id": "time",
+    "name": "Time (reference)",
+    "protocol_min": "2025-06-18",
+    "transports": ["stdio"],
+    "primitives": ["tools"],
+    "status": "stable",
+    "repo": "https://github.com/modelcontextprotocol/servers",
+    "homepage": "https://modelcontextprotocol.io",
+    "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools"], "chatgpt":["tools"] } }
+  },
+  {
+    "id": "github-remote",
+    "name": "GitHub MCP (hosted)",
+    "protocol_min": "2025-06-18",
+    "transports": ["streamable_http"],
+    "primitives": ["tools","resources"],
+    "status": "stable",
+    "repo": "https://github.blog/ai-and-ml/generative-ai/a-practical-guide-on-how-to-use-the-github-mcp-server/",
+    "homepage": "https://api.githubcopilot.com/mcp/",
+    "meta": { "category":"official", "auth":"oauth", "client_matrix": { "vs-code":["tools","resources"], "visual-studio":["tools"], "claude_desktop":["tools"] } }
+  },
+  {
+    "id": "sentry-remote",
+    "name": "Sentry MCP (hosted)",
+    "protocol_min": "2025-06-18",
+    "transports": ["streamable_http"],
+    "primitives": ["tools","resources"],
+    "status": "stable",
+    "repo": "https://github.com/getsentry/sentry-mcp",
+    "homepage": "https://docs.sentry.io/product/sentry-mcp/",
+    "meta": { "category":"official", "auth":"token", "client_matrix": { "cursor":["tools","resources"], "claude_desktop":["tools","resources"] } }
+  }
+]

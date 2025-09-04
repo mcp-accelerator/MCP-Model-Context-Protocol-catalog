@@ -1,98 +1,431 @@
 {
-  "updated_at": "2025-09-04T10:30:00Z",
+  "updated_at": "2025-09-04T11:36:27.532Z",
   "servers": [
     {
-      "id": "filesystem",
-      "name": "Filesystem (reference)",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
+      "id": "airtable",
+      "name": "airtable_mcp",
+      "manifest": "servers/airtable/mcp-server.json",
       "protocol_min": "2025-06-18",
-      "transports": ["stdio"],
-      "primitives": ["tools","resources"],
-      "status": "stable",
-      "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools","resources"], "chatgpt":["tools"] } }
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools"
+      ],
+      "status": "draft",
+      "repo": "https://github.com/modelcontextprotocol/server-airtable",
+      "homepage": "https://airtable.com/developers/web/api/introduction",
+      "meta": {
+        "category": "storage",
+        "license": "MIT",
+        "verified": false,
+        "description": "Read and write Airtable tables/records",
+        "badges": [
+          "community"
+        ],
+        "homepage": "https://airtable.com/developers/web/api/introduction",
+        "repo": "https://github.com/modelcontextprotocol/server-airtable"
+      }
+    },
+    {
+      "id": "echo",
+      "name": "echo",
+      "manifest": "servers/echo/mcp-server.json",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools"
+      ],
+      "status": "draft",
+      "repo": "https://github.com",
+      "homepage": "https://httpbin.org/",
+      "meta": {
+        "category": "other",
+        "license": "MIT",
+        "verified": false,
+        "description": "Demo httpbin endpoints",
+        "badges": [
+          "community"
+        ],
+        "homepage": "https://httpbin.org/",
+        "repo": "https://github.com"
+      }
     },
     {
       "id": "fetch",
       "name": "Fetch (reference)",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "stdio"
+      ],
+      "primitives": [
+        "tools",
+        "resources"
+      ],
+      "status": "stable",
       "repo": "https://github.com/modelcontextprotocol/servers",
       "homepage": "https://modelcontextprotocol.io",
+      "meta": {
+        "category": "reference",
+        "client_matrix": {
+          "claude_desktop": [
+            "tools",
+            "resources"
+          ],
+          "chatgpt": [
+            "tools"
+          ]
+        }
+      }
+    },
+    {
+      "id": "filesystem",
+      "name": "Filesystem (reference)",
       "protocol_min": "2025-06-18",
-      "transports": ["stdio"],
-      "primitives": ["tools","resources"],
+      "transports": [
+        "stdio"
+      ],
+      "primitives": [
+        "tools",
+        "resources"
+      ],
       "status": "stable",
-      "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools","resources"], "chatgpt":["tools"] } }
+      "repo": "https://github.com/modelcontextprotocol/servers",
+      "homepage": "https://modelcontextprotocol.io",
+      "meta": {
+        "category": "reference",
+        "client_matrix": {
+          "claude_desktop": [
+            "tools",
+            "resources"
+          ],
+          "chatgpt": [
+            "tools"
+          ]
+        }
+      }
     },
     {
       "id": "git",
       "name": "Git (reference)",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "stdio"
+      ],
+      "primitives": [
+        "tools",
+        "resources"
+      ],
+      "status": "stable",
       "repo": "https://github.com/modelcontextprotocol/servers",
       "homepage": "https://modelcontextprotocol.io",
-      "protocol_min": "2025-06-18",
-      "transports": ["stdio"],
-      "primitives": ["tools","resources"],
-      "status": "stable",
-      "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools","resources"], "chatgpt":["tools"] } }
-    },
-    {
-      "id": "memory",
-      "name": "Memory (reference)",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
-      "protocol_min": "2025-06-18",
-      "transports": ["stdio"],
-      "primitives": ["tools","resources"],
-      "status": "stable",
-      "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools","resources"], "chatgpt":["tools"] } }
-    },
-    {
-      "id": "sequential-thinking",
-      "name": "Sequential Thinking (reference)",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
-      "protocol_min": "2025-06-18",
-      "transports": ["stdio"],
-      "primitives": ["tools"],
-      "status": "stable",
-      "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools"], "chatgpt":["tools"] } }
-    },
-    {
-      "id": "time",
-      "name": "Time (reference)",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
-      "protocol_min": "2025-06-18",
-      "transports": ["stdio"],
-      "primitives": ["tools"],
-      "status": "stable",
-      "meta": { "category":"reference", "client_matrix": { "claude_desktop":["tools"], "chatgpt":["tools"] } }
+      "meta": {
+        "category": "reference",
+        "client_matrix": {
+          "claude_desktop": [
+            "tools",
+            "resources"
+          ],
+          "chatgpt": [
+            "tools"
+          ]
+        }
+      }
     },
     {
       "id": "github-remote",
       "name": "GitHub MCP (hosted)",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools",
+        "resources"
+      ],
+      "status": "stable",
       "repo": "https://github.blog/ai-and-ml/generative-ai/a-practical-guide-on-how-to-use-the-github-mcp-server/",
       "homepage": "https://api.githubcopilot.com/mcp/",
-      "protocol_min": "2025-06-18",
-      "transports": ["streamable_http"],
-      "primitives": ["tools","resources"],
-      "status": "stable",
       "meta": {
-        "category":"official",
-        "endpoint":"https://api.githubcopilot.com/mcp/",
-        "auth":"oauth",
-        "client_matrix": { "vs-code":["tools","resources"], "visual-studio":["tools"], "claude_desktop":["tools"] }
+        "category": "official",
+        "auth": "oauth",
+        "client_matrix": {
+          "vs-code": [
+            "tools",
+            "resources"
+          ],
+          "visual-studio": [
+            "tools"
+          ],
+          "claude_desktop": [
+            "tools"
+          ]
+        }
+      }
+    },
+    {
+      "id": "github",
+      "name": "github_mcp",
+      "manifest": "servers/github/mcp-server.json",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools"
+      ],
+      "status": "draft",
+      "repo": "https://github.com/modelcontextprotocol/server-github",
+      "homepage": "https://docs.github.com/en/rest",
+      "meta": {
+        "category": "devtools",
+        "license": "MIT",
+        "verified": false,
+        "description": "Issues, PRs, repositories",
+        "badges": [
+          "verified"
+        ],
+        "homepage": "https://docs.github.com/en/rest",
+        "repo": "https://github.com/modelcontextprotocol/server-github"
+      }
+    },
+    {
+      "id": "memory",
+      "name": "Memory (reference)",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "stdio"
+      ],
+      "primitives": [
+        "tools",
+        "resources"
+      ],
+      "status": "stable",
+      "repo": "https://github.com/modelcontextprotocol/servers",
+      "homepage": "https://modelcontextprotocol.io",
+      "meta": {
+        "category": "reference",
+        "client_matrix": {
+          "claude_desktop": [
+            "tools",
+            "resources"
+          ],
+          "chatgpt": [
+            "tools"
+          ]
+        }
+      }
+    },
+    {
+      "id": "notion",
+      "name": "notion_mcp",
+      "manifest": "servers/notion/mcp-server.json",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools"
+      ],
+      "status": "draft",
+      "repo": "https://github.com",
+      "homepage": "https://developers.notion.com/",
+      "meta": {
+        "category": "productivity",
+        "license": "MIT",
+        "verified": false,
+        "description": "Create pages and databases",
+        "badges": [
+          "community"
+        ],
+        "homepage": "https://developers.notion.com/",
+        "repo": "https://github.com"
+      }
+    },
+    {
+      "id": "openai",
+      "name": "openai_mcp",
+      "manifest": "servers/openai/mcp-server.json",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools"
+      ],
+      "status": "draft",
+      "repo": "https://github.com",
+      "homepage": "https://platform.openai.com/docs",
+      "meta": {
+        "category": "ai",
+        "license": "MIT",
+        "verified": false,
+        "description": "LLM requests (compatible API)",
+        "badges": [
+          "community"
+        ],
+        "homepage": "https://platform.openai.com/docs",
+        "repo": "https://github.com"
       }
     },
     {
       "id": "sentry-remote",
       "name": "Sentry MCP (hosted)",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools",
+        "resources"
+      ],
+      "status": "stable",
       "repo": "https://github.com/getsentry/sentry-mcp",
       "homepage": "https://docs.sentry.io/product/sentry-mcp/",
+      "meta": {
+        "category": "official",
+        "auth": "token",
+        "client_matrix": {
+          "cursor": [
+            "tools",
+            "resources"
+          ],
+          "claude_desktop": [
+            "tools",
+            "resources"
+          ]
+        }
+      }
+    },
+    {
+      "id": "sequential-thinking",
+      "name": "Sequential Thinking (reference)",
       "protocol_min": "2025-06-18",
-      "transports": ["streamable_http"],
-      "primitives": ["tools","resources"],
+      "transports": [
+        "stdio"
+      ],
+      "primitives": [
+        "tools"
+      ],
       "status": "stable",
-      "meta": { "category":"official", "auth":"token", "client_matrix": { "cursor":["tools","resources"], "claude_desktop":["tools","resources"] } }
+      "repo": "https://github.com/modelcontextprotocol/servers",
+      "homepage": "https://modelcontextprotocol.io",
+      "meta": {
+        "category": "reference",
+        "client_matrix": {
+          "claude_desktop": [
+            "tools"
+          ],
+          "chatgpt": [
+            "tools"
+          ]
+        }
+      }
+    },
+    {
+      "id": "slack",
+      "name": "slack_mcp",
+      "manifest": "servers/slack/mcp-server.json",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools"
+      ],
+      "status": "draft",
+      "repo": "https://github.com",
+      "homepage": "https://api.slack.com",
+      "meta": {
+        "category": "messaging",
+        "license": "MIT",
+        "verified": false,
+        "description": "Post messages to Slack",
+        "badges": [
+          "community"
+        ],
+        "homepage": "https://api.slack.com",
+        "repo": "https://github.com"
+      }
+    },
+    {
+      "id": "telegram",
+      "name": "telegram_mcp",
+      "manifest": "servers/telegram/mcp-server.json",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools"
+      ],
+      "status": "draft",
+      "repo": "https://github.com",
+      "homepage": "https://core.telegram.org/bots/api",
+      "meta": {
+        "category": "messaging",
+        "license": "MIT",
+        "verified": false,
+        "description": "Send messages in Telegram",
+        "badges": [
+          "community"
+        ],
+        "homepage": "https://core.telegram.org/bots/api",
+        "repo": "https://github.com"
+      }
+    },
+    {
+      "id": "time",
+      "name": "Time (reference)",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "stdio"
+      ],
+      "primitives": [
+        "tools"
+      ],
+      "status": "stable",
+      "repo": "https://github.com/modelcontextprotocol/servers",
+      "homepage": "https://modelcontextprotocol.io",
+      "meta": {
+        "category": "reference",
+        "client_matrix": {
+          "claude_desktop": [
+            "tools"
+          ],
+          "chatgpt": [
+            "tools"
+          ]
+        }
+      }
+    },
+    {
+      "id": "trello",
+      "name": "trello_mcp",
+      "manifest": "servers/trello/mcp-server.json",
+      "protocol_min": "2025-06-18",
+      "transports": [
+        "streamable_http"
+      ],
+      "primitives": [
+        "tools"
+      ],
+      "status": "draft",
+      "repo": "https://github.com/modelcontextprotocol/server-trello",
+      "homepage": "https://developer.atlassian.com/cloud/trello/rest",
+      "meta": {
+        "category": "productivity",
+        "license": "MIT",
+        "verified": false,
+        "description": "Create and move cards on Trello boards",
+        "badges": [
+          "community"
+        ],
+        "homepage": "https://developer.atlassian.com/cloud/trello/rest",
+        "repo": "https://github.com/modelcontextprotocol/server-trello"
+      }
     }
   ]
 }

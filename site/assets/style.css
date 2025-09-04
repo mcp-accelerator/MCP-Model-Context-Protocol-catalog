@@ -1,0 +1,30 @@
+:root { --fg:#111; --muted:#666; --bg:#fff; --card:#fafafa; --bd:#e6e6e6; --link:#0b57d0; }
+*{box-sizing:border-box} html,body{height:100%} body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto}
+a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
+.site-top{position:sticky;top:0;z-index:10;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bd);background:#fff}
+.brand{font-weight:800}
+.menu{display:flex;gap:10px;flex-wrap:wrap}
+.menu a{padding:6px 8px;border-radius:8px}
+.menu a.active{background:#f4f6fb;border:1px solid #e3e7f7}
+.actions a{white-space:nowrap}
+.page{max-width:1100px;margin:0 auto;padding:16px}
+.hero{padding:12px 0 20px 0}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;border:1px solid var(--bd);background:#fff;padding:6px 10px;border-radius:8px}
+.btn.ghost{background:#f8f8f8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;display:flex;flex-direction:column}
+.card-title{margin:0 0 4px 0;font-weight:700}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 8px 0}
+.badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:#eee;border:1px solid #ddd}
+.desc{color:var(--muted);min-height:2em}
+.kv{list-style:none;padding:0;margin:8px 0}
+.kv li{margin:2px 0}
+.links{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+.filters{display:flex;gap:10px;margin:8px 0 16px 0;flex-wrap:wrap}
+input[type="search"],select{border:1px solid var(--bd);border-radius:8px;padding:6px 8px}
+pre{background:#1e1e1e;color:#f3f3f3;border-radius:8px;padding:10px;overflow:auto}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+.site-foot{margin-top:20px;padding:16px;border-top:1px solid var(--bd);color:var(--muted)}
+.muted{color:var(--muted)}
+.steps{padding-left:18px}
