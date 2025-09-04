@@ -10,7 +10,9 @@
   <meta property="og:image" content="https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/site/og.png">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="./style.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MCP Accelerator","url":"https://github.com/mcp-accelerator","logo":"https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/site/og.png","sameAs":["https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog"]}</script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"MCP Accelerator","url":"https://github.com/mcp-accelerator","logo":"https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/site/og.png","sameAs":["https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog"]}
+  </script>
 </head>
 <body>
   <header class="site-header" role="banner">
@@ -35,14 +37,17 @@
       </select>
     </div>
   </header>
+
   <main id="app" role="main">
     <div id="skeleton" class="skeleton-list" aria-hidden="true"></div>
     <div id="list" class="cards" aria-live="polite"></div>
     <div id="pager" class="pager" role="navigation" aria-label="Пагинация"></div>
   </main>
+
   <footer class="site-footer" role="contentinfo">
     <small>© MCP Accelerator. Данные из <code>registry/servers.index.json</code>.</small>
   </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/fuse.js@7"></script>
   <script src="./app.js"></script>
 </body>
