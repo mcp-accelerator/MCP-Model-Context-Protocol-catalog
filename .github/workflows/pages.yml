@@ -5,6 +5,7 @@ on:
     types: [ completed ]
 permissions:
   contents: read
+  actions: read        # <— ВАЖНО: нужно, чтобы забирать артефакт из другого workflow
   pages: write
   id-token: write
 concurrency:
@@ -21,3 +22,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages
