@@ -125,3 +125,4 @@
     }
   });
 })();
+try{ if(typeof REGISTRY_URL!=='undefined'){ window.REGISTRY_URL = REGISTRY_URL; } }catch(e){}
