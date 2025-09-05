@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "blueprints": [
+    {
+      "id": "research-assistant",
+      "name": "Research Assistant",
+      "description": "Web research + notes DB + files + LLM.",
+      "default_transport": "stdio",
+      "capabilities": [
+        {
+          "capability": "Notes/DB",
+          "choices": [
+            { "server_id": "notion",   "env": ["NOTION_API_KEY"],   "links_key": "notion" },
+            { "server_id": "airtable", "env": ["AIRTABLE_API_KEY"], "links_key": "airtable" }
+          ]
+        },
+        {
+          "capability": "Web",
+          "choices": [{ "server_id": "fetch" }]
+        },
+        {
+          "capability": "Files",
+          "choices": [{ "server_id": "filesystem" }]
+        },
+        {
+          "capability": "LLM",
+          "choices": [{ "server_id": "openai", "env": ["OPENAI_API_KEY"], "links_key": "openai" }]
+        }
+      ]
+    },
+    {
+      "id": "devops-monitor",
+      "name": "DevOps Monitor",
+      "description": "Issues/alerts across GitHub + Sentry + Slack notify.",
+      "default_transport": "streamable_http",
+      "capabilities": [
+        {
+          "capability": "Code & Issues",
+          "choices": [{ "server_id": "github" }]
+        },
+        {
+          "capability": "Monitoring",
+          "choices": [{ "server_id": "sentry-remote" }]
+        },
+        {
+          "capability": "Chat",
+          "choices": [
+            { "server_id": "slack",    "env": ["SLACK_BOT_TOKEN"], "links_key": "slack" },
+            { "server_id": "telegram", "env": ["TELEGRAM_BOT_TOKEN"], "links_key": "telegram" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "team-productivity",
+      "name": "Team Productivity",
+      "description": "Tasks + notes + chat; Trello/Notion + Slack/Telegram.",
+      "default_transport": "stdio",
+      "capabilities": [
+        {
+          "capability": "Tasks",
+          "choices": [{ "server_id": "trello", "env": ["TRELLO_KEY","TRELLO_TOKEN"], "links_key": "trello" }]
+        },
+        {
+          "capability": "Notes",
+          "choices": [
+            { "server_id": "notion", "env": ["NOTION_API_KEY"], "links_key": "notion" },
+            { "server_id": "airtable", "env": ["AIRTABLE_API_KEY"], "links_key": "airtable" }
+          ]
+        },
+        {
+          "capability": "Chat",
+          "choices": [
+            { "server_id": "slack", "env": ["SLACK_BOT_TOKEN"], "links_key": "slack" },
+            { "server_id": "telegram", "env": ["TELEGRAM_BOT_TOKEN"], "links_key": "telegram" }
+          ]
+        }
+      ]
+    }
+  ]
+}

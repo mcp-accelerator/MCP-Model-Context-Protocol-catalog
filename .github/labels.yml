@@ -1,0 +1,15 @@
+area/catalog:
+  - 'registry/**'
+  - 'servers/**'
+area/site:
+  - 'site/**'
+area/builder:
+  - 'builder/**'
+area/generator:
+  - 'templates/**'
+  - 'site/generator.html'
+docs:
+  - 'project/**'
+  - '**/*.md'
+ci:
+  - '.github/workflows/**'

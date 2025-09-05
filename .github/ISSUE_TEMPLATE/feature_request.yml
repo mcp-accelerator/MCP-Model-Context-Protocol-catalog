@@ -1,0 +1,17 @@
+name: Feature request
+description: Suggest an idea
+title: "feat: "
+labels: ["feature"]
+body:
+  - type: textarea
+    attributes: { label: Problem, description: What problem are we solving? }
+  - type: textarea
+    attributes: { label: Proposal, description: How should it work? }
+  - type: checkboxes
+    attributes:
+      label: Affected areas
+      options:
+        - label: Catalog
+        - label: Builder
+        - label: Generator
+        - label: Docs/FAQ

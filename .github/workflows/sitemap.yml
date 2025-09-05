@@ -1,0 +1,22 @@
+name: Generate Sitemap
+on:
+  workflow_run:
+    workflows: ["Pages"]
+    types: [completed]
+permissions:
+  contents: write
+jobs:
+  sitemap:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build simple sitemap from /site
+        run: |
+          base="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          find site -name '*.html' -printf "%P\n" | awk -v b="$base" 'BEGIN{print "<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">"} {printf "<url><loc>%s%s</loc></url>\n", b, $0} END{print "</urlset>"}' > site/sitemap.xml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/sitemap.xml
+          git commit -m "chore: update sitemap.xml" || echo "no changes"
+          git push

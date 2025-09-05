@@ -1,12 +1,14 @@
-# 📌 Pull Request
+## Summary
+Describe the change.
 
-### Изменения
-- 
+## Type
+- [ ] Feature
+- [ ] Fix
+- [ ] Docs
+- [ ] Chore
 
-### Checklist
-- [ ] Код/манифесты валидны (`ajv validate`)
-- [ ] Проверка CI прошла успешно
-- [ ] Добавлена документация (если нужно)
+## Testing
+How did you test?
 
-### Связанные Issue
-Closes #
+## Screenshots
+<attach if UI>
