@@ -40,3 +40,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
 .page--protocol { background:linear-gradient(180deg,#ffffff 0%,#fffdf5 100%) }
 .page--sdk      { background:linear-gradient(180deg,#ffffff 0%,#f6fbff 100%) }
 .page--faq      { background:linear-gradient(180deg,#ffffff 0%,#fdf7ff 100%) }
+.hidden{display:none}
+.logo-link{display:inline-block}
+.page h1{margin:8px 0}
+.page hr{border:none;border-top:1px solid var(--bd);margin:12px 0}
