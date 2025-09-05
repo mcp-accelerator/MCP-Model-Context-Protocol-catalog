@@ -51,3 +51,13 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
 .chk{display:flex; gap:8px; align-items:center; margin:4px 0 8px}
 .note{padding:8px; border:1px dashed var(--bd); border-radius:8px; background:var(--bg2)}
 .badge{display:inline-block; padding:4px 8px; border-radius:999px; background:#eef; color:#223; font-size:12px}
+
+/* home tabs hub */
+.hub { margin-top: 16px; }
+.tabbar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px }
+.tabbar .tab {
+  border:1px solid var(--bd); background:var(--bg2); padding:8px 12px; border-radius:10px;
+  cursor:pointer; user-select:none;
+}
+.tabbar .tab.active { background:var(--ac); color:#fff; border-color:var(--ac) }
+.hub-frame { width:100%; min-height:1000px; border:1px solid var(--bd); border-radius:12px; background:#fff }
