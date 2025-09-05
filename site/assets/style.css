@@ -61,3 +61,12 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
 }
 .tabbar .tab.active { background:var(--ac); color:#fff; border-color:var(--ac) }
 .hub-frame { width:100%; min-height:1000px; border:1px solid var(--bd); border-radius:12px; background:#fff }
+
+/* dynamic nav brand */
+.brand{font-weight:700;margin-right:12px}
+
+/* home hero */
+#home-hero .lead{opacity:.85}
+#home-hero .cta{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+#home-hero .video{margin-top:16px;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+#home-hero .video iframe{width:100%;height:100%}

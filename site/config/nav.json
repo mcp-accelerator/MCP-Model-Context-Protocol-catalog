@@ -1,0 +1,12 @@
+{
+  "brand": "MCP Catalog",
+  "items": [
+    { "id": "home",     "title": "Home",     "href": "index.html",    "enabled": true },
+    { "id": "catalog",  "title": "Catalog",  "href": "catalog.html",  "enabled": true },
+    { "id": "builder",  "title": "Builder",  "href": "builder.html",  "enabled": true },
+    { "id": "generator","title": "Generator","href": "generator.html","enabled": true },
+    { "id": "protocol", "title": "Protocol", "href": "protocol.html", "enabled": false },
+    { "id": "sdk",      "title": "SDK",      "href": "sdk.html",      "enabled": false },
+    { "id": "faq",      "title": "FAQ",      "href": "faq.html",      "enabled": true }
+  ]
+}
