@@ -1,83 +1,55 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>MCP Generator • Starter Kit</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="assets/style.css">
-  <!-- JSZip для сборки ZIP в браузере -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-</head>
-<body>
-  <header class="topbar">
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="catalog.html">Catalog</a>
-      <a class="active" href="generator.html">Generator</a>
-      <a href="faq.html">FAQ</a>
-    </nav>
-  </header>
+<html lang="en"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Generator — MCP Catalog</title>
+<link rel="stylesheet" href="./assets/style.css">
 
-  <main class="page">
-    <h1 translate="no">MCP Starter Kit — ZIP generator</h1>
-    <p>Соберите стартовый MCP-сервер за пару кликов. Выберите язык, транспорт, имя сервера — получите готовый ZIP.</p>
+<body class="page page--generator">
+<header class="site-top">
+  <a class="brand notranslate" translate="no" href="./index.html">MCP Catalog</a>
+  <nav class="menu">
+    <a class="" href="./index.html">Home</a>
+    <a class="" href="./catalog.html">Catalog</a>
+    <a class="" href="./prompts.html">Prompts</a>
+    <a class="active" href="./generator.html">Generator</a>
+    <a class="" href="./protocol.html">Protocol</a>
+    <a class="" href="./sdk.html">SDK & Tools</a>
+    <a class="" href="./faq.html">FAQ</a>
+  </nav>
+  <div class="actions">
+    <a href="https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog" target="_blank" rel="noopener">GitHub Repo</a>
+  </div>
+</header>
+<main class="page">
+<section class="hero">
+  <h1>Bootstrap your MCP server</h1>
+  <p>Generate a ready-to-run skeleton (Local or Hosted), manifests, configs and a CI smoke test — all in your browser.</p>
+  <div class="cta-row"><a class="btn" href="#start">Start wizard</a></div>
+</section>
+<section id="start">
+  <h2>Wizard (coming soon)</h2>
+  <ol class="steps">
+    <li>Choose Local (STDIO) or Hosted (HTTP)</li>
+    <li>Define tools/resources</li>
+    <li>Get manifests, configs, and ZIP</li>
+  </ol>
+  <p class="muted">We do not collect any keys. Secrets remain on your machine.</p>
+</section>
 
-    <section class="card">
-      <div class="card-title">Project settings</div>
-      <div class="grid2">
-        <div>
-          <label class="lbl">Server name</label>
-          <input id="srvName" class="input" placeholder="my-mcp-server" value="my-mcp-server"/>
-
-          <label class="lbl">Language</label>
-          <select id="lang" class="input">
-            <option value="python">Python (FastMCP)</option>
-            <option value="node">Node.js (TypeScript SDK)</option>
-          </select>
-
-          <label class="lbl">Transport</label>
-          <select id="transport" class="input">
-            <option value="stdio">STDIO (local, simplest)</option>
-            <option value="streamable-http">Streamable HTTP (hostable)</option>
-          </select>
-
-          <label class="lbl">Include samples</label>
-          <label class="chk"><input id="addSamples" type="checkbox" checked/> tools/resources/prompts</label>
-
-          <label class="lbl">Add GitHub Actions</label>
-          <label class="chk"><input id="addCI" type="checkbox" checked/> validate & lint</label>
-        </div>
-
-        <div>
-          <div class="note">
-            <b>Tips</b>
-            <ul class="steps">
-              <li>STDIO — проще всего для локального запуска (Claude Desktop, Inspector).</li>
-              <li>Streamable HTTP — для развёртывания как отдельного сервиса.</li>
-              <li>Не логируйте в <code>stdout</code> при STDIO (используйте stderr / логгер).</li>
-            </ul>
-          </div>
-          <div id="compatMsg" class="badge">Node+HTTP добавим в следующей итерации.</div>
-        </div>
-      </div>
-
-      <div style="margin-top:12px; display:flex; gap:8px;">
-        <button id="btnZip" class="btn">Download ZIP</button>
-        <button id="btnPreviewManifest" class="btn btn-secondary">Preview mcp-server.json</button>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="card-title">Preview</div>
-      <pre id="preview" class="code" style="min-height:160px">—</pre>
-    </section>
-
-    <hr/>
-    <p class="muted">
-      Based on official SDKs: Python FastMCP & Node SDK. See quickstart & transports docs for details.
-    </p>
-  </main>
-
-  <script src="assets/generator.js"></script>
-</body>
-</html>
+<section>
+  <h2>Feedback</h2>
+  <p>Tell us which templates and languages you want first.</p>
+  <section id="comments">
+    <script src="https://utteranc.es/client.js"
+            repo="mcp-accelerator/MCP-Model-Context-Protocol-catalog"
+            issue-term="pathname"
+            label="comments"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </section>
+</section></main>
+<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
+<script src="./assets/app.js"></script>
+</body></html>
