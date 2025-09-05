@@ -43,7 +43,7 @@
     if (detailH1) {
       const params = new URLSearchParams(location.search);
       const id = params.get('id');
-      fetch('./registry/servers.index.json')
+      fetch('./https://mcp-accelerator.github.io/mcp-registry/servers.index.json')
         .then(r => r.json())
         .then(data => {
           const s = (data.servers || []).find(x => x.id === id) || null;
