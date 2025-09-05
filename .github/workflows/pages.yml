@@ -46,7 +46,7 @@ jobs:
           echo "site contents:"; find site -maxdepth 2 -type f -printf "%P\n"
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./site
 
