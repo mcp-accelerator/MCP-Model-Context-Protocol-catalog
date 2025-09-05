@@ -44,3 +44,10 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
 .logo-link{display:inline-block}
 .page h1{margin:8px 0}
 .page hr{border:none;border-top:1px solid var(--bd);margin:12px 0}
+
+/* generator */
+.input{display:block; width:100%; padding:8px; border:1px solid var(--bd); border-radius:8px; margin:6px 0 12px}
+.lbl{display:block; font-weight:600; margin-top:6px}
+.chk{display:flex; gap:8px; align-items:center; margin:4px 0 8px}
+.note{padding:8px; border:1px dashed var(--bd); border-radius:8px; background:var(--bg2)}
+.badge{display:inline-block; padding:4px 8px; border-radius:999px; background:#eef; color:#223; font-size:12px}
