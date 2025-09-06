@@ -1,13 +1,15 @@
 (() => {
   function catalogLogos(){
-    const anchors = document.querySelectorAll('a[href*="server.html?id="]');
-    anchors.forEach(a=>{
+    document.querySelectorAll('a[href*="server.html?id="]').forEach(a=>{
       try{
         const url = new URL(a.getAttribute('href'), location.href);
         const id = url.searchParams.get('id'); if(!id) return;
-        const card = a.closest('.card') || a.parentElement; if (!card || card.querySelector('img.card-logo')) return;
-        const img = document.createElement('img'); img.className='card-logo'; img.alt=id+' logo';
-        img.src = `assets/logos/${id}.svg`; img.onerror = () => img.remove();
+        const card = a.closest('.card') || a.parentElement; 
+        if (!card || card.querySelector('img.card-logo')) return;
+        const img = document.createElement('img');
+        img.className='card-logo'; img.alt=id+' logo';
+        img.src = `assets/logos/${id}.svg`; 
+        img.onerror = () => img.remove();
         card.insertBefore(img, card.firstChild);
       }catch(_){}
     });

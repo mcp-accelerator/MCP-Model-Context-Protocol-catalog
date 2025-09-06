@@ -12,6 +12,10 @@
   };
   let theme = localStorage.getItem('mcp_theme') || 'light';
   apply(theme);
-  btn.addEventListener('click', () => { let i = THEMES.indexOf(theme); theme = THEMES[(i+1)%THEMES.length]; apply(theme); });
-  document.addEventListener('DOMContentLoaded', () => document.body.appendChild(btn));
+  btn.addEventListener('click', () => {
+    const i = THEMES.indexOf(theme);
+    theme = THEMES[(i+1)%THEMES.length];
+    apply(theme);
+  });
+  document.addEventListener('DOMContentLoaded', () => { if (document.body) document.body.appendChild(btn); });
 })();
