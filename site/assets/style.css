@@ -92,3 +92,14 @@ a{ color:var(--ac); }
 .card-logo{ width:36px; height:36px; object-fit:contain; float:right; margin:-4px -4px 0 8px; opacity:.9 }
 .server-logo{ width:32px; height:32px; object-fit:contain; margin-left:8px; vertical-align:middle }
 /* logos: end */
+
+/* Telegram CTA */
+.tabs a.cta.tg{
+  border:1px solid var(--bd);
+  background:var(--bg2);
+  color:var(--fg);
+  padding:6px 10px;
+  border-radius:10px;
+  text-decoration:none;
+}
+.tabs a.cta.tg::before{ content:"✈ "; opacity:.9 }
