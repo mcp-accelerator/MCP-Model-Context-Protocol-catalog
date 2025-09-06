@@ -8,11 +8,6 @@
 - **docs/** — правила, онбординг, метаданные
 - **site/** — простая витрина (GitHub Pages)
 
-## Быстрый старт
-1. Включите GitHub Pages (Settings → Pages → GitHub Actions).
-2. Push в `main`: каталожные JSON публикуются и доступны по адресу:
-   `https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/site/
-3. Простая витрина: `https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/site/
 
 ## Добавление сервера (PR)
 См. **docs/ADD_SERVER.md**. Вкратце:
