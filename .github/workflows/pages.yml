@@ -31,6 +31,8 @@ jobs:
 
       - name: Build all static pages
         run: node tools/site-build.mjs
+      - name: Postprocess site
+        run: node tools/postbuild.mjs
 
       - name: Bundle registry, manifests and prompts into site
         run: |
