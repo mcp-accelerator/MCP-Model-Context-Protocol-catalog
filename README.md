@@ -1,7 +1,5 @@
 # MCP Catalog v3 — публичный реестр MCP‑серверов
-
-[![Validate MCP Catalog](https://github.com/BogdanAIP/MCP-Model-Context-Protocol-catalog/actions/workflows/validate.yml/badge.svg)](https://github.com/BogdanAIP/MCP-Model-Context-Protocol-catalog/actions/workflows/validate.yml)
-[![Publish Pages](https://github.com/BogdanAIP/MCP-Model-Context-Protocol-catalog/actions/workflows/pages.yml/badge.svg)](https://github.com/BogdanAIP/MCP-Model-Context-Protocol-catalog/actions/workflows/pages.yml)
+[![Publish Pages]
 
 Каталог предоставляет:
 - **registry/servers.index.json** — индекс серверов
