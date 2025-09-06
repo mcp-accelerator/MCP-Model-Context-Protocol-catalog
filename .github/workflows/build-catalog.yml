@@ -33,7 +33,7 @@ jobs:
           rsync -a site/ dist/site/
           jq -c . registry/servers.index.json > dist/registry/servers.index.json
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
