@@ -8,7 +8,7 @@ jobs:
   lychee:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: lycheeverse/lychee-action@v1
         with:
           args: --no-progress --exclude-mail --max-redirects 5 --accept 200,206,429 --retry-wait-time 2 --retry-count 2 .
