@@ -87,3 +87,8 @@ a{ color:var(--ac); }
 .card-logo{ width:36px; height:36px; object-fit:contain; float:right; margin:-4px -4px 0 8px; opacity:.9 }
 .server-logo{ width:32px; height:32px; object-fit:contain; margin-left:8px; vertical-align:middle }
 /* logos: end */
+
+/* logos: begin */
+.card-logo{ width:36px; height:36px; object-fit:contain; float:right; margin:-4px -4px 0 8px; opacity:.9 }
+.server-logo{ width:32px; height:32px; object-fit:contain; margin-left:8px; vertical-align:middle }
+/* logos: end */

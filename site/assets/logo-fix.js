@@ -1,14 +1,14 @@
 (() => {
   function addCardLogos() {
-    // ищем ссылки вида server.html?id=...
+    // ссылки вида server.html?id=...
     const anchors = Array.from(document.querySelectorAll('a[href*="server.html"]'));
     anchors.forEach(a => {
       let href = a.getAttribute('href') || '';
       try { href = new URL(href, location.href).href; } catch (_) {}
       let id = '';
       try { id = new URL(href).searchParams.get('id') || ''; } catch (_) {}
-
       if (!id) return;
+
       const card = a.closest('.card') || a.parentElement;
       if (!card || card.querySelector('img.card-logo')) return;
 
