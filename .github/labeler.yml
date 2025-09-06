@@ -1,0 +1,38 @@
+area/catalog:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "registry/**"
+          - "servers/**"
+
+area/site:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "site/**"
+          - "assets/**"
+          - "prompts/**"
+
+area/schema:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "schema/**"
+          - "tools/*schema*.mjs"
+
+area/ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+
+dependencies:
+  - any:
+      - changed-files:
+          - any-glob-to-any-file:
+              - "**/package.json"
+              - "**/package-lock.json"
+              - ".github/workflows/**"
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+          - "README.md"
+          - "site/*.html"
