@@ -1,5 +1,5 @@
 # MCP Catalog v3 — публичный реестр MCP‑серверов
-[![Publish Pages]
+[![Publish Pages] https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/
 
 Каталог предоставляет:
 - **registry/servers.index.json** — индекс серверов
