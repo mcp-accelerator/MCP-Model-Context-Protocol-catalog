@@ -103,3 +103,8 @@ a{ color:var(--ac); }
   text-decoration:none;
 }
 .tabs a.cta.tg::before{ content:"✈ "; opacity:.9 }
+
+/* nav right-side items */
+.tabs{ display:flex; gap:12px; align-items:center; }
+.tabs a.tg{ margin-left:auto; opacity:.9 }
+.tabs a.tg:hover{ opacity:1 }
