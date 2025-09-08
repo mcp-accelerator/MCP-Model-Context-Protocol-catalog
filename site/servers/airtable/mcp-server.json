@@ -1,0 +1,32 @@
+{
+  "name": "airtable_mcp",
+  "version": "1.0.0",
+  "base_url": "https://api.airtable.com/v0",
+  "auth": {
+    "type": "bearer",
+    "env": "AIRTABLE_API_KEY"
+  },
+  "capabilities": [
+    {}
+  ],
+  "meta": {
+    "title": "Airtable",
+    "description": "Read and write Airtable tables/records",
+    "category": "storage",
+    "homepage": "https://airtable.com/developers/web/api/introduction",
+    "repo": "https://github.com/modelcontextprotocol/server-airtable",
+    "license": "MIT",
+    "badges": [
+      "community"
+    ],
+    "maintainers": [
+      "BogdanAIP"
+    ],
+    "keywords": [],
+    "capabilities": [
+      "REST API",
+      "SDK Support",
+      "OAuth"
+    ]
+  }
+}

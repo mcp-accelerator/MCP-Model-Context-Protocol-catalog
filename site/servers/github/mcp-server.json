@@ -1,0 +1,33 @@
+{
+  "name": "github_mcp",
+  "version": "1.0.0",
+  "base_url": "https://api.github.com",
+  "auth": {
+    "type": "bearer",
+    "env": "GITHUB_TOKEN"
+  },
+  "headers": {
+    "Accept": "application/vnd.github+json"
+  },
+  "capabilities": [
+    {}
+  ],
+  "meta": {
+    "title": "GitHub",
+    "description": "Issues, PRs, repositories",
+    "category": "devtools",
+    "homepage": "https://docs.github.com/en/rest",
+    "repo": "https://github.com/modelcontextprotocol/server-github",
+    "license": "MIT",
+    "badges": [
+      "verified"
+    ],
+    "keywords": [],
+    "capabilities": [
+      "REST API",
+      "Webhooks",
+      "OAuth",
+      "SDK Support"
+    ]
+  }
+}
