@@ -1,0 +1,286 @@
+🔎 Link audit started: Mon Sep  8 13:59:46 UTC 2025
+Repo: /workspaces/MCP-Model-Context-Protocol-catalog
+
+## NAV (site/config/nav.json)
+home       Home       index.html      enabled=true
+catalog    Catalog    catalog.html    enabled=true
+builder    Builder    builder.html    enabled=true
+generator  Generator  generator.html  enabled=true
+protocol   Protocol   protocol.html   enabled=true
+sdk        SDK        sdk.html        enabled=true
+faq        FAQ        faq.html        enabled=true
+
+## EXTERNAL URLs (http/https, unique)
+http://json-schema.org/draft-07/schema#
+http://www.sitemaps.org/schemas/sitemap/0.9
+http://www.sitemaps.org/schemas/sitemap/0.9\
+http://www.w3.org/2000/svg
+https://${{
+https://..
+https://YOUR_HOST/mcp
+https://airtable.com/create/tokens
+https://airtable.com/developers/web/api/introduction
+https://airtable.com/developers/web/guides/personal-access-tokens
+https://api.airtable.com/v0
+https://api.github.com
+https://api.github.com/orgs/{owner}/repos
+https://api.github.com/repos/{ow}/{rp}
+https://api.github.com/search/code?q={q}&per_page=100
+https://api.github.com/users/{owner}
+https://api.github.com/users/{owner}/repos
+https://api.githubcopilot.com/mcp/
+https://api.notion.com/v1
+https://api.openai.com/v1
+https://api.slack.com
+https://api.slack.com/apps
+https://api.telegram.org
+https://api.trello.com/1
+https://astral.sh
+https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.esm.js
+https://core.telegram.org/bots/api
+https://core.telegram.org/bots/features#botfather
+https://developer.atlassian.com/cloud/trello/rest
+https://developers.notion.com/
+https://developers.notion.com/docs/create-a-notion-integration
+https://docs.github.com/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
+https://docs.github.com/en/rest
+https://docs.sentry.io/product/sentry-mcp/
+https://example.com/schema/servers.index.schema.json
+https://github.blog/ai-and-ml/generative-ai/a-practical-guide-on-how-to-use-the-github-mcp-server/
+https://github.com
+https://github.com/getsentry/sentry-mcp
+https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog
+https://github.com/modelcontextprotocol/server-airtable
+https://github.com/modelcontextprotocol/server-github
+https://github.com/modelcontextprotocol/server-trello
+https://github.com/modelcontextprotocol/servers
+https://github.com/settings/tokens
+https://github.com/sponsors/epoberezkin
+https://github.com/sponsors/fastify
+https://httpbin.org
+https://httpbin.org/
+https://json-schema.org/draft-07/schema
+https://json-schema.org/draft/2020-12/schema
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/builder.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/catalog.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/faq.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/generator.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/index.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/prompts.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/protocol.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/sdk.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/server.html
+https://mcp-accelerator.github.io/mcp-registry/servers.index.json
+https://mcp-accelerator.github.io/mcp-registry/servers.index.json`
+https://mcp.sentry.dev/mcp
+https://modelcontextprotocol.io
+https://modelcontextprotocol.io/docs/getting-started/intro
+https://opencollective.com/fastify
+https://platform.openai.com/api-keys
+https://platform.openai.com/docs
+https://raw.githubusercontent.com/
+https://raw.githubusercontent.com/{owner}/{repo}/{quote
+https://registry.npmjs.org/ajv-formats/-/ajv-formats-3.0.1.tgz
+https://registry.npmjs.org/ajv/-/ajv-8.17.1.tgz
+https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz
+https://registry.npmjs.org/fast-uri/-/fast-uri-3.1.0.tgz
+https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz
+https://registry.npmjs.org/require-from-string/-/require-from-string-2.0.2.tgz
+https://sentry.io/settings/account/api/auth-tokens/
+https://slack.com/api
+https://t.me/+4m2vc99t-RQwZjEy
+https://t.me/BotFather
+https://trello.com/app-key
+https://utteranc.es/client.js
+https://www.notion.so/my-integrations
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
+https://your-hosted-endpoint.example
+
+## INTERNAL href/src targets (site/*.html)
+
+${esc(m.homepage)}
+${esc(m.repo)}
+/MCP-Model-Context-Protocol-catalog/index.html
+assets/app.js
+assets/builder.css
+assets/builder.js
+assets/logo-fix.js
+assets/logos/airtable.svg
+assets/logos/echo.svg
+assets/logos/fetch.svg
+assets/logos/filesystem.svg
+assets/logos/git.svg
+assets/logos/github-remote.svg
+assets/logos/github.svg
+assets/logos/memory.svg
+assets/logos/notion.svg
+assets/logos/openai.svg
+assets/logos/sentry-remote.svg
+assets/logos/sequential-thinking.svg
+assets/logos/slack.svg
+assets/logos/telegram.svg
+assets/logos/time.svg
+assets/logos/trello.svg
+assets/nav.js
+assets/style.css
+assets/theme.js
+builder.html
+catalog.html
+config/claude/airtable.json
+config/claude/echo.json
+config/claude/fetch.json
+config/claude/filesystem.json
+config/claude/git.json
+config/claude/github-remote.json
+config/claude/github.json
+config/claude/memory.json
+config/claude/notion.json
+config/claude/openai.json
+config/claude/sentry-remote.json
+config/claude/sequential-thinking.json
+config/claude/slack.json
+config/claude/telegram.json
+config/claude/time.json
+config/claude/trello.json
+config/env/airtable.env
+config/env/github.env
+config/env/notion.env
+config/env/openai.env
+config/env/slack.env
+config/env/telegram.env
+config/env/trello.env
+faq.html
+generator.html
+index.html
+prompts.html
+prompts/catalog_curator.md
+prompts/frontend_ux.md
+prompts/pages_publisher.md
+prompts/security_auditor.md
+protocol.html
+sdk.html
+servers/airtable/mcp-server.json
+servers/echo/mcp-server.json
+servers/github/mcp-server.json
+servers/notion/mcp-server.json
+servers/openai/mcp-server.json
+servers/slack/mcp-server.json
+servers/telegram/mcp-server.json
+servers/trello/mcp-server.json
+
+## MISSING internal files (referenced but not found in site/)
+${esc(m.homepage)}
+${esc(m.repo)}
+/MCP-Model-Context-Protocol-catalog/index.html
+servers/airtable/mcp-server.json
+servers/echo/mcp-server.json
+servers/github/mcp-server.json
+servers/notion/mcp-server.json
+servers/openai/mcp-server.json
+servers/slack/mcp-server.json
+servers/telegram/mcp-server.json
+servers/trello/mcp-server.json
+
+## Leftovers: generator.html / prompts.html references
+site/index.html:14:    <a class="" href="./generator.html">Generator</a>
+site/index.html:29:    <a class="btn ghost" href="./generator.html">Build your server</a>
+site/config/nav.json:5:  { "id":"generator","title":"Generator","href":"generator.html","enabled": true },
+site/sdk.html:14:    <a class="" href="./generator.html">Generator</a>
+site/generator.html:14:    <a class="active" href="./generator.html">Generator</a>
+site/link-audit.txt:8:generator  Generator  generator.html  enabled=true
+site/link-audit.txt:68:https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/generator.html
+site/link-audit.txt:154:generator.html
+site/link-audit.txt:185:## Leftovers: generator.html / prompts.html references
+site/assets/tabs.js:5:    generator: 'generator.html',
+site/faq.html:14:    <a class="" href="./generator.html">Generator</a>
+site/catalog.html:14:    <a class="" href="./generator.html">Generator</a>
+site/builder.html:21:        <a href="generator.html">Generator</a>
+site/prompts.html:14:    <a class="" href="./generator.html">Generator</a>
+site/protocol.html:14:    <a class="" href="./generator.html">Generator</a>
+site/sitemap.xml:5:<url><loc>https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/generator.html</loc></url>
+site/index.html:13:    <a class="" href="./prompts.html">Prompts</a>
+site/sdk.html:13:    <a class="" href="./prompts.html">Prompts</a>
+site/generator.html:13:    <a class="" href="./prompts.html">Prompts</a>
+site/link-audit.txt:70:https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/prompts.html
+site/link-audit.txt:156:prompts.html
+site/link-audit.txt:185:## Leftovers: generator.html / prompts.html references
+site/link-audit.txt:194:site/link-audit.txt:185:## Leftovers: generator.html / prompts.html references
+site/link-audit.txt:199:site/prompts.html:14:    <a class="" href="./generator.html">Generator</a>
+site/faq.html:13:    <a class="" href="./prompts.html">Prompts</a>
+site/catalog.html:13:    <a class="" href="./prompts.html">Prompts</a>
+site/prompts.html:13:    <a class="active" href="./prompts.html">Prompts</a>
+site/protocol.html:13:    <a class="" href="./prompts.html">Prompts</a>
+site/sitemap.xml:4:<url><loc>https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/prompts.html</loc></url>
+
+## Catalog cards -> server.html?id=...
+
+## REGISTRY references
+site/index.html:40:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
+site/sdk.html:31:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
+site/generator.html:53:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
+site/link-audit.txt:74:https://mcp-accelerator.github.io/mcp-registry/servers.index.json
+site/link-audit.txt:75:https://mcp-accelerator.github.io/mcp-registry/servers.index.json`
+site/assets/builder.js:6:  const REG_URL = window.REGISTRY_URL
+site/assets/builder.js:7:    || document.querySelector('meta[name="mcp-registry"]')?.content
+site/assets/builder.js:8:    || 'https://mcp-accelerator.github.io/mcp-registry/servers.index.json';
+site/assets/app.js:46:      fetch('./https://mcp-accelerator.github.io/mcp-registry/servers.index.json')
+site/assets/app.js:128:try{ if(typeof REGISTRY_URL!=='undefined'){ window.REGISTRY_URL = REGISTRY_URL; } }catch(e){}
+site/faq.html:82:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
+site/app.js:80:  const res = await fetch("./https://mcp-accelerator.github.io/mcp-registry/servers.index.json", { cache: "no-cache" });
+site/app.js:96:  els.list.innerHTML = `<div class="card"><h2>Ошибка загрузки</h2><p>Проверьте <code>https://mcp-accelerator.github.io/mcp-registry/servers.index.json</code>.</p></div>`;
+site/catalog.html:442:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
+site/builder.html:7:  <!-- fallback if window.REGISTRY_URL is not set -->
+site/builder.html:8:  <meta name="mcp-registry" content="https://mcp-accelerator.github.io/mcp-registry/servers.index.json">
+site/prompts.html:31:Цель: поддерживать качество `registry/servers.index.json`.
+site/prompts.html:38:Цель: поддерживать качество `registry/servers.index.json`.
+site/prompts.html:89:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
+site/prompts/catalog_curator.md:2:Цель: поддерживать качество `registry/servers.index.json`.
+site/protocol.html:32:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
+tools/validate-index.mjs:6:const data   = JSON.parse(fs.readFileSync("registry/servers.index.json", "utf8"));
+tools/discover.py:7:REGISTRY = ROOT / "registry" / "servers.index.json"
+tools/site-build.mjs:34:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
+tools/site-build.mjs:40:const reg = readJSON("registry/servers.index.json");
+tools/merge-index.disabled.mjs:9:const registryPath = path.join(root, "registry/servers.index.json");
+tools/build-site.mjs:2:const index = JSON.parse(fs.readFileSync("registry/servers.index.json","utf8"));
+tools/build-site.mjs:62:    <p class="hint">Источник данных: <code>registry/servers.index.json</code>. Показаны локальные и hosted/reference.</p>
+tools/validate-manifests.mjs:5:const index  = JSON.parse(fs.readFileSync("registry/servers.index.json", "utf8"));
+
+## SITEMAP URLs
+http://www.sitemaps.org/schemas/sitemap/0.9">
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/builder.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/catalog.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/faq.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/generator.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/index.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/prompts.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/protocol.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/sdk.html
+https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/server.html
+
+## LOGOS availability (site/assets/logos/*.svg)
+_default.svg
+airtable.svg
+echo.svg
+fetch.svg
+filesystem.svg
+git.svg
+github-remote.svg
+github.svg
+memory.svg
+notion.svg
+openai.svg
+sentry-remote.svg
+sequential-thinking.svg
+slack.svg
+telegram.svg
+time.svg
+trello.svg
+
+## COUNTS
+External URLs total: 85
+Internal href/src targets: 70
+Missing internal files: 11
+Server cards links: 0
+
+✅ Link audit written to site/link-audit.txt
