@@ -72,8 +72,8 @@ pre{background:#0d141d;border:1px solid #223044;border-radius:10px;padding:12px;
     const caps=(m.capabilities||[]);
     el('caps').innerHTML=caps.length?caps.map(c=>`<span class="badge">${esc(c)}</span>`).join(' '):'<span style="color:#99a7b3">—</span>';
     const links=[];
-    if(m.homepage) links.push(`<a href="${esc(m.homepage)}" target="_blank">homepage</a>`);
-    if(m.repo) links.push(`<a href="${esc(m.repo)}" target="_blank">repo</a>`);
+    if(m.homepage) links.push(`<a href="https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/" target="_blank">homepage</a>`);
+    if(m.repo) links.push(`<a href="https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog" target="_blank">repo</a>`);
     el('links').innerHTML=links.length?('<li>'+links.join('</li><li>')+'</li>'):'<li style="color:#99a7b3">—</li>';
     const qc=`{
   "mcpServers": {
