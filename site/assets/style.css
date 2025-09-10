@@ -108,3 +108,42 @@ a{ color:var(--ac); }
 .tabs{ display:flex; gap:12px; align-items:center; }
 .tabs a.tg{ margin-left:auto; opacity:.9 }
 .tabs a.tg:hover{ opacity:1 }
+
+/* MATTE THEME */
+:root{
+  --bg:#f6f7fb;       /* светлый матовый фон */
+  --surface:#ffffff;  /* карточки/панели */
+  --text:#0b0f14;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --accent:#2563eb;
+}
+.theme-dark{
+  --bg:#0e1117;       /* графитовый фон */
+  --surface:#12161f;  /* немного светлее фона */
+  --text:#e6eaf2;
+  --muted:#9aa4b2;
+  --border:#1f2530;
+  --accent:#5aa0ff;
+}
+
+/* применяем ко всем страницам */
+html,body{ background:var(--bg); color:var(--text); }
+
+.header,.tabs,.card,.panel,.section,.container,
+.main,.content, .hero, .footer {
+  background:var(--surface) !important;
+  color:var(--text) !important;
+  border-color:var(--border) !important;
+}
+
+/* ссылки/кнопки и код */
+a{ color:var(--accent); }
+code,pre{ background: color-mix(in oklab, var(--surface) 85%, black 15%); border:1px solid var(--border); }
+
+/* фикс расположения переключателя темы */
+#theme-toggle{
+  position:fixed; top:14px; right:14px; z-index:999;
+  border:1px solid var(--border); background:var(--surface); color:var(--text);
+  border-radius:10px; padding:6px 10px; box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
