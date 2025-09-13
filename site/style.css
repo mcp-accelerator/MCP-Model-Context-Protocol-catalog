@@ -1,67 +1,96 @@
-:root { --fg:#111; --muted:#666; --bg:#fff; --card:#fafafa; --bd:#e6e6e6; }
-*{box-sizing:border-box} body{margin:0;font:14px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto}
-.top{padding:20px; border-bottom:1px solid var(--bd); display:flex; gap:16px; align-items:flex-end; justify-content:space-between; flex-wrap:wrap}
-.top h1{margin:0;font-size:20px}
-.top .actions a{margin-right:12px}
-.hint{color:var(--muted); margin:6px 0 0 0}
-.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; padding:16px}
-.card{background:var(--card); border:1px solid var(--bd); border-radius:12px; padding:14px}
-.card .title{font-weight:700; text-decoration:none; color:var(--fg)}
-.card .title:hover{text-decoration:underline}
-.meta{margin:8px 0; display:flex; gap:8px; flex-wrap:wrap}
-.badge{display:inline-block; font-size:12px; padding:2px 8px; border-radius:999px; background:#eee; border:1px solid #ddd}
-.badge.ok{background:#e6ffef; border-color:#b7f0c4}
-.desc{color:var(--muted); min-height:2em}
-.kv{list-style:none; padding:0; margin:8px 0}
-.kv li{margin:2px 0}
-.links a{margin-right:10px}
-.foot{border-top:1px solid var(--bd); padding:16px; color:var(--muted)}
-
-:root{ --bg:#ffffff; --bg2:#f8f9fb; --fg:#111; --bd:#e5e7eb; --ac:#2563eb; }
-.theme-dark{ --bg:#0b0b0c; --bg2:#151618; --fg:#e6e6e7; --bd:#2a2b2f; --ac:#4f8cff; }
-.theme-dim{  --bg:#0f1115; --bg2:#171a22; --fg:#dbe2ee; --bd:#2b3340; --ac:#5aa0ff; }
-body{ background:var(--bg); color:var(--fg); }
-a{ color:var(--ac); }
-.header,.tabs,.card{ background:var(--bg2); border-color:var(--bd); }
-.tabs{ display:flex; gap:12px; align-items:center; }
-.tabs a.tg{ margin-left:auto; opacity:.9 }
-.tabs a.tg:hover{ opacity:1 }
-
-/* MATTE THEME */
 :root{
-  --bg:#f6f7fb;       /* светлый матовый фон */
-  --surface:#ffffff;  /* карточки/панели */
-  --text:#0b0f14;
-  --muted:#6b7280;
-  --border:#e5e7eb;
-  --accent:#2563eb;
-}
-.theme-dark{
-  --bg:#0e1117;       /* графитовый фон */
-  --surface:#12161f;  /* немного светлее фона */
-  --text:#e6eaf2;
-  --muted:#9aa4b2;
-  --border:#1f2530;
-  --accent:#5aa0ff;
+  --bg:#0e1117;         /* фон страницы */
+  --surface:#12161f;    /* фон карточек/панелей */
+  --text:#e6eaf2;       /* основной текст */
+  --muted:#9aa4b2;      /* подписи/вторичный текст */
+  --border:rgba(148,163,184,.2);
+  --accent:#5aa0ff;     /* акцентные ссылки/кнопки */
+  --gap:16px;
 }
 
-/* применяем ко всем страницам */
-html,body{ background:var(--bg); color:var(--text); }
-
-.header,.tabs,.card,.panel,.section,.container,
-.main,.content, .hero, .footer {
-  background:var(--surface) !important;
-  color:var(--text) !important;
-  border-color:var(--border) !important;
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 }
 
-/* ссылки/кнопки и код */
-a{ color:var(--accent); }
-code,pre{ background: color-mix(in oklab, var(--surface) 85%, black 15%); border:1px solid var(--border); }
+/* Хедер/навигация */
+.site-header{
+  position:sticky; top:0; z-index:10;
+  padding:24px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.site-header h1{margin:0 0 8px}
+.muted{color:var(--muted)}
+nav a{
+  color:var(--accent); text-decoration:none; margin-right:12px;
+}
+nav a:hover{text-decoration:underline}
 
-/* фикс расположения переключателя темы */
-#theme-toggle{
-  position:fixed; top:14px; right:14px; z-index:999;
+/* Панель управления */
+.controls{
+  display:grid; grid-auto-flow:column; gap:var(--gap); align-items:center; margin-top:12px;
+}
+.controls input,.controls select{
+  padding:8px 10px; border:1px solid var(--border); border-radius:10px;
+  background:#0f141b; color:var(--text);
+}
+.controls input::placeholder{color:#7b8694}
+
+/* Карточки */
+.cards{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:var(--gap); padding:24px;
+}
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px; padding:16px;
+  box-shadow:0 1px 0 rgba(0,0,0,.2);
+}
+.card h2{margin:0 0 8px; font-size:18px}
+.card a{color:var(--accent); text-decoration:none}
+.card a:hover{text-decoration:underline}
+.meta{color:var(--muted); font-size:13px; margin-top:8px}
+
+/* Бэйджи */
+.badges{display:flex; gap:6px; flex-wrap:wrap}
+.badge{
+  background:rgba(90,160,255,.15);
+  color:var(--accent);
+  border:1px solid rgba(90,160,255,.35);
+  border-radius:999px; padding:2px 8px; font-size:12px;
+}
+
+/* Скелетоны */
+.skeleton-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:var(--gap); padding:24px}
+.skeleton{
+  height:140px; border-radius:12px;
+  background:linear-gradient(90deg,#151a21,#0f141b,#151a21);
+  background-size:200% 100%; animation:ske 1.2s infinite;
+}
+@keyframes ske{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Пагинация */
+.pager{display:flex; gap:8px; justify-content:center; padding:16px 24px}
+button.pill{
   border:1px solid var(--border); background:var(--surface); color:var(--text);
-  border-radius:10px; padding:6px 10px; box-shadow:0 2px 8px rgba(0,0,0,.12);
+  border-radius:999px; padding:6px 12px; cursor:pointer;
 }
+button.pill[aria-current="page"]{
+  background:var(--accent); color:#0b1220; border-color:var(--accent); font-weight:600;
+}
+button.pill:hover{border-color:var(--accent)}
+
+/* Футер */
+.site-footer{
+  color:var(--muted); border-top:1px solid var(--border);
+  background:var(--surface); padding:16px 24px;
+}
+
+/* Гасим переключатель темы, если он был в верстке */
+.theme-toggle, [data-role="theme-toggle"]{display:none !important}
