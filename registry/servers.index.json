@@ -1,7 +1,7 @@
 {
-  "version": 1,
   "servers": [
     {
+      "id": "autospec-master-server",
       "name": "AutoSpec Master Server",
       "manifest": "servers/autospec-master-server/mcp-server.json",
       "meta": {
@@ -12,6 +12,7 @@
       }
     },
     {
+      "id": "uncertainty-engine-server",
       "name": "Uncertainty Engine Server",
       "manifest": "servers/uncertainty-engine-server/mcp-server.json",
       "meta": {
@@ -22,6 +23,7 @@
       }
     },
     {
+      "id": "uniquemark-policy-server",
       "name": "UniqueMark Policy Server",
       "manifest": "servers/uniquemark-policy-server/mcp-server.json",
       "meta": {
@@ -32,6 +34,7 @@
       }
     },
     {
+      "id": "prompt-analytics-server",
       "name": "Prompt Analytics Server",
       "manifest": "servers/prompt-analytics-server/mcp-server.json",
       "meta": {
@@ -42,6 +45,7 @@
       }
     },
     {
+      "id": "materials-ledger-server",
       "name": "Materials Ledger Server",
       "manifest": "servers/materials-ledger-server/mcp-server.json",
       "meta": {
@@ -52,6 +56,7 @@
       }
     },
     {
+      "id": "ilyuha-archive-server",
       "name": "Ilyuha Archive Server",
       "manifest": "servers/ilyuha-archive-server/mcp-server.json",
       "meta": {
