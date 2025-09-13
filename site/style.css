@@ -1,10 +1,10 @@
 :root{
-  --bg:#0e1117;         /* фон страницы */
-  --surface:#12161f;    /* фон карточек/панелей */
-  --text:#e6eaf2;       /* основной текст */
-  --muted:#9aa4b2;      /* подписи/вторичный текст */
-  --border:rgba(148,163,184,.2);
-  --accent:#5aa0ff;     /* акцентные ссылки/кнопки */
+  --bg:#0e1117;         /* page */
+  --surface:#12161f;    /* cards/panels */
+  --text:#e6eaf2;       /* main text */
+  --muted:#9aa4b2;      /* secondary text */
+  --border:#1f2530;
+  --accent:#5aa0ff;     /* links/buttons */
   --gap:16px;
 }
 
@@ -17,35 +17,27 @@ body{
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 }
 
-/* Хедер/навигация */
+/* header/nav */
 .site-header{
   position:sticky; top:0; z-index:10;
-  padding:24px;
-  background:var(--surface);
+  padding:24px; background:var(--surface);
   border-bottom:1px solid var(--border);
 }
 .site-header h1{margin:0 0 8px}
 .muted{color:var(--muted)}
-nav a{
-  color:var(--accent); text-decoration:none; margin-right:12px;
-}
+nav a{color:var(--accent); text-decoration:none; margin-right:12px}
 nav a:hover{text-decoration:underline}
 
-/* Панель управления */
-.controls{
-  display:grid; grid-auto-flow:column; gap:var(--gap); align-items:center; margin-top:12px;
-}
+/* controls */
+.controls{display:grid; grid-auto-flow:column; gap:var(--gap); align-items:center; margin-top:12px}
 .controls input,.controls select{
   padding:8px 10px; border:1px solid var(--border); border-radius:10px;
-  background:#0f141b; color:var(--text);
+  background:#0f141b; color:var(--text)
 }
 .controls input::placeholder{color:#7b8694}
 
-/* Карточки */
-.cards{
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:var(--gap); padding:24px;
-}
+/* cards */
+.cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:var(--gap); padding:24px}
 .card{
   background:var(--surface);
   border:1px solid var(--border);
@@ -57,7 +49,7 @@ nav a:hover{text-decoration:underline}
 .card a:hover{text-decoration:underline}
 .meta{color:var(--muted); font-size:13px; margin-top:8px}
 
-/* Бэйджи */
+/* badges */
 .badges{display:flex; gap:6px; flex-wrap:wrap}
 .badge{
   background:rgba(90,160,255,.15);
@@ -66,7 +58,7 @@ nav a:hover{text-decoration:underline}
   border-radius:999px; padding:2px 8px; font-size:12px;
 }
 
-/* Скелетоны */
+/* skeletons */
 .skeleton-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:var(--gap); padding:24px}
 .skeleton{
   height:140px; border-radius:12px;
@@ -75,7 +67,7 @@ nav a:hover{text-decoration:underline}
 }
 @keyframes ske{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* Пагинация */
+/* pager */
 .pager{display:flex; gap:8px; justify-content:center; padding:16px 24px}
 button.pill{
   border:1px solid var(--border); background:var(--surface); color:var(--text);
@@ -86,33 +78,8 @@ button.pill[aria-current="page"]{
 }
 button.pill:hover{border-color:var(--accent)}
 
-/* Футер */
-.site-footer{
-  color:var(--muted); border-top:1px solid var(--border);
-  background:var(--surface); padding:16px 24px;
-}
+/* footer */
+.site-footer{color:var(--muted); border-top:1px solid var(--border); background:var(--surface); padding:16px 24px}
 
-/* Гасим переключатель темы, если он был в верстке */
-.theme-toggle, [data-role="theme-toggle"]{display:none !important}
-
-/* ===== Force global dark across all tabs/pages ===== */
-html, body, main, #app, .tab-page, .page, .container, .content {
-  background: var(--bg) !important;
-  color: var(--text) !important;
-}
-header, .site-header, footer, .site-footer, .sidebar, .panel, .toolbar {
-  background: var(--surface) !important;
-  color: var(--text) !important;
-  border-color: var(--border) !important;
-}
-a, .link { color: var(--accent) !important; }
-input, select, textarea, .input, .select, .textarea {
-  background: #0f141b !important; color: var(--text) !important; border: 1px solid var(--border) !important;
-}
-.card, .panel, .box {
-  background: var(--surface) !important; color: var(--text) !important;
-  border: 1px solid var(--border) !important; border-radius: 12px;
-}
-.badge { background: rgba(90,160,255,.15) !important; color: var(--accent) !important; border: 1px solid rgba(90,160,255,.35) !important; }
-.theme-toggle,[data-role="theme-toggle"]{ display:none !important; }
-/* ================================================ */
+/* disable any theme switchers */
+.theme-toggle,[data-role="theme-toggle"]{display:none !important}
