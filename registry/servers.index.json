@@ -1,486 +1,64 @@
 {
-  "updated_at": "2025-09-04T11:36:27.532Z",
+  "version": 1,
   "servers": [
     {
-      "id": "airtable",
-      "name": "airtable_mcp",
-      "manifest": "servers/airtable/mcp-server.json",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "draft",
-      "repo": "https://github.com/modelcontextprotocol/server-airtable",
-      "homepage": "https://airtable.com/developers/web/api/introduction",
+      "name": "AutoSpec Master Server",
+      "manifest": "servers/autospec-master-server/mcp-server.json",
       "meta": {
-        "category": "storage",
-        "license": "MIT",
-        "verified": false,
-        "description": "Read and write Airtable tables/records",
-        "badges": [
-          "community"
-        ],
-        "homepage": "https://airtable.com/developers/web/api/introduction",
-        "repo": "https://github.com/modelcontextprotocol/server-airtable",
-        "env_vars": [
-          "AIRTABLE_PAT"
-        ]
-      },
-      "auth": {
-        "type": "token",
-        "token_guide_url": "https://airtable.com/developers/web/guides/personal-access-tokens"
-      }
-    },
-    {
-      "id": "echo",
-      "name": "echo",
-      "manifest": "servers/echo/mcp-server.json",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "draft",
-      "repo": "https://github.com",
-      "homepage": "https://httpbin.org/",
-      "meta": {
-        "category": "other",
-        "license": "MIT",
-        "verified": false,
-        "description": "Demo httpbin endpoints",
-        "badges": [
-          "community"
-        ],
-        "homepage": "https://httpbin.org/",
-        "repo": "https://github.com"
-      }
-    },
-    {
-      "id": "fetch",
-      "name": "Fetch (reference)",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "stdio"
-      ],
-      "primitives": [
-        "tools",
-        "resources"
-      ],
-      "status": "stable",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
-      "meta": {
-        "category": "reference",
-        "client_matrix": {
-          "claude_desktop": [
-            "tools",
-            "resources"
-          ],
-          "chatgpt": [
-            "tools"
-          ]
-        }
-      }
-    },
-    {
-      "id": "filesystem",
-      "name": "Filesystem (reference)",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "stdio"
-      ],
-      "primitives": [
-        "tools",
-        "resources"
-      ],
-      "status": "stable",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
-      "meta": {
-        "category": "reference",
-        "client_matrix": {
-          "claude_desktop": [
-            "tools",
-            "resources"
-          ],
-          "chatgpt": [
-            "tools"
-          ]
-        }
-      }
-    },
-    {
-      "id": "git",
-      "name": "Git (reference)",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "stdio"
-      ],
-      "primitives": [
-        "tools",
-        "resources"
-      ],
-      "status": "stable",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
-      "meta": {
-        "category": "reference",
-        "client_matrix": {
-          "claude_desktop": [
-            "tools",
-            "resources"
-          ],
-          "chatgpt": [
-            "tools"
-          ]
-        }
-      }
-    },
-    {
-      "id": "github-remote",
-      "name": "GitHub MCP (hosted)",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools",
-        "resources"
-      ],
-      "status": "stable",
-      "repo": "https://github.blog/ai-and-ml/generative-ai/a-practical-guide-on-how-to-use-the-github-mcp-server/",
-      "homepage": "https://api.githubcopilot.com/mcp/",
-      "meta": {
-        "category": "official",
-        "auth": "oauth",
-        "client_matrix": {
-          "vs-code": [
-            "tools",
-            "resources"
-          ],
-          "visual-studio": [
-            "tools"
-          ],
-          "claude_desktop": [
-            "tools"
-          ]
-        }
-      },
-      "connect": {
-        "endpoint_url": "https://api.githubcopilot.com/mcp/"
-      }
-    },
-    {
-      "id": "github",
-      "name": "github_mcp",
-      "manifest": "servers/github/mcp-server.json",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "draft",
-      "repo": "https://github.com/modelcontextprotocol/server-github",
-      "homepage": "https://docs.github.com/en/rest",
-      "meta": {
+        "description": "Автоматическая спецификация системных промтов",
         "category": "devtools",
         "license": "MIT",
-        "verified": false,
-        "description": "Issues, PRs, repositories",
-        "badges": [
-          "verified"
-        ],
-        "homepage": "https://docs.github.com/en/rest",
-        "repo": "https://github.com/modelcontextprotocol/server-github",
-        "env_vars": [
-          "GITHUB_TOKEN"
-        ]
-      },
-      "auth": {
-        "type": "token",
-        "token_guide_url": "https://docs.github.com/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens"
+        "updated": "2025-09-04"
       }
     },
     {
-      "id": "memory",
-      "name": "Memory (reference)",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "stdio"
-      ],
-      "primitives": [
-        "tools",
-        "resources"
-      ],
-      "status": "stable",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
+      "name": "Uncertainty Engine Server",
+      "manifest": "servers/uncertainty-engine-server/mcp-server.json",
       "meta": {
-        "category": "reference",
-        "client_matrix": {
-          "claude_desktop": [
-            "tools",
-            "resources"
-          ],
-          "chatgpt": [
-            "tools"
-          ]
-        }
-      }
-    },
-    {
-      "id": "notion",
-      "name": "notion_mcp",
-      "manifest": "servers/notion/mcp-server.json",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "draft",
-      "repo": "https://github.com",
-      "homepage": "https://developers.notion.com/",
-      "meta": {
-        "category": "productivity",
-        "license": "MIT",
-        "verified": false,
-        "description": "Create pages and databases",
-        "badges": [
-          "community"
-        ],
-        "homepage": "https://developers.notion.com/",
-        "repo": "https://github.com",
-        "env_vars": [
-          "NOTION_TOKEN"
-        ]
-      },
-      "auth": {
-        "type": "token",
-        "token_guide_url": "https://developers.notion.com/docs/create-a-notion-integration"
-      }
-    },
-    {
-      "id": "openai",
-      "name": "openai_mcp",
-      "manifest": "servers/openai/mcp-server.json",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "draft",
-      "repo": "https://github.com",
-      "homepage": "https://platform.openai.com/docs",
-      "meta": {
+        "description": "Оценка неопределённости для LLM-ответов",
         "category": "ai",
         "license": "MIT",
-        "verified": false,
-        "description": "LLM requests (compatible API)",
-        "badges": [
-          "community"
-        ],
-        "homepage": "https://platform.openai.com/docs",
-        "repo": "https://github.com",
-        "env_vars": [
-          "OPENAI_API_KEY"
-        ]
-      },
-      "auth": {
-        "type": "token",
-        "token_guide_url": "https://platform.openai.com/api-keys"
+        "updated": "2025-09-04"
       }
     },
     {
-      "id": "sentry-remote",
-      "name": "Sentry MCP (hosted)",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools",
-        "resources"
-      ],
-      "status": "stable",
-      "repo": "https://github.com/getsentry/sentry-mcp",
-      "homepage": "https://docs.sentry.io/product/sentry-mcp/",
+      "name": "UniqueMark Policy Server",
+      "manifest": "servers/uniquemark-policy-server/mcp-server.json",
       "meta": {
-        "category": "official",
-        "auth": "token",
-        "client_matrix": {
-          "cursor": [
-            "tools",
-            "resources"
-          ],
-          "claude_desktop": [
-            "tools",
-            "resources"
-          ]
-        }
-      },
-      "connect": {
-        "endpoint_url": "https://mcp.sentry.dev/mcp"
-      }
-    },
-    {
-      "id": "sequential-thinking",
-      "name": "Sequential Thinking (reference)",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "stdio"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "stable",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
-      "meta": {
-        "category": "reference",
-        "client_matrix": {
-          "claude_desktop": [
-            "tools"
-          ],
-          "chatgpt": [
-            "tools"
-          ]
-        }
-      }
-    },
-    {
-      "id": "slack",
-      "name": "slack_mcp",
-      "manifest": "servers/slack/mcp-server.json",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "draft",
-      "repo": "https://github.com",
-      "homepage": "https://api.slack.com",
-      "meta": {
-        "category": "messaging",
+        "description": "Сервер политик UniqueMark",
+        "category": "ai",
         "license": "MIT",
-        "verified": false,
-        "description": "Post messages to Slack",
-        "badges": [
-          "community"
-        ],
-        "homepage": "https://api.slack.com",
-        "repo": "https://github.com",
-        "env_vars": [
-          "SLACK_BOT_TOKEN"
-        ]
-      },
-      "auth": {
-        "type": "token",
-        "token_guide_url": "https://api.slack.com/apps"
+        "updated": "2025-09-04"
       }
     },
     {
-      "id": "telegram",
-      "name": "telegram_mcp",
-      "manifest": "servers/telegram/mcp-server.json",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "draft",
-      "repo": "https://github.com",
-      "homepage": "https://core.telegram.org/bots/api",
+      "name": "Prompt Analytics Server",
+      "manifest": "servers/prompt-analytics-server/mcp-server.json",
       "meta": {
-        "category": "messaging",
+        "description": "Сбор и аналитика использования промтов",
+        "category": "analytics",
         "license": "MIT",
-        "verified": false,
-        "description": "Send messages in Telegram",
-        "badges": [
-          "community"
-        ],
-        "homepage": "https://core.telegram.org/bots/api",
-        "repo": "https://github.com",
-        "env_vars": [
-          "TELEGRAM_BOT_TOKEN"
-        ]
-      },
-      "auth": {
-        "type": "token",
-        "token_guide_url": "https://core.telegram.org/bots/features#botfather"
+        "updated": "2025-09-04"
       }
     },
     {
-      "id": "time",
-      "name": "Time (reference)",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "stdio"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "stable",
-      "repo": "https://github.com/modelcontextprotocol/servers",
-      "homepage": "https://modelcontextprotocol.io",
+      "name": "Materials Ledger Server",
+      "manifest": "servers/materials-ledger-server/mcp-server.json",
       "meta": {
-        "category": "reference",
-        "client_matrix": {
-          "claude_desktop": [
-            "tools"
-          ],
-          "chatgpt": [
-            "tools"
-          ]
-        }
-      }
-    },
-    {
-      "id": "trello",
-      "name": "trello_mcp",
-      "manifest": "servers/trello/mcp-server.json",
-      "protocol_min": "2025-06-18",
-      "transports": [
-        "streamable_http"
-      ],
-      "primitives": [
-        "tools"
-      ],
-      "status": "draft",
-      "repo": "https://github.com/modelcontextprotocol/server-trello",
-      "homepage": "https://developer.atlassian.com/cloud/trello/rest",
-      "meta": {
-        "category": "productivity",
+        "description": "Учёт материалов и заявок",
+        "category": "storage",
         "license": "MIT",
-        "verified": false,
-        "description": "Create and move cards on Trello boards",
-        "badges": [
-          "community"
-        ],
-        "homepage": "https://developer.atlassian.com/cloud/trello/rest",
-        "repo": "https://github.com/modelcontextprotocol/server-trello",
-        "env_vars": [
-          "TRELLO_KEY",
-          "TRELLO_TOKEN"
-        ]
-      },
-      "auth": {
-        "type": "token",
-        "token_guide_url": "https://trello.com/app-key"
+        "updated": "2025-09-04"
+      }
+    },
+    {
+      "name": "Ilyuha Archive Server",
+      "manifest": "servers/ilyuha-archive-server/mcp-server.json",
+      "meta": {
+        "description": "Архив и персональные данные",
+        "category": "storage",
+        "license": "MIT",
+        "updated": "2025-09-04"
       }
     }
   ]
