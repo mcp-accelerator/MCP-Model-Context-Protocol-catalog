@@ -1,7 +1,8 @@
 name: Pages
+
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -10,32 +11,31 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Prepare .nojekyll
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false    # важно: не трогаем субмодули, чтобы не падать на mcp-registry
+      - name: Ensure site exists
         run: |
-          mkdir -p site
+          test -d site || { echo "ERROR: site/ not found"; exit 1; }
+          # отключим Jekyll на всякий
           touch site/.nojekyll
-
-      - name: E2E: check main page exists
-        run: |
-          test -f site/index.html || (echo "No site/index.html"; exit 1)
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
         with:
           path: site
 
   deploy:
-    needs: build
     runs-on: ubuntu-latest
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
