@@ -4,15 +4,15 @@
   const els = { nav: document.getElementById("nav"), app: document.getElementById("app") };
 
   const NAV = `
-    <a href="${BASE}/#/">Главная</a>
-    <a href="${BASE}/#/catalog">Каталог</a>
-    <a href="${BASE}/#/protocol">Протокол</a>
-    <a href="${BASE}/#/sdk">SDK</a>
-    <a href="${BASE}/#/faq">FAQ</a>
+    <a href="/MCP-Model-Context-Protocol-catalog/#/">Главная</a>
+    <a href="/MCP-Model-Context-Protocol-catalog/#/catalog">Каталог</a>
+    <a href="/MCP-Model-Context-Protocol-catalog/#/protocol">Протокол</a>
+    <a href="/MCP-Model-Context-Protocol-catalog/#/sdk">SDK</a>
+    <a href="/MCP-Model-Context-Protocol-catalog/#/faq">FAQ</a>
     <a href="https://t.me/mcpcatalog" target="_blank" rel="noopener">Telegram</a>
     <a href="https://github.com/mcp-accelerator/MCP-Model-Context-Protocol-catalog" target="_blank" rel="noopener">GitHub</a>
-    <a href="${BASE}/#/generator">Генератор</a>
-    <a href="${BASE}/#/builder">Builder</a>
+    <a href="/MCP-Model-Context-Protocol-catalog/#/generator">Генератор</a>
+    <a href="/MCP-Model-Context-Protocol-catalog/#/builder">Builder</a>
   `;
   if (els.nav) els.nav.innerHTML = NAV;
 
@@ -134,15 +134,7 @@
     `;
   }
 
-  function viewBuilder() {
-    els.app.className = "";
-    // Встраиваем восстановлённую страницу билда
-    els.app.innerHTML = `
-      <div style="height:calc(100vh - 160px);">
-        <iframe src="${BASE}/site/builder.html" style="width:100%;height:100%;border:1px solid var(--border);border-radius:12px;background:var(--surface)"></iframe>
-      </div>
-    `;
-  }
+  function viewBuilder(){ window.location.href = "/MCP-Model-Context-Protocol-catalog/site/builder.html"; }
 
   function router() {
     const h = (location.hash || "#/").replace(/^#/, "");
