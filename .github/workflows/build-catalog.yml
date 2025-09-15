@@ -46,7 +46,7 @@ jobs:
       - name: List dist
         run: find dist -maxdepth 2 -type f -print
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
           name: github-pages
