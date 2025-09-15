@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "echo": {
+      "command": "node",
+      "args": [
+        "./servers/echo/dist/index.js"
+      ],
+      "env": {}
+    }
+  }
+}

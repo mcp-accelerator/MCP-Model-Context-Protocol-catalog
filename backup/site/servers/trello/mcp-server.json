@@ -1,0 +1,37 @@
+{
+  "name": "trello_mcp",
+  "version": "1.0.0",
+  "base_url": "https://api.trello.com/1",
+  "auth": {
+    "type": "apikey",
+    "env": "TRELLO_KEY",
+    "in": "query",
+    "name": "key"
+  },
+  "query_defaults": {
+    "token": "${env.TRELLO_TOKEN}"
+  },
+  "capabilities": [
+    {}
+  ],
+  "meta": {
+    "title": "Trello",
+    "description": "Create and move cards on Trello boards",
+    "category": "productivity",
+    "homepage": "https://developer.atlassian.com/cloud/trello/rest",
+    "repo": "https://github.com/modelcontextprotocol/server-trello",
+    "license": "MIT",
+    "badges": [
+      "community"
+    ],
+    "maintainers": [
+      "BogdanAIP"
+    ],
+    "keywords": [],
+    "capabilities": [
+      "REST API",
+      "Webhooks",
+      "OAuth"
+    ]
+  }
+}

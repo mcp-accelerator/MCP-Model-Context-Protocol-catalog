@@ -1,0 +1,9 @@
+{
+  "hero_title": "Build & connect MCP servers faster",
+  "hero_text": "Catalog of ready-to-use servers + Builder to generate your own. Follow simple steps, copy configs, test in Inspector.",
+  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "cta": [
+    { "label": "Open Builder", "href": "builder.html" },
+    { "label": "Browse Catalog", "href": "catalog.html" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "notion": {
+      "command": "node",
+      "args": [
+        "./servers/notion/dist/index.js"
+      ],
+      "env": {
+        "NOTION_TOKEN": ""
+      }
+    }
+  }
+}

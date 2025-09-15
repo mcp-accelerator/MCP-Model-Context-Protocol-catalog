@@ -1,0 +1,32 @@
+{
+  "name": "slack_mcp",
+  "version": "1.0.0",
+  "base_url": "https://slack.com/api",
+  "auth": {
+    "type": "bearer",
+    "env": "SLACK_BOT_TOKEN",
+    "scopes_hint": [
+      "chat:write"
+    ]
+  },
+  "capabilities": [
+    {}
+  ],
+  "meta": {
+    "title": "Slack",
+    "description": "Post messages to Slack",
+    "category": "messaging",
+    "homepage": "https://api.slack.com",
+    "repo": "https://github.com",
+    "license": "MIT",
+    "badges": [
+      "community"
+    ],
+    "keywords": [],
+    "capabilities": [
+      "REST API",
+      "Webhooks",
+      "OAuth"
+    ]
+  }
+}

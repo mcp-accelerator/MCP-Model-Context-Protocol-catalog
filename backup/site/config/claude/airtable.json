@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "airtable": {
+      "command": "node",
+      "args": [
+        "./servers/airtable/dist/index.js"
+      ],
+      "env": {
+        "AIRTABLE_PAT": ""
+      }
+    }
+  }
+}
