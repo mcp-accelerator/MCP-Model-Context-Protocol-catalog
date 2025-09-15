@@ -1,6 +1,6 @@
 (() => {
   const BASE = "/MCP-Model-Context-Protocol-catalog";
-  const PATH_JSON = `${BASE}/registry/servers.index.json`;
+  const PATH_JSON = "/MCP-Model-Context-Protocol-catalog/registry/servers.index.json";
   const els = { nav: document.getElementById("nav"), app: document.getElementById("app") };
 
   const NAV = `
