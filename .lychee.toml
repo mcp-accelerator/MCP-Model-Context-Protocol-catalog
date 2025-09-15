@@ -1,0 +1,29 @@
+exclude_path = [
+  "^node_modules/",
+  "^backup/",
+  "^tools/reports/",
+  "^./backup/",
+  "^./tools/reports/",
+  "^site/link-audit.txt$",
+  "^backup/site/link-audit.txt$"
+]
+
+exclude = [
+  "^https://api\\.github\\.com/",
+  "^https://api\\.openai\\.com/",
+  "^https://platform\\.openai\\.com/",
+  "^https://api\\.airtable\\.com/",
+  "^https://api\\.notion\\.com/",
+  "^https://mcp\\.sentry\\.dev/",
+  "^https://trello\\.com/",
+  "^https://api\\.githubcopilot\\.com/",
+  "^https://raw\\.githubusercontent\\.com/%7Bowner%7D/%7Brepo%7D",
+  "^https://github\\.com/modelcontextprotocol/server-(airtable|github|trello)$"
+]
+
+accept = [200, 206, 301, 302, 307, 308, 429]
+max_redirects = 5
+retry_wait_time = 2
+no_progress = true
+format = "markdown"
+output = "lychee/out.md"
