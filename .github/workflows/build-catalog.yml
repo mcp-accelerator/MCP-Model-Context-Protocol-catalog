@@ -32,6 +32,16 @@ jobs:
           mkdir -p dist/site dist/registry
           rsync -a site/ dist/site/
           jq -c . registry/servers.index.json > dist/registry/servers.index.json
+          # корневые SPA-файлы:
+          install -D -m 0644 index.html   dist/index.html
+          install -D -m 0644 catalog.html dist/catalog.html
+          install -D -m 0644 protocol.html dist/protocol.html
+          install -D -m 0644 sdk.html      dist/sdk.html
+          install -D -m 0644 faq.html      dist/faq.html
+          set -e
+          mkdir -p dist/site dist/registry
+          rsync -a site/ dist/site/
+          jq -c . registry/servers.index.json > dist/registry/servers.index.json
 
           # NEW: копируем корневые страницы в корень артефакта
           install -D -m 0644 index.html   dist/index.html
