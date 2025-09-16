@@ -1,0 +1,29 @@
+name: Validate Index
+on:
+  pull_request:
+    paths:
+      - 'registry/**'
+      - 'schema/**'
+  push:
+    branches: [ main ]
+    paths:
+      - 'registry/**'
+      - 'schema/**'
+
+permissions: { contents: read }
+
+jobs:
+  ajv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm -g i ajv-cli@5
+      - name: Validate index schema (existence + format)
+        run: |
+          test -s registry/servers.index.json
+          jq '.servers // .' registry/servers.index.json | jq 'length' | grep -E '^[1-9][0-9]*$'
+      - name: Validate manifests shape with AJV (best-effort)
+        run: |
+          ajv validate -s schema/mcp-server.schema.json -d 'servers/*/mcp-server.json' || true

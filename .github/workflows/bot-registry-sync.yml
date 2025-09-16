@@ -1,0 +1,29 @@
+name: Bot • Registry Sync
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *"   # раз в день
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch external registry
+        run: |
+          set -e
+          mkdir -p registry
+          curl -fsSL https://mcp-accelerator.github.io/mcp-registry/servers.index.json -o registry/servers.index.json
+          jq . registry/servers.index.json >/dev/null
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: bot/registry-sync
+          title: "chore(registry): sync from mcp-registry"
+          commit-message: "chore(registry): sync from mcp-registry"
+          body: "Автосинхронизация index из внешнего реестра."
+          delete-branch: true
