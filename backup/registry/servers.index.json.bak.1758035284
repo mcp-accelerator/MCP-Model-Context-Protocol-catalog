@@ -1,0 +1,70 @@
+{
+  "servers": [
+    {
+      "id": "autospec-master-server",
+      "name": "AutoSpec Master Server",
+      "manifest": "servers/autospec-master-server/mcp-server.json",
+      "meta": {
+        "description": "Автоматическая спецификация системных промтов",
+        "category": "devtools",
+        "license": "MIT",
+        "updated": "2025-09-04"
+      }
+    },
+    {
+      "id": "uncertainty-engine-server",
+      "name": "Uncertainty Engine Server",
+      "manifest": "servers/uncertainty-engine-server/mcp-server.json",
+      "meta": {
+        "description": "Оценка неопределённости для LLM-ответов",
+        "category": "ai",
+        "license": "MIT",
+        "updated": "2025-09-04"
+      }
+    },
+    {
+      "id": "uniquemark-policy-server",
+      "name": "UniqueMark Policy Server",
+      "manifest": "servers/uniquemark-policy-server/mcp-server.json",
+      "meta": {
+        "description": "Сервер политик UniqueMark",
+        "category": "ai",
+        "license": "MIT",
+        "updated": "2025-09-04"
+      }
+    },
+    {
+      "id": "prompt-analytics-server",
+      "name": "Prompt Analytics Server",
+      "manifest": "servers/prompt-analytics-server/mcp-server.json",
+      "meta": {
+        "description": "Сбор и аналитика использования промтов",
+        "category": "analytics",
+        "license": "MIT",
+        "updated": "2025-09-04"
+      }
+    },
+    {
+      "id": "materials-ledger-server",
+      "name": "Materials Ledger Server",
+      "manifest": "servers/materials-ledger-server/mcp-server.json",
+      "meta": {
+        "description": "Учёт материалов и заявок",
+        "category": "storage",
+        "license": "MIT",
+        "updated": "2025-09-04"
+      }
+    },
+    {
+      "id": "ilyuha-archive-server",
+      "name": "Ilyuha Archive Server",
+      "manifest": "servers/ilyuha-archive-server/mcp-server.json",
+      "meta": {
+        "description": "Архив и персональные данные",
+        "category": "storage",
+        "license": "MIT",
+        "updated": "2025-09-04"
+      }
+    }
+  ]
+}
