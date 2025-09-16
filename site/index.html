@@ -1,2 +1,55 @@
-<!doctype html><meta charset="utf-8"><title>Catalog</title>
-<p><a href="/MCP-Model-Context-Protocol-catalog/catalog.html">Перейти в каталог</a></p>
+<!doctype html><html lang="ru"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>MCP Catalog — Витрина</title>
+<link rel="stylesheet" href="./style.css"/>
+</head><body>
+<header class="header">
+  <h1>MCP Catalog</h1>
+  <nav class="nav">
+    <a href="/MCP-Model-Context-Protocol-catalog/">Главная</a>
+    <a href="/MCP-Model-Context-Protocol-catalog/site/">Витрина</a>
+    <a href="/MCP-Model-Context-Protocol-catalog/site/generator.html">Генератор</a>
+    <a href="https://t.me/mcpcatalog" target="_blank" rel="noopener">Telegram</a>
+  </nav>
+  <p class="muted">Публичный каталог MCP-серверов. Карточки подтягиваются из внешнего реестра.</p>
+</header>
+
+<main class="container">
+  <input id="q" class="search" placeholder="Поиск по названию/описанию…" />
+  <div id="list" class="grid"></div>
+  <p id="empty" class="muted" style="display:none">Пусто. Измени фильтры или запрос.</p>
+</main>
+
+<footer class="container footer muted">© MCP Accelerator. Источник: mcp-registry.</footer>
+<script>
+const REG_URL='https://mcp-accelerator.github.io/mcp-registry/servers.index.json';
+const list=document.getElementById('list'), q=document.getElementById('q'), empty=document.getElementById('empty');
+
+const norm = (arr)=> Array.isArray(arr)?arr:(Array.isArray(arr?.servers)?arr.servers:[]);
+const card = (it)=> `<article class="card">
+  <h3>${(it.name||it.id||'Без имени')}</h3>
+  <p class="muted">${(it.meta?.description||it.description||'')}</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+    ${it.homepage?`<a class="badge" href="${it.homepage}" target="_blank" rel="noopener">Homepage</a>`:''}
+    ${it.repo?`<a class="badge" href="${it.repo}" target="_blank" rel="noopener">Repo</a>`:''}
+    ${it.manifest?`<a class="badge" href="/MCP-Model-Context-Protocol-catalog/${it.manifest}" target="_blank" rel="noopener">Manifest</a>`:''}
+  </div>
+</article>`;
+
+let data=[];
+async function load(){
+  const r=await fetch(REG_URL,{headers:{'cache-control':'no-cache'}});
+  const j=await r.json();
+  data = norm(j).filter(x=>!String(x.id||'').startsWith('_'));
+  render('');
+}
+function render(term){
+  const t=term.trim().toLowerCase();
+  const view = t? data.filter(x=>(x.name||'').toLowerCase().includes(t)||(x.meta?.description||x.description||'').toLowerCase().includes(t)) : data;
+  list.innerHTML = view.map(card).join('');
+  empty.style.display = view.length? 'none':'block';
+}
+q.addEventListener('input',e=>render(e.target.value));
+load().catch(e=>{list.innerHTML=`<div class="card"><h3>Ошибка загрузки</h3><p class="muted">${e}</p></div>`});
+</script>
+</body></html>

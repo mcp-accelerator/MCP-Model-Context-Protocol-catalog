@@ -1,0 +1,56 @@
+name: Build & Deploy Catalog
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build dist (site + external registry)
+        run: |
+          set -e
+          mkdir -p dist/site dist/registry
+          rsync -a site/ dist/site/
+
+          node -e "const fs=require('fs');(async()=>{\
+            const r=await fetch('https://mcp-accelerator.github.io/mcp-registry/servers.index.json');\
+            const j=await r.json();\
+            const arr=Array.isArray(j)?j:(Array.isArray(j.servers)?j.servers:[]);\
+            if(!arr.length){ throw new Error('external registry is empty'); }\
+            fs.writeFileSync('dist/registry/servers.index.json', JSON.stringify({servers:arr}));\
+          })().catch(e=>{console.error(e);process.exit(1)});"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
