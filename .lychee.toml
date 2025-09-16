@@ -1,6 +1,9 @@
 exclude_path = ["^node_modules/","^backup/","^tools/reports/","^docs/ignored-audits/"]
 exclude = [
-  "^https://api\\.", "^https://platform\\.openai\\.com", "^https://trello\\.com", "^https://mcp\\.sentry\\.dev"
+  "^https://api\\.",
+  "^https://platform\\.openai\\.com",
+  "^https://trello\\.com",
+  "^https://mcp\\.sentry\\.dev"
 ]
 accept = [200,206,301,302,307,308,429]
 max_redirects = 5

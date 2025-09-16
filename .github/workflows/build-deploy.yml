@@ -9,7 +9,9 @@ permissions:
   pages: write
   id-token: write
 
-concurrency: { group: pages, cancel-in-progress: true }
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -26,7 +28,9 @@ jobs:
             -o dist/registry/servers.index.json
           jq . dist/registry/servers.index.json >/dev/null
       - uses: actions/upload-pages-artifact@v3
-        with: { name: github-pages, path: dist }
+        with:
+          name: github-pages
+          path: dist
 
   deploy:
     needs: build
