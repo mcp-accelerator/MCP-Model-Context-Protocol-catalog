@@ -1,1 +1,6 @@
-* @BogdanAIP
+# Сайт и CI требуют ревью владельца
+/site/**                  @BogdanAIP
+/.github/workflows/**     @BogdanAIP
+
+# Карточки/индекс — можно автомержить после зелёных проверок
+/registry/**              @BogdanAIP
