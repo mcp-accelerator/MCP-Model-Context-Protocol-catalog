@@ -96,3 +96,9 @@ main().catch(err=>{
   els.list.innerHTML = `<div class="card"><h2>Ошибка загрузки</h2><p>Проверьте <code>registry/servers.index.json</code>.</p></div>`;
 });
 
+
+function normalizeIndex(data){
+  const arr = Array.isArray(data) ? data : Array.isArray(data?.servers) ? data.servers : [];
+  // берём только «реальные» карточки: есть имя и либо repo/homepage/manifest
+  return arr.filter(x => typeof x === 'object' && x && (x.repo || x.homepage || x.manifest) && x.name);
+}
