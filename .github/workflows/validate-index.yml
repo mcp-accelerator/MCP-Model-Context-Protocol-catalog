@@ -1,33 +1,24 @@
 name: Validate Index
 on:
   pull_request:
-    paths: ['registry/**','schema/**','servers/**']
+    paths: ['registry/**','schema/**','servers/**','tools/validate-index.mjs']
   push:
     branches: [ main ]
-    paths: ['registry/**','schema/**','servers/**']
+    paths: ['registry/**','schema/**','servers/**','tools/validate-index.mjs']
 
 permissions:
   contents: read
 
 jobs:
-  ajv:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Validate servers.index.json against schema
+      - name: Validate servers.index.json & manifests (AJV draft-07)
         run: |
-          set -e
-          # если индекс хранится массивом или объектом с .servers — выровняем к массиву
-          jq '.servers // .' registry/servers.index.json > .tmp.index.json
-          npx --yes -p ajv-cli@5 ajv validate --spec=draft7 --strict=false \
-            -s schema/servers.index.schema.json \
-            -d .tmp.index.json
-          rm -f .tmp.index.json
-      - name: Validate individual manifests (best-effort)
-        run: |
-          npx --yes -p ajv-cli@5 ajv validate --spec=draft7 --strict=false \
-            -s schema/mcp-server.schema.json \
-            -d 'servers/*/mcp-server.json' || true
+          node --version
+          # Скрипт сам дергает "npx -y ajv-cli@5 ..."
+          node tools/validate-index.mjs
