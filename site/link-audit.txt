@@ -71,8 +71,8 @@ https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/prompts.htm
 https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/protocol.html
 https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/sdk.html
 https://mcp-accelerator.github.io/MCP-Model-Context-Protocol-catalog/server.html
-https://mcp-accelerator.github.io/mcp-registry/servers.index.json
-https://mcp-accelerator.github.io/mcp-registry/servers.index.json`
+/MCP-Model-Context-Protocol-catalog/registry/servers.index.json
+/MCP-Model-Context-Protocol-catalog/registry/servers.index.json`
 https://mcp.sentry.dev/mcp
 https://modelcontextprotocol.io
 https://modelcontextprotocol.io/docs/getting-started/intro
@@ -219,32 +219,32 @@ site/sitemap.xml:4:<url><loc>https://mcp-accelerator.github.io/MCP-Model-Context
 site/index.html:40:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
 site/sdk.html:31:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
 site/generator.html:53:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
-site/link-audit.txt:74:https://mcp-accelerator.github.io/mcp-registry/servers.index.json
-site/link-audit.txt:75:https://mcp-accelerator.github.io/mcp-registry/servers.index.json`
+site/link-audit.txt:74:/MCP-Model-Context-Protocol-catalog/registry/servers.index.json
+site/link-audit.txt:75:/MCP-Model-Context-Protocol-catalog/registry/servers.index.json`
 site/assets/builder.js:6:  const REG_URL = window.REGISTRY_URL
 site/assets/builder.js:7:    || document.querySelector('meta[name="mcp-registry"]')?.content
-site/assets/builder.js:8:    || 'https://mcp-accelerator.github.io/mcp-registry/servers.index.json';
-site/assets/app.js:46:      fetch('./https://mcp-accelerator.github.io/mcp-registry/servers.index.json')
+site/assets/builder.js:8:    || '/MCP-Model-Context-Protocol-catalog/registry/servers.index.json';
+site/assets/app.js:46:      fetch('.//MCP-Model-Context-Protocol-catalog/registry/servers.index.json')
 site/assets/app.js:128:try{ if(typeof REGISTRY_URL!=='undefined'){ window.REGISTRY_URL = REGISTRY_URL; } }catch(e){}
 site/faq.html:82:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
-site/app.js:80:  const res = await fetch("./https://mcp-accelerator.github.io/mcp-registry/servers.index.json", { cache: "no-cache" });
-site/app.js:96:  els.list.innerHTML = `<div class="card"><h2>Ошибка загрузки</h2><p>Проверьте <code>https://mcp-accelerator.github.io/mcp-registry/servers.index.json</code>.</p></div>`;
+site/app.js:80:  const res = await fetch(".//MCP-Model-Context-Protocol-catalog/registry/servers.index.json", { cache: "no-cache" });
+site/app.js:96:  els.list.innerHTML = `<div class="card"><h2>Ошибка загрузки</h2><p>Проверьте <code>/MCP-Model-Context-Protocol-catalog/registry/servers.index.json</code>.</p></div>`;
 site/catalog.html:442:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
 site/builder.html:7:  <!-- fallback if window.REGISTRY_URL is not set -->
-site/builder.html:8:  <meta name="mcp-registry" content="https://mcp-accelerator.github.io/mcp-registry/servers.index.json">
+site/builder.html:8:  <meta name="mcp-registry" content="/MCP-Model-Context-Protocol-catalog/registry/servers.index.json">
 site/prompts.html:31:Цель: поддерживать качество `registry/servers.index.json`.
 site/prompts.html:38:Цель: поддерживать качество `registry/servers.index.json`.
 site/prompts.html:89:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
 site/prompts/catalog_curator.md:2:Цель: поддерживать качество `registry/servers.index.json`.
 site/protocol.html:32:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
-tools/validate-index.mjs:6:const data   = JSON.parse(fs.readFileSync("registry/servers.index.json", "utf8"));
+tools/validate-index.mjs:6:const data   = JSON.parse(fs.readFileSync("/MCP-Model-Context-Protocol-catalog/registry/servers.index.json", "utf8"));
 tools/discover.py:7:REGISTRY = ROOT / "registry" / "servers.index.json"
 tools/site-build.mjs:34:<footer class="site-foot">© MCP Accelerator · Data: <code translate="no" class="notranslate">registry/servers.index.json</code></footer>
-tools/site-build.mjs:40:const reg = readJSON("registry/servers.index.json");
-tools/merge-index.disabled.mjs:9:const registryPath = path.join(root, "registry/servers.index.json");
-tools/build-site.mjs:2:const index = JSON.parse(fs.readFileSync("registry/servers.index.json","utf8"));
+tools/site-build.mjs:40:const reg = readJSON("/MCP-Model-Context-Protocol-catalog/registry/servers.index.json");
+tools/merge-index.disabled.mjs:9:const registryPath = path.join(root, "/MCP-Model-Context-Protocol-catalog/registry/servers.index.json");
+tools/build-site.mjs:2:const index = JSON.parse(fs.readFileSync("/MCP-Model-Context-Protocol-catalog/registry/servers.index.json","utf8"));
 tools/build-site.mjs:62:    <p class="hint">Источник данных: <code>registry/servers.index.json</code>. Показаны локальные и hosted/reference.</p>
-tools/validate-manifests.mjs:5:const index  = JSON.parse(fs.readFileSync("registry/servers.index.json", "utf8"));
+tools/validate-manifests.mjs:5:const index  = JSON.parse(fs.readFileSync("/MCP-Model-Context-Protocol-catalog/registry/servers.index.json", "utf8"));
 
 ## SITEMAP URLs
 http://www.sitemaps.org/schemas/sitemap/0.9">

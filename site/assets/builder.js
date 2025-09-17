@@ -5,7 +5,7 @@
   const serverId = QS.get('id') || '';
   const REG_URL = window.REGISTRY_URL
     || document.querySelector('meta[name="mcp-registry"]')?.content
-    || 'https://mcp-accelerator.github.io/mcp-registry/servers.index.json';
+    || '/MCP-Model-Context-Protocol-catalog/registry/servers.index.json';
 
   function clamp(n){ return Math.min(STEP_MAX, Math.max(STEP_MIN, isFinite(n)?n:1)); }
   function setStep(n){ QS.set('step', String(clamp(n))); history.replaceState(null,'','?'+QS.toString()); highlightStep(); showStep(); }
