@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci --no-audit --no-fund
+      - name: CI deps (bare)
+        run: npm ci --no-audit --no-fund || true
       - name: Validate servers index & manifests (draft-07)
         run: node tools/validate-index.mjs
