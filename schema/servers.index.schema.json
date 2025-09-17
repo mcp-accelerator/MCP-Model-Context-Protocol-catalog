@@ -1,171 +1,80 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://example.com/schema/servers.index.schema.json",
-  "title": "MCP servers index",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "updated_at": {
-      "type": "string",
-      "format": "date-time"
+  "title": "MCP Servers Index",
+  "type": ["object","array"],
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["servers"],
+      "properties": {
+        "servers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/server" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
     },
-    "servers": {
+    {
       "type": "array",
-      "minItems": 1,
-      "items": {
-        "$ref": "#/definitions/server"
-      }
+      "items": { "$ref": "#/$defs/server" },
+      "minItems": 1
     }
-  },
-  "required": [
-    "servers"
   ],
-  "definitions": {
+  "$defs": {
     "link": {
       "type": "string",
       "format": "uri"
     },
     "server": {
       "type": "object",
-      "additionalProperties": false,
+      "required": ["id","name","manifest"],
       "properties": {
-        "id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "stable",
-            "beta",
-            "alpha",
-            "draft",
-            "experimental"
-          ]
-        },
-        "protocol_min": {
-          "type": "string"
-        },
-        "transports": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string"
-          }
-        },
-        "primitives": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": [
-              "tools",
-              "resources",
-              "prompts"
-            ]
-          }
-        },
-        "manifest": {
-          "type": "string"
-        },
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "manifest": { "type": "string" },
         "manifests": {
           "type": "array",
           "items": {
-            "type": "object",
-            "additionalProperties": false,
+            "type":"object",
+            "required":["uri"],
             "properties": {
-              "path": {
-                "type": "string"
-              },
-              "uri": {
-                "type": "string",
-                "format": "uri"
-              }
-            }
+              "uri": { "type": "string", "format": "uri" },
+              "note": { "type": "string" }
+            },
+            "additionalProperties": false
           }
         },
+        "homepage": { "$ref": "#/$defs/link" },
+        "repo": { "$ref": "#/$defs/link" },
         "connect": {
           "type": "object",
-          "additionalProperties": false,
           "properties": {
-            "endpoint_url": {
-              "type": "string",
-              "format": "uri"
-            }
-          }
+            "endpoint_url": { "type": "string", "format": "uri" }
+          },
+          "additionalProperties": true
         },
         "auth": {
           "type": "object",
-          "additionalProperties": false,
           "properties": {
-            "type": {
-              "type": "string",
-              "enum": [
-                "none",
-                "token",
-                "oauth"
-              ]
-            },
-            "token_guide_url": {
-              "type": "string",
-              "format": "uri"
-            },
-            "token_scopes": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "homepage": {
-          "$ref": "#/definitions/link"
-        },
-        "repo": {
-          "$ref": "#/definitions/link"
-        },
-        "links": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "homepage": {
-              "$ref": "#/definitions/link"
-            },
-            "docs": {
-              "$ref": "#/definitions/link"
-            },
-            "repo": {
-              "$ref": "#/definitions/link"
-            }
-          }
+            "token_guide_url": { "type": "string", "format": "uri" }
+          },
+          "additionalProperties": true
         },
         "meta": {
           "type": "object",
-          "additionalProperties": true,
           "properties": {
-            "category": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "env_vars": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "clients": {
-          "type": "object",
+            "description": { "type": "string" },
+            "category": { "type": "string" },
+            "license": { "type": "string" },
+            "updated": { "type": "string", "format": "date-time" }
+          },
           "additionalProperties": true
-        }
+        },
+        "logo": { "$ref": "#/$defs/link" }
       },
-      "required": [
-        "id"
-      ]
+      "additionalProperties": true
     }
   }
 }
