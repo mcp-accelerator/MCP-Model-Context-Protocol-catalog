@@ -1,17 +1,17 @@
 name: Validate Index
 on:
   pull_request:
-    paths: ['registry/**','schema/**']
+    paths:
+      - 'registry/**'
+      - 'schema/**'
   push:
     branches: [ main ]
-    paths: ['registry/**','schema/**']
+    paths:
+      - 'registry/**'
+      - 'schema/**'
 
 permissions:
   contents: read
-
-concurrency:
-  group: validate-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 
 jobs:
   ajv:
@@ -19,12 +19,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+        with:
+          node-version: '20'
       - run: npm -g i ajv-cli@5
-      - name: Sanity: index exists & non-empty
+      - name: Basic index presence & non-empty
         run: |
           test -s registry/servers.index.json
-          jq '.servers // .' registry/servers.index.json | jq 'length' | grep -E '^[1-9][0-9]*$'
-      - name: AJV (best-effort)
+          jq '(.servers // .) | length' registry/servers.index.json | grep -E '^[1-9][0-9]*$'
+      - name: Validate manifests (best-effort)
         run: |
-          ajv validate -s schema/mcp-server.schema.json -d 'servers/*/mcp-server.json' || true
+          if [ -f schema/mcp-server.schema.json ]; then
+            ajv validate -s schema/mcp-server.schema.json -d 'servers/*/mcp-server.json' || true
+          else
+            echo "schema not found, skipping"
+          fi
