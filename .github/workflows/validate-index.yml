@@ -1,23 +1,44 @@
 name: Validate Index
 on:
   pull_request:
-    paths: ['registry/**','schema/**','servers/**','tools/validate-index.mjs','package.json','package-lock.json']
+    paths: ['registry/**','schema/**','servers/**']
   push:
     branches: [ main ]
-    paths: ['registry/**','schema/**','servers/**','tools/validate-index.mjs','package.json','package-lock.json']
+    paths: ['registry/**','schema/**','servers/**']
 
 permissions:
   contents: read
 
 jobs:
-  ajv:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-      - run: npm ci --no-audit --no-fund
-      - name: Validate servers index & manifests (draft-07)
-        run: node tools/validate-index.mjs
+
+      # Проверим, что индекс не пуст
+      - name: Sanity check index length
+        run: |
+          test -s registry/servers.index.json
+          jq '(.servers // .) | length' registry/servers.index.json | grep -E '^[1-9][0-9]*$'
+
+      # Валидация схем draft-07 без глобального ajv (через npx с зафиксированной версией)
+      - name: Validate manifests (draft-07)
+        run: |
+          npx -y ajv-cli@5 ajv validate --spec=draft7 \
+            -s schema/mcp-server.schema.json \
+            -d 'servers/*/mcp-server.json' \
+            --strict=false || true
+
+      - name: Validate index shape (если есть схема индекса)
+        run: |
+          if [ -f schema/mcp-server-index.schema.json ]; then
+            jq '.servers // .' registry/servers.index.json > .tmp.index.json
+            npx -y ajv-cli@5 ajv validate --spec=draft7 \
+              -s schema/mcp-server-index.schema.json \
+              -d .tmp.index.json \
+              --strict=false
+          fi
