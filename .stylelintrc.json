@@ -1,0 +1,14 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "selector-class-pattern": null,
+    "no-duplicate-selectors": null,
+    "no-descending-specificity": null,
+    "declaration-block-single-line-max-declarations": null,
+    "color-hex-length": "short",
+    "color-function-notation": "modern",
+    "alpha-value-notation": "percentage",
+    "shorthand-property-no-redundant-values": true,
+    "font-family-name-quotes": "always-unless-keyword"
+  }
+}
