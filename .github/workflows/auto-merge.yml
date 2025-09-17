@@ -15,17 +15,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Find PR from bot branch
-        id: pr
-        run: |
-          gh pr list --state open --json number,headRefName,files \
-            | jq -r '.[] | select(.headRefName=="bot/registry-sync") | .number' | head -n1 > pr.txt || true
-          PR=$(cat pr.txt || true)
-          if [ -z "$PR" ]; then echo "no PR"; exit 0; fi
-          echo "pr=$PR" >> $GITHUB_OUTPUT
-        env: { GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} }
-      - name: Enable auto-merge (squash)
-        if: steps.pr.outputs.pr
-        run: gh pr merge $PR --squash --auto
+        id: find
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR: ${{ steps.pr.outputs.pr }}
+        run: |
+          gh pr list --state open --json number,headRefName \
+            | jq -r '.[] | select(.headRefName=="bot/registry-sync") | .number' | head -n1 > pr.txt || true
+          PR=$(cat pr.txt || true)
+          if [ -z "$PR" ]; then
+            echo "no PR"; exit 0
+          fi
+          echo "pr=$PR" >> $GITHUB_OUTPUT
+      - name: Enable auto-merge (squash)
+        if: steps.find.outputs.pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge "${{ steps.find.outputs.pr }}" --squash --auto
