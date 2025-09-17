@@ -1,10 +1,10 @@
 name: Validate Index
 on:
   pull_request:
-    paths: ['registry/**','schema/**','servers/**']
+    paths: ['registry/**','schema/**','servers/**','tools/validate-index.mjs','package.json','package-lock.json']
   push:
     branches: [ main ]
-    paths: ['registry/**','schema/**','servers/**']
+    paths: ['registry/**','schema/**','servers/**','tools/validate-index.mjs','package.json','package-lock.json']
 
 permissions:
   contents: read
@@ -17,14 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install ajv-cli
-        run: npm -g i ajv-cli@5
-      - name: Validate manifests (draft-07)
-        run: |
-          ajv validate --spec=draft7 -s schema/mcp-server.schema.json -d 'servers/*/mcp-server.json' --strict=false || true
-      - name: Validate index (draft-07)
-        run: |
-          test -s registry/servers.index.json
-          jq '.servers // .' registry/servers.index.json > .tmp.index.json
-          ajv validate --spec=draft7 -s schema/mcp-server-index.schema.json -d .tmp.index.json --strict=false
-          rm -f .tmp.index.json
+          cache: 'npm'
+      - run: npm ci --no-audit --no-fund
+      - name: Validate servers index & manifests (draft-07)
+        run: node tools/validate-index.mjs
