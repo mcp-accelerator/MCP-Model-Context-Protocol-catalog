@@ -101,7 +101,7 @@ jobs:
           set -eux
           test -f schema/mcp-server.schema.json
           # Принудительно draft-07 — без fallback, чтобы не "гонять драфты по кругу"
-          ajv validate --spec=draft7 --strict=false \
+          npx --yes --package=ajv-cli@5 ajv validate --spec=draft7 --strict=false \
             -s schema/mcp-server.schema.json \
             -d "servers/*/mcp-server.json"
 YAML
