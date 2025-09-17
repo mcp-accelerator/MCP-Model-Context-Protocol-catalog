@@ -10,35 +10,24 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  ajv:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      # Проверим, что индекс не пуст
-      - name: Sanity check index length
+      - name: Validate servers.index.json against schema
         run: |
-          test -s registry/servers.index.json
-          jq '(.servers // .) | length' registry/servers.index.json | grep -E '^[1-9][0-9]*$'
-
-      # Валидация схем draft-07 без глобального ajv (через npx с зафиксированной версией)
-      - name: Validate manifests (draft-07)
+          set -e
+          # если индекс хранится массивом или объектом с .servers — выровняем к массиву
+          jq '.servers // .' registry/servers.index.json > .tmp.index.json
+          npx --yes -p ajv-cli@5 ajv validate --spec=draft7 --strict=false \
+            -s schema/servers.index.schema.json \
+            -d .tmp.index.json
+          rm -f .tmp.index.json
+      - name: Validate individual manifests (best-effort)
         run: |
-          npx -y ajv-cli@5 ajv validate --spec=draft7 \
+          npx --yes -p ajv-cli@5 ajv validate --spec=draft7 --strict=false \
             -s schema/mcp-server.schema.json \
-            -d 'servers/*/mcp-server.json' \
-            --strict=false || true
-
-      - name: Validate index shape (если есть схема индекса)
-        run: |
-          if [ -f schema/mcp-server-index.schema.json ]; then
-            jq '.servers // .' registry/servers.index.json > .tmp.index.json
-            npx -y ajv-cli@5 ajv validate --spec=draft7 \
-              -s schema/mcp-server-index.schema.json \
-              -d .tmp.index.json \
-              --strict=false
-          fi
+            -d 'servers/*/mcp-server.json' || true
