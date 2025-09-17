@@ -17,10 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-      - name: CI deps (минимум, чтобы npx работал корректно)
-        run: |
-          npm ci --no-audit --no-fund || true
+          cache: npm
+      - run: npm ci --no-audit --no-fund
       - name: Validate servers index & manifests (draft-07)
-        run: |
-          node tools/validate-index.mjs
+        run: node tools/validate-index.mjs
