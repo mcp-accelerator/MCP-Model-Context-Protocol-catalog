@@ -5,96 +5,167 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "updated_at": { "type": "string", "format": "date-time" },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
     "servers": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/definitions/server" }
+      "items": {
+        "$ref": "#/definitions/server"
+      }
     }
   },
-  "required": ["servers"],
+  "required": [
+    "servers"
+  ],
   "definitions": {
-    "link": { "type": "string", "format": "uri" },
+    "link": {
+      "type": "string",
+      "format": "uri"
+    },
     "server": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "id": { "type": "string" },
-        "name": { "type": "string" },
-
-        "status": { "type": "string", "enum": ["stable","beta","alpha","draft","experimental"] },
-        "protocol_min": { "type": "string" },
-
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "stable",
+            "beta",
+            "alpha",
+            "draft",
+            "experimental"
+          ]
+        },
+        "protocol_min": {
+          "type": "string"
+        },
         "transports": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "primitives": {
           "type": "array",
-          "items": { "type": "string", "enum": ["tools","resources","prompts"] }
+          "items": {
+            "type": "string",
+            "enum": [
+              "tools",
+              "resources",
+              "prompts"
+            ]
+          }
         },
-
-        "manifest": { "type": "string" },
+        "manifest": {
+          "type": "string"
+        },
         "manifests": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "path": { "type": "string" },
-              "uri":  { "type": "string", "format": "uri" }
+              "path": {
+                "type": "string"
+              },
+              "uri": {
+                "type": "string",
+                "format": "uri"
+              }
             }
           }
         },
-
         "connect": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "endpoint_url": { "type": "string", "format": "uri" }
+            "endpoint_url": {
+              "type": "string",
+              "format": "uri"
+            }
           }
         },
-
         "auth": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "type": { "type": "string", "enum": ["none","token","oauth"] },
-            "token_guide_url": { "type": "string", "format": "uri" },
-            "token_scopes": { "type": "array", "items": { "type": "string" } }
+            "type": {
+              "type": "string",
+              "enum": [
+                "none",
+                "token",
+                "oauth"
+              ]
+            },
+            "token_guide_url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "token_scopes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         },
-
-        "homepage": { "$ref": "#/definitions/link" },
-        "repo":     { "$ref": "#/definitions/link" },
-
+        "homepage": {
+          "$ref": "#/definitions/link"
+        },
+        "repo": {
+          "$ref": "#/definitions/link"
+        },
         "links": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "homepage": { "$ref": "#/definitions/link" },
-            "docs":     { "$ref": "#/definitions/link" },
-            "repo":     { "$ref": "#/definitions/link" }
+            "homepage": {
+              "$ref": "#/definitions/link"
+            },
+            "docs": {
+              "$ref": "#/definitions/link"
+            },
+            "repo": {
+              "$ref": "#/definitions/link"
+            }
           }
         },
-
         "meta": {
           "type": "object",
           "additionalProperties": true,
           "properties": {
-            "category":    { "type": "string" },
-            "description": { "type": "string" },
-            "env_vars":    { "type": "array", "items": { "type": "string" } }
+            "category": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "env_vars": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         },
-
         "clients": {
           "type": "object",
           "additionalProperties": true
         }
       },
-      "required": ["id"]
+      "required": [
+        "id"
+      ]
     }
   }
 }

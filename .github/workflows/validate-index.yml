@@ -1,14 +1,10 @@
 name: Validate Index
 on:
   pull_request:
-    paths:
-      - 'registry/**'
-      - 'schema/**'
+    paths: ['registry/**','schema/**','servers/**']
   push:
     branches: [ main ]
-    paths:
-      - 'registry/**'
-      - 'schema/**'
+    paths: ['registry/**','schema/**','servers/**']
 
 permissions:
   contents: read
@@ -21,15 +17,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm -g i ajv-cli@5
-      - name: Basic index presence & non-empty
+      - name: Install ajv-cli
+        run: npm -g i ajv-cli@5
+      - name: Validate manifests (draft-07)
+        run: |
+          ajv validate --spec=draft7 -s schema/mcp-server.schema.json -d 'servers/*/mcp-server.json' --strict=false || true
+      - name: Validate index (draft-07)
         run: |
           test -s registry/servers.index.json
-          jq '(.servers // .) | length' registry/servers.index.json | grep -E '^[1-9][0-9]*$'
-      - name: Validate manifests (best-effort)
-        run: |
-          if [ -f schema/mcp-server.schema.json ]; then
-            ajv validate -s schema/mcp-server.schema.json -d 'servers/*/mcp-server.json' || true
-          else
-            echo "schema not found, skipping"
-          fi
+          jq '.servers // .' registry/servers.index.json > .tmp.index.json
+          ajv validate --spec=draft7 -s schema/mcp-server-index.schema.json -d .tmp.index.json --strict=false
+          rm -f .tmp.index.json
