@@ -1,33 +1,38 @@
-<!doctype html><html lang="ru"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>MCP Catalog — Витрина</title>
-<link rel="stylesheet" href="./style.css"/>
-</head><body>
-<header class="header">
-  <h1>MCP Catalog</h1>
-  <nav class="nav">
-    <a href="/MCP-Model-Context-Protocol-catalog/">Главная</a>
-    <a href="/MCP-Model-Context-Protocol-catalog/site/">Витрина</a>
-    <a href="/MCP-Model-Context-Protocol-catalog/site/generator.html">Генератор</a>
-    <a href="https://t.me/mcpcatalog" target="_blank" rel="noopener">Telegram</a>
-  </nav>
-  <p class="muted">Публичный каталог MCP-серверов. Карточки из внешнего реестра mcp-registry.</p>
-</header>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MCP Catalog — Витрина</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="header">
+    <h1>MCP Catalog</h1>
+    <nav class="nav">
+      <a href="/MCP-Model-Context-Protocol-catalog/">Главная</a> <a href=
+      "/MCP-Model-Context-Protocol-catalog/site/">Витрина</a> <a href=
+      "/MCP-Model-Context-Protocol-catalog/site/generator.html">Генератор</a> <a href="https://t.me/mcpcatalog" target=
+      "_blank" rel="noopener">Telegram</a>
+    </nav>
+    <p class="muted">Публичный каталог MCP-серверов. Карточки из внешнего реестра mcp-registry.</p>
+  </header>
+  <main class="container">
+    <input id="q" class="search" placeholder="Поиск по названию/описанию…">
+    <div id="list" class="grid"></div>
+    <p id="empty" class="muted" style="display:none">Пусто. Измени запрос.</p>
+  </main>
+  <footer class="container footer muted">
+    © MCP Accelerator. Источник: mcp-registry.
+  </footer>
+  <script>
+  const REG='/MCP-Model-Context-Protocol-catalog/registry/servers.index.json';
+  const RAW=(p)=>`https://raw.githubusercontent.com/mcp-accelerator/mcp-registry/refs/heads/main/${p.replace(/^\\/*/,'')}`;
 
-<main class="container">
-  <input id="q" class="search" placeholder="Поиск по названию/описанию…"/>
-  <div id="list" class="grid"></div>
-  <p id="empty" class="muted" style="display:none">Пусто. Измени запрос.</p>
-</main>
-
-<footer class="container footer muted">© MCP Accelerator. Источник: mcp-registry.</footer>
-<script>
-const REG='/MCP-Model-Context-Protocol-catalog/registry/servers.index.json';
-const RAW=(p)=>`https://raw.githubusercontent.com/mcp-accelerator/mcp-registry/refs/heads/main/${p.replace(/^\\/*/,'')}`;
-
-const list=document.getElementById('list'), q=document.getElementById('q'), empty=document.getElementById('empty');
-const norm=a=>Array.isArray(a)?a:(Array.isArray(a?.servers)?a.servers:[]);
-const card=it=>{
+  const list=document.getElementById('list'), q=document.getElementById('q'), empty=document.getElementById('empty');
+  const norm=a=>Array.isArray(a)?a:(Array.isArray(a?.servers)?a.servers:[]);
+  const card=it=>{
   const manifestHref = it.manifest?.startsWith('http') ? it.manifest : (it.manifest ? RAW(it.manifest) : '');
   return `<article class="card">
     <h3>${it.name||it.id||'Без имени'}</h3>
@@ -38,21 +43,22 @@ const card=it=>{
       ${manifestHref?`<a class="badge" href="${manifestHref}" target="_blank" rel="noopener">Manifest</a>`:''}
     </div>
   </article>`;
-};
-let data=[];
-async function load(){
+  };
+  let data=[];
+  async function load(){
   const r=await fetch(REG,{headers:{'cache-control':'no-cache'}});
   const j=await r.json();
   data = norm(j).filter(x=>!String(x.id||'').startsWith('_'));
   render('');
-}
-function render(t){
+  }
+  function render(t){
   t=(t||'').toLowerCase();
   const v=t?data.filter(x=>(x.name||'').toLowerCase().includes(t)||(x.meta?.description||x.description||'').toLowerCase().includes(t)):data;
   list.innerHTML=v.map(card).join('');
   empty.style.display=v.length?'none':'block';
-}
-q.addEventListener('input',e=>render(e.target.value));
-load().catch(e=>{list.innerHTML=`<div class="card"><h3>Ошибка</h3><p class="muted">${e}</p></div>`});
-</script>
-</body></html>
+  }
+  q.addEventListener('input',e=>render(e.target.value));
+  load().catch(e=>{list.innerHTML=`<div class="card"><h3>Ошибка</h3><p class="muted">${e}</p></div>`});
+  </script>
+</body>
+</html>

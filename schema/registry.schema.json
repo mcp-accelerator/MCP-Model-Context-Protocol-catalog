@@ -4,30 +4,32 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": [
-      "name",
-      "path"
-    ],
+    "required": ["name", "path", "category"],
     "properties": {
       "name": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       },
       "path": {
-        "type": "string"
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9-_/]+$"
       },
       "category": {
-        "type": "string"
+        "type": "string",
+        "enum": ["ai", "storage", "messaging", "other"]
       },
       "badges": {
         "type": "array",
         "items": {
-          "type": "string"
+          "type": "string",
+          "enum": ["verified", "popular", "new"]
         }
       },
       "homepage": {
-        "type": "string"
+        "type": "string",
+        "format": "uri"
       }
     },
-    "additionalProperties": true
+    "additionalProperties": false
   }
 }

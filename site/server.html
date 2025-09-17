@@ -1,43 +1,46 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCP Server · Details</title>
-<style>
-:root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui}
-main{max-width:900px;margin:24px auto;padding:0 16px 40px}
-.card{background:var(--card);border:1px solid #223044;border-radius:14px;padding:16px}
-h1{margin:0 0 12px 0;font-size:28px}
-.meta{color:var(--muted);font-size:13px;margin-bottom:10px}
-.badge{display:inline-block;margin-right:6px;margin-bottom:6px;padding:4px 8px;border-radius:999px;background:#14202e;border:1px solid #27415a;font-size:12px}
-a{color:var(--brand);text-decoration:none}
-pre{background:#0d141d;border:1px solid #223044;border-radius:10px;padding:12px;overflow:auto}
-.btn{display:inline-block;margin:0 0 16px 0;padding:8px 12px;background:#182435;border:1px solid #223044;border-radius:10px;color:var(--ink);text-decoration:none}
-.lang{float:right;display:flex;gap:6px}
-.lang button{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
-.lang button.active{outline:2px solid var(--brand)}
-</style>
-</head><body>
-<main>
-  <div class="lang">
-    <button id="en" class="active">EN</button>
-    <button id="ru">RU</button>
-  </div>
-  <a class="btn" id="back" href="./index.html">&larr; Back to catalog</a>
-  <div class="card" id="wrap">
-    <h1 id="title">Loading…</h1>
-    <div class="meta" id="meta"></div>
-    <p id="desc"></p>
-    <div id="badges"></div>
-    <h3>Capabilities</h3>
-    <div id="caps"></div>
-    <h3>Links</h3>
-    <ul id="links"></ul>
-    <h3>Quick Connect (example)</h3>
-    <pre id="qc"></pre>
-  </div>
-</main>
-<script>
-(function(){
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP Server · Details</title>
+  <style>
+  :root{--bg:#0b0f14;--card:#10161f;--ink:#e8eef6;--muted:#99a7b3;--brand:#5aa7ff;--chip:#1a2330}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui}
+  main{max-width:900px;margin:24px auto;padding:0 16px 40px}
+  .card{background:var(--card);border:1px solid #223044;border-radius:14px;padding:16px}
+  h1{margin:0 0 12px 0;font-size:28px}
+  .meta{color:var(--muted);font-size:13px;margin-bottom:10px}
+  .badge{display:inline-block;margin-right:6px;margin-bottom:6px;padding:4px 8px;border-radius:999px;background:#14202e;border:1px solid #27415a;font-size:12px}
+  a{color:var(--brand);text-decoration:none}
+  pre{background:#0d141d;border:1px solid #223044;border-radius:10px;padding:12px;overflow:auto}
+  .btn{display:inline-block;margin:0 0 16px 0;padding:8px 12px;background:#182435;border:1px solid #223044;border-radius:10px;color:var(--ink);text-decoration:none}
+  .lang{float:right;display:flex;gap:6px}
+  .lang button{background:var(--chip);border:1px solid #223044;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px}
+  .lang button.active{outline:2px solid var(--brand)}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="lang">
+      <button id="en" class="active">EN</button> <button id="ru">RU</button>
+    </div><a class="btn" id="back" href="./index.html">← Back to catalog</a>
+    <div class="card" id="wrap">
+      <h1 id="title">Loading…</h1>
+      <div class="meta" id="meta"></div>
+      <p id="desc"></p>
+      <div id="badges"></div>
+      <h3>Capabilities</h3>
+      <div id="caps"></div>
+      <h3>Links</h3>
+      <ul id="links"></ul>
+      <h3>Quick Connect (example)</h3>
+      <pre id="qc"></pre>
+    </div>
+  </main>
+  <script>
+  (function(){
   const p=new URLSearchParams(location.search), name=p.get('name')||'';
   const BASE=location.pathname.replace(/\/site\/.*$/,'/');
   const LANGp=(p.get('lang')||'en').toLowerCase();
@@ -81,11 +84,12 @@ pre{background:#0d141d;border:1px solid #223044;border-radius:10px;padding:12px;
       "env": { /* your env here */ }
     }
   }
-}`;
+  }`;
     el('qc').textContent=qc;
     el('back').href='./index.html?lang='+LANG;
   }
   load();
-})();
-</script>
-</body></html>
+  })();
+  </script>
+</body>
+</html>

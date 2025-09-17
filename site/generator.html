@@ -1,30 +1,49 @@
-<!doctype html><html lang="ru"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>MCP Generator</title>
-<link rel="stylesheet" href="./style.css"/>
-</head><body>
-<div class="header">
-  <h1>Генератор MCP-сервера</h1>
-  <p class="muted">Заполни поля — получишь <code>mcp-server.json</code> для карточки.</p>
-</div>
-<main class="container">
-  <div class="card">
-    <label>Идентификатор (id)<br><input id="id" class="search" placeholder="например: telegram-server"></label><br><br>
-    <label>Название (name)<br><input id="name" class="search" placeholder="Telegram MCP Server"></label><br><br>
-    <label>Описание (description)<br><input id="desc" class="search" placeholder="Интеграция Telegram Bot API"></label><br><br>
-    <label>Категория (category)<br><input id="cat" class="search" placeholder="messaging"></label><br><br>
-    <label>Лицензия (license)<br><input id="lic" class="search" placeholder="MIT"></label><br><br>
-    <label>Repo URL<br><input id="repo" class="search" placeholder="https://github.com/you/server-telegram"></label><br><br>
-    <label>Homepage/Docs URL<br><input id="home" class="search" placeholder="https://core.telegram.org/bots/api"></label><br><br>
-    <button id="gen">Сгенерировать JSON</button>
-    <button id="copy">Скопировать</button>
-    <button id="save">Скачать</button>
-    <pre id="out" class="card" style="white-space:pre-wrap;margin-top:12px"></pre>
-    <p class="muted">Дальше: добавь файл в <code>servers/&lt;id&gt;/mcp-server.json</code> и индекс <code>registry/servers.index.json</code>.</p>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MCP Generator</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="header">
+    <h1>Генератор MCP-сервера</h1>
+    <p class="muted">Заполни поля — получишь <code>mcp-server.json</code> для карточки.</p>
   </div>
-</main>
-<script>
-function build(){
+  <main class="container">
+    <div class="card">
+      <label>Идентификатор (id)<br>
+      <input id="id" class="search" placeholder="например: telegram-server"></label><br>
+      <br>
+      <label>Название (name)<br>
+      <input id="name" class="search" placeholder="Telegram MCP Server"></label><br>
+      <br>
+      <label>Описание (description)<br>
+      <input id="desc" class="search" placeholder="Интеграция Telegram Bot API"></label><br>
+      <br>
+      <label>Категория (category)<br>
+      <input id="cat" class="search" placeholder="messaging"></label><br>
+      <br>
+      <label>Лицензия (license)<br>
+      <input id="lic" class="search" placeholder="MIT"></label><br>
+      <br>
+      <label>Repo URL<br>
+      <input id="repo" class="search" placeholder="https://github.com/you/server-telegram"></label><br>
+      <br>
+      <label>Homepage/Docs URL<br>
+      <input id="home" class="search" placeholder="https://core.telegram.org/bots/api"></label><br>
+      <br>
+      <button id="gen">Сгенерировать JSON</button> <button id="copy">Скопировать</button> <button id=
+      "save">Скачать</button>
+      <pre id="out" class="card" style="white-space:pre-wrap;margin-top:12px"></pre>
+      <p class="muted">Дальше: добавь файл в <code>servers/&lt;id&gt;/mcp-server.json</code> и индекс
+      <code>registry/servers.index.json</code>.</p>
+    </div>
+  </main>
+  <script>
+  function build(){
   const now=new Date().toISOString().slice(0,10);
   const j={
     id: id.value.trim(),
@@ -40,12 +59,13 @@ function build(){
     homepage: home.value.trim()||undefined
   };
   return JSON.stringify(j,null,2);
-}
-gen.onclick=()=>{ out.textContent=build(); };
-copy.onclick=async()=>{ await navigator.clipboard.writeText(build()); copy.textContent='Скопировано'; setTimeout(()=>copy.textContent='Скопировать',1200); };
-save.onclick=()=>{
+  }
+  gen.onclick=()=>{ out.textContent=build(); };
+  copy.onclick=async()=>{ await navigator.clipboard.writeText(build()); copy.textContent='Скопировано'; setTimeout(()=>copy.textContent='Скопировать',1200); };
+  save.onclick=()=>{
   const blob=new Blob([build()],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mcp-server.json'; a.click();
-};
-</script>
-</body></html>
+  };
+  </script>
+</body>
+</html>
