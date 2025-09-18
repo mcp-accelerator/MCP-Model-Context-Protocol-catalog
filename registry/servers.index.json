@@ -1,0 +1,258 @@
+{
+  "updated_at": "2025-09-05T00:00:00Z",
+  "servers": [
+    {
+      "id": "airtable",
+      "name": "Airtable",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools", "resources"],
+      "manifest": "servers/airtable/mcp-server.json",
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://airtable.com/create/tokens",
+        "token_scopes": ["data.records:read", "data.records:write"]
+      },
+      "meta": {
+        "category": "productivity",
+        "description": "Read/write Airtable bases via MCP tools.",
+        "env_vars": ["AIRTABLE_API_KEY"]
+      }
+    },
+    {
+      "id": "echo",
+      "name": "Echo",
+      "status": "alpha",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools"],
+      "manifest": "servers/echo/mcp-server.json",
+      "meta": {
+        "category": "utility",
+        "description": "Minimal echo server for MCP debugging.",
+        "env_vars": []
+      }
+    },
+    {
+      "id": "fetch",
+      "name": "Fetch",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["stdio"],
+      "primitives": ["tools", "resources"],
+      "meta": {
+        "category": "network",
+        "description": "HTTP fetch tools (GET/HEAD/download) for MCP.",
+        "env_vars": []
+      }
+    },
+    {
+      "id": "filesystem",
+      "name": "Filesystem",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["stdio"],
+      "primitives": ["tools", "resources"],
+      "meta": {
+        "category": "local",
+        "description": "Local file read/write/list for MCP.",
+        "env_vars": []
+      }
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["stdio"],
+      "primitives": ["tools"],
+      "meta": {
+        "category": "devtools",
+        "description": "Run common Git operations from MCP.",
+        "env_vars": []
+      }
+    },
+    {
+      "id": "github-remote",
+      "name": "GitHub (Remote)",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools", "resources"],
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://github.com/settings/tokens"
+      },
+      "meta": {
+        "category": "devtools",
+        "description": "Hosted GitHub MCP endpoint (issues, PRs, search).",
+        "env_vars": ["GITHUB_TOKEN"]
+      }
+    },
+    {
+      "id": "github",
+      "name": "GitHub",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools", "resources"],
+      "manifest": "servers/github/mcp-server.json",
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://github.com/settings/tokens"
+      },
+      "meta": {
+        "category": "devtools",
+        "description": "Local GitHub MCP server using a personal token.",
+        "env_vars": ["GITHUB_TOKEN"]
+      }
+    },
+    {
+      "id": "memory",
+      "name": "Memory",
+      "status": "alpha",
+      "protocol_min": "2024-11-05",
+      "transports": ["stdio"],
+      "primitives": ["resources", "tools"],
+      "meta": {
+        "category": "utility",
+        "description": "Ephemeral key/value memory for sessions.",
+        "env_vars": []
+      }
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools", "resources"],
+      "manifest": "servers/notion/mcp-server.json",
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://www.notion.so/my-integrations"
+      },
+      "meta": {
+        "category": "productivity",
+        "description": "Query and update Notion databases and pages.",
+        "env_vars": ["NOTION_TOKEN"]
+      }
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "status": "stable",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools", "resources"],
+      "manifest": "servers/openai/mcp-server.json",
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://platform.openai.com/api-keys"
+      },
+      "meta": {
+        "category": "ai",
+        "description": "Access OpenAI APIs via MCP.",
+        "env_vars": ["OPENAI_API_KEY"]
+      }
+    },
+    {
+      "id": "sentry-remote",
+      "name": "Sentry (Remote)",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools", "resources"],
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://sentry.io/settings/account/api/auth-tokens/"
+      },
+      "meta": {
+        "category": "observability",
+        "description": "Hosted Sentry MCP endpoint (issues, events).",
+        "env_vars": ["SENTRY_AUTH_TOKEN"]
+      }
+    },
+    {
+      "id": "sequential-thinking",
+      "name": "Sequential Thinking",
+      "status": "alpha",
+      "protocol_min": "2024-11-05",
+      "transports": ["stdio"],
+      "primitives": ["prompts", "tools"],
+      "meta": {
+        "category": "ai",
+        "description": "Utilities for chain-of-thought style planning.",
+        "env_vars": []
+      }
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools", "resources"],
+      "manifest": "servers/slack/mcp-server.json",
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://api.slack.com/apps"
+      },
+      "meta": {
+        "category": "communication",
+        "description": "Send/read Slack messages, manage channels.",
+        "env_vars": ["SLACK_BOT_TOKEN", "SLACK_SIGNING_SECRET"]
+      }
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools"],
+      "manifest": "servers/telegram/mcp-server.json",
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://t.me/BotFather"
+      },
+      "meta": {
+        "category": "communication",
+        "description": "Send and receive Telegram messages via bot.",
+        "env_vars": ["TELEGRAM_BOT_TOKEN"]
+      }
+    },
+    {
+      "id": "time",
+      "name": "Time",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["stdio"],
+      "primitives": ["tools", "resources"],
+      "meta": {
+        "category": "utility",
+        "description": "Time/date utilities and clock.",
+        "env_vars": []
+      }
+    },
+    {
+      "id": "trello",
+      "name": "Trello",
+      "status": "beta",
+      "protocol_min": "2024-11-05",
+      "transports": ["streamable_http"],
+      "primitives": ["tools", "resources"],
+      "manifest": "servers/trello/mcp-server.json",
+      "auth": {
+        "type": "token",
+        "token_guide_url": "https://trello.com/app-key"
+      },
+      "meta": {
+        "category": "productivity",
+        "description": "Work with Trello boards, lists and cards.",
+        "env_vars": ["TRELLO_KEY", "TRELLO_TOKEN"]
+      }
+    }
+  ]
+}
