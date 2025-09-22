@@ -27,7 +27,7 @@ jobs:
           curl -fsSL https://mcp-accelerator.github.io/mcp-registry/servers.index.json \
             -o dist/registry/servers.index.json
           jq . dist/registry/servers.index.json >/dev/null
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           name: github-pages
           path: dist
