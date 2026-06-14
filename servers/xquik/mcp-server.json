@@ -1,0 +1,37 @@
+{
+  "name": "xquik_mcp",
+  "version": "2.4.16",
+  "base_url": "https://xquik.com/mcp",
+  "auth": {
+    "type": "api_key",
+    "env": "XQUIK_API_KEY",
+    "header": "x-api-key"
+  },
+  "headers": {
+    "x-api-key": "${env.XQUIK_API_KEY}"
+  },
+  "capabilities": [
+    {
+      "type": "tools",
+      "names": [
+        "explore",
+        "xquik"
+      ]
+    }
+  ],
+  "meta": {
+    "title": "Xquik",
+    "description": "X data MCP server for search, profiles, timelines, media, monitors, and posting workflows.",
+    "category": "social",
+    "homepage": "https://docs.xquik.com/mcp/overview",
+    "repo": "https://github.com/Xquik-dev/x-twitter-scraper",
+    "license": "MIT",
+    "keywords": [
+      "x",
+      "twitter",
+      "social",
+      "mcp",
+      "webhooks"
+    ]
+  }
+}

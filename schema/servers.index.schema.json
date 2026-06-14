@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schema/servers.index.schema.json",
+  "title": "MCP Catalog Servers Index",
+  "type": "object",
+  "required": [
+    "updated_at",
+    "servers"
+  ],
+  "properties": {
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "servers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/server"
+      }
+    }
+  },
+  "$defs": {
+    "server": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "protocol_min",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-_]{1,63}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protocol_min": {
+          "type": "string",
+          "pattern": "^20\\d{2}-\\d{2}-\\d{2}$"
+        },
+        "status": {
+          "enum": [
+            "stable",
+            "beta",
+            "alpha",
+            "deprecated",
+            "draft"
+          ]
+        },
+        "transports": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "primitives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "manifest": {
+          "type": "string"
+        },
+        "manifests": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "repo": {
+          "type": "string",
+          "format": "uri"
+        },
+        "homepage": {
+          "type": "string",
+          "format": "uri"
+        },
+        "meta": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
